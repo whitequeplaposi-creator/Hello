@@ -3,10 +3,10 @@ import { getCustomerOrders } from '@/lib/customerDb';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const customerId = params.id;
+    const { id: customerId } = await params;
     
     // Verifiera att customerId är giltig
     if (!customerId || typeof customerId !== 'string') {

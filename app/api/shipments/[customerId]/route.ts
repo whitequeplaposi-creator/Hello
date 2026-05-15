@@ -3,10 +3,10 @@ import { getCustomerShipments } from '@/lib/logisticsDb';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { customerId: string } }
+  { params }: { params: Promise<{ customerId: string }> }
 ) {
   try {
-    const customerId = params.customerId;
+    const { customerId } = await params;
     
     // Verifiera att customerId är giltig
     if (!customerId || typeof customerId !== 'string') {

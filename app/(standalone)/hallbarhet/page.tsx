@@ -140,8 +140,8 @@ export default function Hallbarhet() {
                 desc: t('transparencyDesc'),
               },
               {
-                title: t('innovation'),
-                desc: t('innovationDesc'),
+                title: t('innovationSustainability'),
+                desc: t('innovationSustainabilityDesc'),
               },
             ].map((v, i) => (
               <div key={i} className="bg-white/90 backdrop-blur-sm rounded-3xl p-10 shadow-lg border border-emerald-100/50 text-center hover:shadow-xl transition-all duration-300 hover:bg-white hover:scale-[1.02]">
@@ -330,9 +330,9 @@ export default function Hallbarhet() {
               <p className="text-white/90 leading-relaxed text-xl font-light max-w-3xl mx-auto">
                 {t('makeADifferenceText')}
               </p>
-              <button className="bg-white text-emerald-700 px-10 py-4 font-semibold hover:bg-stone-50 transition-all duration-300 rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-[1.05] text-lg">
+              <a href="/products" className="inline-block bg-white text-emerald-700 px-10 py-4 font-semibold hover:bg-stone-50 transition-all duration-300 rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-[1.05] text-lg">
                 {t('exploreSustainableProducts')}
-              </button>
+              </a>
             </div>
           </div>
         </section>

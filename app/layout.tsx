@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Playfair_Display } from 'next/font/google'
 import './globals.css'
 import { CartProvider } from '@/lib/CartContext'
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   },
 }
 
-export function generateViewport() {
+export function generateViewport(): Viewport {
   return {
     width: 'device-width',
     initialScale: 1,

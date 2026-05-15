@@ -6,12 +6,13 @@ import ProductDetailPage from '@/components/ProductDetailPage'
 import type { Metadata } from 'next'
 
 interface PageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const product = await getProduct(params.id)
+  const { id } = await params
+  const product = await getProduct(id)
   
   if (!product) {
     return {
@@ -36,14 +37,14 @@ export async function generateStaticParams() {
 }
 
 export default async function ProduktPage({ params }: PageProps) {
-  // Fetch product first, then fetch related products using its category
-  const product = await getProduct(params.id)
+  const { id } = await params
+  const product = await getProduct(id)
 
   if (!product) {
     notFound()
   }
 
-  const relatedProducts = await getRelatedProducts(params.id, product.category)
+  const relatedProducts = await getRelatedProducts(id, product.category)
 
   return (
     <div className="min-h-screen flex flex-col bg-white">

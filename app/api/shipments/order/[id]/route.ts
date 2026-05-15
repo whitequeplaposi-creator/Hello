@@ -7,10 +7,10 @@ import client from '@/lib/db';
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const orderId = params.id;
+    const { id: orderId } = await params;
     
     if (!orderId || typeof orderId !== 'string') {
       return NextResponse.json(
