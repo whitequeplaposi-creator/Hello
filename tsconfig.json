@@ -21,6 +21,15 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "firebase/auth": [
+        "./node_modules/firebase/app/dist/auth/index.d.ts"
+      ],
+      "firebase/analytics": [
+        "./node_modules/firebase/app/dist/analytics/index.d.ts"
+      ],
+      "firebase/app": [
+        "./node_modules/firebase/app/dist/app/index.d.ts"
       ]
     },
     "plugins": [

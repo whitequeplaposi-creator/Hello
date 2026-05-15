@@ -97,9 +97,16 @@ function categorizeProduct(productName: string): string {
   return 'clothing';
 }
 
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL environment variable is not set');
+}
+if (!process.env.DATABASE_AUTH_TOKEN) {
+  throw new Error('DATABASE_AUTH_TOKEN environment variable is not set');
+}
+
 const client = createClient({
-  url: 'libsql://dostar-dostar.aws-ap-northeast-1.turso.io',
-  authToken: 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NzgxNDQyMjYsImlkIjoiMDE5Y2QzN2QtYzYwMS03YWVjLTljMjctMzY0MmE2ZjA0YjIyIiwicmlkIjoiNzg3ZmQwMjYtZDk5OS00ZTM3LThiZjctODBlYmU2NGViYzRjIn0.LE3OXGwCSgOuX_2tgOguKI1rWjz6K_Pa_7M1oDkkHVgg7jQrXS-RtN19OcNaTFROJZmXHBbaOaxfAReOmjWuCg'
+  url: process.env.DATABASE_URL,
+  authToken: process.env.DATABASE_AUTH_TOKEN,
 });
 
 // Initialize database schema - ensure all tables and columns exist

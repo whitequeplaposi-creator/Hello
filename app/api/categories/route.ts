@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server'
 import { getProducts } from '@/lib/db'
-import { generateCategoriesFromProducts, translateCategories } from '@/lib/categoryGenerator'
+import { generateCategoriesFromProducts } from '@/lib/categoryGenerator'
 
 export const dynamic = 'force-dynamic'
-export const revalidate = 3600 // Cache i 1 timme
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
     const lang = searchParams.get('lang') as 'sv' | 'en' || 'en'
+    void lang // lang parameter reserved for future use
     
     // Fetch all products from database
     const products = await getProducts()

@@ -1,12 +1,20 @@
 'use client'
 
 import { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react'
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile,
+  type User as FirebaseUser,
+} from 'firebase/auth'
+import { auth } from './firebase'
 import { User } from './types'
 
 async function fetchDbCustomerIdForEmail(email: string): Promise<string | null> {
   try {
     const res = await fetch(`/api/customers?email=${encodeURIComponent(email)}`)
-    // 404 means the customer doesn't exist in the DB yet — not an error
     if (!res.ok) return null
     const data = await res.json()
     if (data.success && data.customer?.id) return data.customer.id as string
@@ -21,7 +29,6 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>
   register: (email: string, password: string, name: string) => Promise<boolean>
   logout: () => void
-  /** När order-API returnerar annat kund-id än sessionen (t.ex. gammalt numeriskt localStorage-id). */
   alignCustomerId: (customerId: string) => void
   isAuthenticated: boolean
   isLoading: boolean
@@ -36,122 +43,76 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const alignCustomerId = useCallback((customerId: string) => {
     setUser((prev) => {
       if (!prev || prev.id === customerId) return prev
-      const next = { ...prev, id: customerId }
-      localStorage.setItem('user', JSON.stringify(next))
-      return next
+      return { ...prev, id: customerId }
     })
   }, [])
 
+  // Lyssna på Firebase Auth-tillstånd
   useEffect(() => {
-    let cancelled = false
-    ;(async () => {
-      const savedUser = localStorage.getItem('user')
-      if (savedUser) {
-        try {
-          const parsed = JSON.parse(savedUser) as User
-          if (!cancelled) setUser(parsed)
-          const dbId = parsed.email ? await fetchDbCustomerIdForEmail(parsed.email) : null
-          if (!cancelled && dbId && dbId !== parsed.id) {
-            const updated = { ...parsed, id: dbId }
-            setUser(updated)
-            localStorage.setItem('user', JSON.stringify(updated))
-          }
-        } catch (error) {
-          console.error('Error loading user from localStorage:', error)
-          localStorage.removeItem('user')
-        }
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
+      if (firebaseUser) {
+        // Hämta kund-ID från databasen
+        const dbId = await fetchDbCustomerIdForEmail(firebaseUser.email!)
+        setUser({
+          id: dbId ?? firebaseUser.uid,
+          email: firebaseUser.email!,
+          name: firebaseUser.displayName ?? '',
+        })
+      } else {
+        setUser(null)
       }
-      if (!cancelled) setIsLoading(false)
-    })()
-    return () => {
-      cancelled = true
-    }
+      setIsLoading(false)
+    })
+    return () => unsubscribe()
   }, [])
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    const users = JSON.parse(localStorage.getItem('users') || '[]')
-    const foundUser = users.find(
-      (u: any) => u.email === email && u.password === password
-    )
-
-    if (foundUser) {
-      // Hämta korrekt customer ID från databasen
-      try {
-        const response = await fetch(`/api/customers?email=${encodeURIComponent(email)}`)
-        const data = response.ok ? await response.json() : null
-        
-        let customerId = foundUser.id
-        if (data?.success && data.customer) {
-          // Använd customer ID från databasen
-          customerId = data.customer.id
-          console.log('✅ Using customer ID from database:', customerId)
-        }
-        
-        const userData = { id: customerId, email: foundUser.email, name: foundUser.name }
-        setUser(userData)
-        localStorage.setItem('user', JSON.stringify(userData))
-        return true
-      } catch (error) {
-        console.error('Error fetching customer ID:', error)
-        // Fallback till localStorage ID
-        const userData = { id: foundUser.id, email: foundUser.email, name: foundUser.name }
-        setUser(userData)
-        localStorage.setItem('user', JSON.stringify(userData))
-        return true
-      }
+    try {
+      const credential = await signInWithEmailAndPassword(auth, email, password)
+      const dbId = await fetchDbCustomerIdForEmail(email)
+      setUser({
+        id: dbId ?? credential.user.uid,
+        email: credential.user.email!,
+        name: credential.user.displayName ?? '',
+      })
+      return true
+    } catch (error: any) {
+      console.error('Firebase login error:', error.code, error.message)
+      return false
     }
-    return false
   }
 
   const register = async (email: string, password: string, name: string): Promise<boolean> => {
     try {
-      // Spara i localStorage (för autentisering)
-      const users = JSON.parse(localStorage.getItem('users') || '[]')
-      
-      if (users.find((u: any) => u.email === email)) {
-        return false
-      }
+      const credential = await createUserWithEmailAndPassword(auth, email, password)
 
-      const userId = `cust_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`
+      // Sätt displayName i Firebase
+      await updateProfile(credential.user, { displayName: name })
 
-      const newUser = {
-        id: userId,
-        email,
-        password,
-        name,
-      }
-
-      users.push(newUser)
-      localStorage.setItem('users', JSON.stringify(users))
+      const userId = credential.user.uid
 
       // Skapa kund i databasen
       try {
         await fetch('/api/customers', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            id: userId,
-            email,
-            name
-          })
+          body: JSON.stringify({ id: userId, email, name }),
         })
-      } catch (error) {
-        console.error('Failed to create customer in database:', error)
+      } catch (err) {
+        console.error('Failed to create customer in database:', err)
       }
 
-      const userData = { id: newUser.id, email: newUser.email, name: newUser.name }
-      setUser(userData)
-      localStorage.setItem('user', JSON.stringify(userData))
+      setUser({ id: userId, email, name })
       return true
-    } catch (error) {
-      console.error('Registration error:', error)
+    } catch (error: any) {
+      console.error('Firebase register error:', error.code, error.message)
       return false
     }
   }
 
-  const logout = () => {
+  const logout = async () => {
+    await signOut(auth)
     setUser(null)
-    localStorage.removeItem('user')
   }
 
   return (

@@ -12,9 +12,7 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@/components', '@/lib'],
   },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-  },
+  // removeConsole removed: keeping console logs in production for Vercel function logs
 }
 
 module.exports = nextConfig

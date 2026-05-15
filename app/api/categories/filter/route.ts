@@ -3,7 +3,6 @@ import { getProducts } from '@/lib/db'
 import { filterProductsByCategory } from '@/lib/categoryGenerator'
 
 export const dynamic = 'force-dynamic'
-export const revalidate = 3600 // Cache i 1 timme
 
 export async function GET(request: Request) {
   try {

@@ -10,6 +10,7 @@ import { CookieProvider } from '@/lib/CookieContext'
 import { FavoritesProvider } from '@/lib/FavoritesContext'
 import CookieBanner from '@/components/CookieBanner'
 import CookieSettings from '@/components/CookieSettings'
+import FirebaseAnalytics from '@/components/FirebaseAnalytics'
 
 const playfair = Playfair_Display({ 
   subsets: ['latin'],
@@ -58,6 +59,7 @@ export default function RootLayout({
                       {children}
                       <CookieBanner />
                       <CookieSettings />
+                      <FirebaseAnalytics />
                     </FavoritesProvider>
                   </CartProvider>
                 </CategoryProvider>
