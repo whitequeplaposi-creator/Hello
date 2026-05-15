@@ -3,12 +3,14 @@ import * as customerDb from '@/lib/customerDb';
 import client from '@/lib/db';
 import Stripe from 'stripe';
 
+export const dynamic = 'force-dynamic';
+
 function getStripe() {
   if (!process.env.STRIPE_SECRET_KEY) {
     throw new Error('STRIPE_SECRET_KEY saknas');
   }
   return new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2024-06-20',
+    apiVersion: '2026-04-22.dahlia',
   });
 }
 

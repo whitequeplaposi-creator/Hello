@@ -7,12 +7,13 @@ function getStripe() {
     throw new Error('STRIPE_SECRET_KEY saknas');
   }
   return new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2024-06-20',
+    apiVersion: '2026-04-22.dahlia',
   });
 }
 
 // App Router: raw body via request.text() (inte Pages `bodyParser: false`)
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
