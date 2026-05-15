@@ -2,9 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import client from '@/lib/db';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-04-22.dahlia',
-});
+function getStripe() {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error('STRIPE_SECRET_KEY saknas');
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2026-04-22.dahlia',
+  });
+}
 
 // App Router: raw body via request.text() (inte Pages `bodyParser: false`)
 export const runtime = 'nodejs';
@@ -20,7 +25,7 @@ export async function POST(request: NextRequest) {
   // Om webhook secret finns, verifiera signaturen
   if (webhookSecret && signature) {
     try {
-      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+      event = getStripe().webhooks.constructEvent(body, signature, webhookSecret);
     } catch (err: any) {
       console.error('❌ Webhook signature verification failed:', err.message);
       return NextResponse.json(

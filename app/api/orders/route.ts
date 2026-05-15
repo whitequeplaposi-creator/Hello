@@ -3,9 +3,14 @@ import * as customerDb from '@/lib/customerDb';
 import client from '@/lib/db';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-04-22.dahlia',
-});
+function getStripe() {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error('STRIPE_SECRET_KEY saknas');
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2026-04-22.dahlia',
+  });
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -95,7 +100,7 @@ export async function POST(request: NextRequest) {
       
       let paymentIntent;
       try {
-        paymentIntent = await stripe.paymentIntents.retrieve(orderData.paymentIntentId);
+        paymentIntent = await getStripe().paymentIntents.retrieve(orderData.paymentIntentId);
       } catch (stripeError: any) {
         console.error('❌ Stripe verification failed:', stripeError.message);
         return NextResponse.json(
