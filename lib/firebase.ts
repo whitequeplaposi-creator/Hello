@@ -1,5 +1,5 @@
-import { initializeApp, getApps } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
+import { getAuth, type Auth } from "firebase/auth";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -12,14 +12,21 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Prevent re-initialization during hot reloads in development
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+// Only initialize Firebase if we have a valid API key
+// This prevents build-time crashes when env vars are not set
+let app: FirebaseApp | null = null;
+let auth: Auth | null = null;
 
-const auth = getAuth(app);
+if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
+  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+  auth = getAuth(app);
+}
 
 // Analytics is only available in the browser and requires user consent
-const analyticsPromise = isSupported().then((supported) =>
-  supported ? getAnalytics(app) : null
-);
+const analyticsPromise = app
+  ? isSupported().then((supported) =>
+      supported ? getAnalytics(app!) : null
+    )
+  : Promise.resolve(null);
 
 export { app, auth, analyticsPromise };

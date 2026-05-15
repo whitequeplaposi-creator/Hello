@@ -49,9 +49,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Lyssna på Firebase Auth-tillstånd
   useEffect(() => {
+    // Om Firebase inte är konfigurerat, sätt isLoading till false direkt
+    if (!auth) {
+      setIsLoading(false)
+      return
+    }
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
       if (firebaseUser) {
-        // Hämta kund-ID från databasen
         const dbId = await fetchDbCustomerIdForEmail(firebaseUser.email!)
         setUser({
           id: dbId ?? firebaseUser.uid,
@@ -67,6 +71,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const login = async (email: string, password: string): Promise<boolean> => {
+    if (!auth) {
+      console.error('Firebase är inte konfigurerat')
+      return false
+    }
     try {
       const credential = await signInWithEmailAndPassword(auth, email, password)
       const dbId = await fetchDbCustomerIdForEmail(email)
@@ -83,15 +91,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const register = async (email: string, password: string, name: string): Promise<boolean> => {
+    if (!auth) {
+      console.error('Firebase är inte konfigurerat')
+      return false
+    }
     try {
       const credential = await createUserWithEmailAndPassword(auth, email, password)
-
-      // Sätt displayName i Firebase
       await updateProfile(credential.user, { displayName: name })
-
       const userId = credential.user.uid
-
-      // Skapa kund i databasen
       try {
         await fetch('/api/customers', {
           method: 'POST',
@@ -101,7 +108,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (err) {
         console.error('Failed to create customer in database:', err)
       }
-
       setUser({ id: userId, email, name })
       return true
     } catch (error: any) {
@@ -111,7 +117,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const logout = async () => {
-    await signOut(auth)
+    if (auth) {
+      await signOut(auth)
+    }
     setUser(null)
   }
 
