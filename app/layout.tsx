@@ -6,6 +6,10 @@ import { AuthProvider } from '@/lib/AuthContext'
 import { LanguageProvider } from '@/lib/LanguageContext'
 import { CategoryProvider } from '@/lib/CategoryContext'
 import { SearchProvider } from '@/lib/SearchContext'
+import { CookieProvider } from '@/lib/CookieContext'
+import { FavoritesProvider } from '@/lib/FavoritesContext'
+import CookieBanner from '@/components/CookieBanner'
+import CookieSettings from '@/components/CookieSettings'
 
 const playfair = Playfair_Display({ 
   subsets: ['latin'],
@@ -16,6 +20,21 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: 'Modern E-handel',
   description: 'En modern och användarvänlig e-handelssida',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Modern E-handel',
+  },
+}
+
+export function generateViewport() {
+  return {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+    themeColor: '#ffffff',
+  }
 }
 
 export default function RootLayout({
@@ -24,17 +43,28 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="sv" className={playfair.variable}>
+    <html lang="en" className={playfair.variable}>
+      <head>
+        <meta name="google" content="notranslate" />
+      </head>
       <body>
-        <LanguageProvider>
-          <AuthProvider>
-            <SearchProvider>
-              <CategoryProvider>
-                <CartProvider>{children}</CartProvider>
-              </CategoryProvider>
-            </SearchProvider>
-          </AuthProvider>
-        </LanguageProvider>
+        <CookieProvider>
+          <LanguageProvider>
+            <AuthProvider>
+              <SearchProvider>
+                <CategoryProvider>
+                  <CartProvider>
+                    <FavoritesProvider>
+                      {children}
+                      <CookieBanner />
+                      <CookieSettings />
+                    </FavoritesProvider>
+                  </CartProvider>
+                </CategoryProvider>
+              </SearchProvider>
+            </AuthProvider>
+          </LanguageProvider>
+        </CookieProvider>
       </body>
     </html>
   )

@@ -6,17 +6,14 @@ import { useCart } from '../lib/CartContext'
 interface AddToCartButtonProps {
   product: Product
   selectedSize?: string
+  selectedColor?: string
 }
 
-export default function AddToCartButton({ product, selectedSize }: AddToCartButtonProps) {
+export default function AddToCartButton({ product, selectedSize, selectedColor }: AddToCartButtonProps) {
   const { addToCart } = useCart()
 
   const handleAddToCart = () => {
-    const productWithSize = {
-      ...product,
-      selectedSize: selectedSize || undefined
-    }
-    addToCart(productWithSize)
+    addToCart(product, selectedSize, selectedColor)
   }
 
   const isDisabled = false

@@ -30,24 +30,24 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError('')
+    
     if (!name || !email || !password || !confirmPassword) {
       setError(t('fillAllFields'))
-      setIsLoading(false)
       return
     }
 
     if (password !== confirmPassword) {
       setError(t('passwordsDontMatch'))
-      setIsLoading(false)
       return
     }
 
     if (password.length < 6) {
       setError(t('passwordTooShort'))
-      setIsLoading(false)
       return
     }
 
+    setIsLoading(true)
     const success = await register(email, password, name)
     setIsLoading(false)
     
@@ -175,7 +175,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full py-3 bg-sky-400 text-white font-medium rounded-lg hover:bg-sky-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {isLoading ? (
                 <>

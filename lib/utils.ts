@@ -61,20 +61,61 @@ export function filterJpgImages(imageUrls: string[] | string): string[] {
 }
 
 /**
- * Tar bort 'dropshipping', 'EPROLO' och '--- Övrigt' från text
+ * Rengör och förkortar produktnamn för professionell visning
  * @param text - Texten som ska rensas
- * @returns Rensat text utan dessa ord/mönster
+ * @returns Rensat och förkortat produktnamn
  */
 export function cleanText(text: string): string {
   if (!text || typeof text !== 'string') return text;
   
-  return text
-    .replace(/\bdropshipping\b/gi, '') // Ta bort 'dropshipping' (case-insensitive)
-    .replace(/\bEPROLO\b/gi, '') // Ta bort 'EPROLO' (case-insensitive)
-    .replace(/\s*-\s*-\s*Övrigt/gi, '') // Ta bort '- - Övrigt' med mellanslag
-    .replace(/\s*-+\s*Övrigt/gi, '') // Ta bort '--- Övrigt', '- Övrigt' osv
+  let cleanedText = text
+    .replace(/\bdropshipping\b/gi, '') // Ta bort 'dropshipping'
+    .replace(/\bEPROLO\b/gi, '') // Ta bort 'EPROLO'
+    .replace(/\s*-\s*-\s*Övrigt/gi, '') // Ta bort '- - Övrigt'
+    .replace(/\s*-+\s*Övrigt/gi, '') // Ta bort '--- Övrigt'
     .replace(/\s+/g, ' ') // Ta bort extra mellanslag
-    .trim(); // Ta bort ledande och avslutande mellanslag
+    .trim();
+  
+  // Hantera duplicerad text som "TextwomenText" eller "TextforWomenText"
+  // Hitta och ta bort duplicerade delar av titeln
+  const duplicatePattern = /(.+?)(women|woman|ladies|men|man|for\s+women|for\s+men)\1/gi;
+  cleanedText = cleanedText.replace(duplicatePattern, '$1$2');
+  
+  // Ta bort redundanta fraser som "for women", "for men" från slutet och mitten
+  cleanedText = cleanedText
+    .replace(/\s+(for\s+)?(women|woman|ladies|men|man)(?=\s|$)/gi, '')
+    .replace(/\s+(dam|herr|kvinnor|män)(?=\s|$)/gi, '')
+    .replace(/\s+/g, ' ') // Ta bort extra mellanslag igen
+    .trim();
+  
+  // Ta bort duplicerade ord (case-insensitive)
+  const words = cleanedText.split(/\s+/);
+  const uniqueWords: string[] = [];
+  const seenWords = new Set<string>();
+  
+  for (const word of words) {
+    const lowerWord = word.toLowerCase();
+    if (!seenWords.has(lowerWord) && word.length > 0) {
+      seenWords.add(lowerWord);
+      uniqueWords.push(word);
+    }
+  }
+  
+  cleanedText = uniqueWords.join(' ');
+  
+  // Begränsa längden till max 6 ord för bättre läsbarhet
+  const finalWords = cleanedText.split(/\s+/).filter(word => word.length > 0);
+  if (finalWords.length > 6) {
+    cleanedText = finalWords.slice(0, 6).join(' ');
+  }
+  
+  // Ta bort avslutande bindestreck, kommatecken eller punkter
+  cleanedText = cleanedText.replace(/[-,.\s]+$/, '').trim();
+  
+  // Kapitalisera första bokstaven i varje ord för professionell look
+  cleanedText = cleanedText.replace(/\b\w/g, (char) => char.toUpperCase());
+  
+  return cleanedText || text;
 }
 
 /**

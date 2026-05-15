@@ -1,0 +1,211 @@
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":264365},"timestamp":1778718109534,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":264446},"timestamp":1778718109615,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":3377,"createdSchema":false},"timestamp":1778718209854,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":23290,"rowCount":7864,"limit":null},"timestamp":1778718229883,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":25317,"rowCount":7864,"limit":null},"timestamp":1778718232201,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":25322,"productCount":7864},"timestamp":1778718232206,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":27679,"rowCount":7864,"limit":null},"timestamp":1778718234279,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":39646,"rowCount":7864,"limit":null},"timestamp":1778718246663,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":39647,"productCount":7864},"timestamp":1778718246664,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":26634},"timestamp":1778718258900,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":11,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778718258896,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":14,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778718259047,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":26783},"timestamp":1778718259049,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":3,"rowCount":7864,"limit":null},"timestamp":1778718259878,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":4,"rowCount":7864,"limit":null},"timestamp":1778718265285,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":32,"createdSchema":false},"timestamp":1778718596510,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":13323,"rowCount":7864,"limit":null},"timestamp":1778718609836,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":13325,"productCount":7864},"timestamp":1778718609838,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":17983,"rowCount":7864,"limit":null},"timestamp":1778718614675,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":17985,"productCount":7864},"timestamp":1778718614677,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":38,"createdSchema":false},"timestamp":1778719465142,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":12552,"rowCount":7864,"limit":null},"timestamp":1778719477702,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":12553,"productCount":7864},"timestamp":1778719477703,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":17340,"rowCount":7864,"limit":null},"timestamp":1778719483525,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":17341,"productCount":7864},"timestamp":1778719483526,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":21,"createdSchema":false},"timestamp":1778719493396,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":11481,"rowCount":7864,"limit":null},"timestamp":1778719505054,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":11483,"productCount":7864},"timestamp":1778719505056,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":19343,"rowCount":7864,"limit":null},"timestamp":1778719512743,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":19351,"productCount":7864},"timestamp":1778719512750,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":18,"createdSchema":false},"timestamp":1778719979691,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":9266,"rowCount":7864,"limit":null},"timestamp":1778719989102,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":13073,"productCount":7864},"timestamp":1778719992767,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":13057,"rowCount":7864,"limit":null},"timestamp":1778719992752,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":3031,"createdSchema":false},"timestamp":1778720003049,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":14691,"rowCount":7864,"limit":null},"timestamp":1778720014728,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":1,"rowCount":7864,"limit":null},"timestamp":1778720015129,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":1,"rowCount":7864,"limit":null},"timestamp":1778720033276,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":1,"rowCount":7864,"limit":null},"timestamp":1778720033560,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":6,"rowCount":7864,"limit":null},"timestamp":1778720049520,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":77,"productCount":7864},"timestamp":1778720049590,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":2,"rowCount":7864,"limit":null},"timestamp":1778720058592,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":5,"productCount":7864},"timestamp":1778720058595,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":8,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778720067325,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":18360},"timestamp":1778720067329,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":10,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778720067422,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":18456},"timestamp":1778720067425,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":1,"rowCount":7864,"limit":null},"timestamp":1778720067504,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":68,"rowCount":7864,"limit":null},"timestamp":1778720068263,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":29,"createdSchema":false},"timestamp":1778720381278,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":66777,"rowCount":7864,"limit":null},"timestamp":1778720448059,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":66782,"productCount":7864},"timestamp":1778720448063,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":69915,"rowCount":7864,"limit":null},"timestamp":1778720451307,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":69916,"productCount":7864},"timestamp":1778720451308,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":0,"rowCount":7864,"limit":null},"timestamp":1778720573763,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":6,"productCount":7864},"timestamp":1778720573768,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":0,"rowCount":7864,"limit":null},"timestamp":1778720610753,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":3,"productCount":7864},"timestamp":1778720610756,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":66,"createdSchema":false},"timestamp":1778720625080,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":1739,"rowCount":50,"limit":50},"timestamp":1778720634515,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":3142,"createdSchema":false},"timestamp":1778720635533,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":12138,"rowCount":7864,"limit":null},"timestamp":1778720637229,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":12141,"productCount":7864},"timestamp":1778720637231,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":16457,"rowCount":7864,"limit":null},"timestamp":1778720642119,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":16459,"productCount":7864},"timestamp":1778720642121,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":2839,"createdSchema":false},"timestamp":1778720652036,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":4578,"rowCount":7864,"limit":null},"timestamp":1778720658469,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":4588,"productCount":7864},"timestamp":1778720658478,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":11667,"rowCount":7864,"limit":null},"timestamp":1778720660896,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":4,"rowCount":7864,"limit":null},"timestamp":1778720661445,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":11,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778720663944,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":49533},"timestamp":1778720663948,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":8,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778720664030,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":49617},"timestamp":1778720664032,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":1,"rowCount":7864,"limit":null},"timestamp":1778720664145,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":0,"rowCount":7864,"limit":null},"timestamp":1778720664841,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":24,"createdSchema":false},"timestamp":1778721029740,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":3280,"createdSchema":false},"timestamp":1778721035270,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":18920,"rowCount":7864,"limit":null},"timestamp":1778721048664,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":18924,"productCount":7864},"timestamp":1778721048667,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":21248,"rowCount":7864,"limit":null},"timestamp":1778721053246,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":10128,"createdSchema":false},"timestamp":1778721054391,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":11358,"rowCount":7864,"limit":null},"timestamp":1778721062249,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":9307,"rowCount":7864,"limit":null},"timestamp":1778721063302,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":7985,"rowCount":7864,"limit":null},"timestamp":1778721068510,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":2743,"createdSchema":false},"timestamp":1778721078412,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":8672,"rowCount":7864,"limit":null},"timestamp":1778721084363,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":2,"rowCount":7864,"limit":null},"timestamp":1778721084690,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":4290,"createdSchema":false},"timestamp":1778721092650,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":12101,"rowCount":7864,"limit":null},"timestamp":1778721100524,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":1,"rowCount":7864,"limit":null},"timestamp":1778721100864,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":2652,"createdSchema":false},"timestamp":1778721110094,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":2514,"createdSchema":false},"timestamp":1778721122636,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":2874,"createdSchema":false},"timestamp":1778721242848,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":9177,"rowCount":7864,"limit":null},"timestamp":1778721249245,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":0,"rowCount":7864,"limit":null},"timestamp":1778721249477,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":12,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778721254962,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":640550},"timestamp":1778721254964,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":9,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778721255048,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":640635},"timestamp":1778721255050,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":1,"rowCount":7864,"limit":null},"timestamp":1778721255098,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":1,"rowCount":7864,"limit":null},"timestamp":1778721255961,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":2,"rowCount":7864,"limit":null},"timestamp":1778721260025,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":0,"rowCount":7864,"limit":null},"timestamp":1778721260460,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":2,"rowCount":7864,"limit":null},"timestamp":1778721262045,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":7,"rowCount":7864,"limit":null},"timestamp":1778721262790,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":0,"rowCount":7864,"limit":null},"timestamp":1778721272226,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":1,"rowCount":7864,"limit":null},"timestamp":1778721272475,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":7,"rowCount":7864,"limit":null},"timestamp":1778721275333,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":4,"rowCount":7864,"limit":null},"timestamp":1778721275911,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":436,"createdSchema":false},"timestamp":1778721590467,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":199,"createdSchema":false},"timestamp":1778721632988,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":3680,"createdSchema":false},"timestamp":1778721686588,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":1128,"createdSchema":false},"timestamp":1778721689084,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":112420,"rowCount":7864,"limit":null},"timestamp":1778721702942,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":112422,"productCount":7864},"timestamp":1778721702943,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":101833,"rowCount":7864,"limit":null},"timestamp":1778721707686,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":101834,"productCount":7864},"timestamp":1778721707687,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":31,"createdSchema":false},"timestamp":1778721725967,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":97727,"rowCount":7864,"limit":null},"timestamp":1778721730782,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":97736,"productCount":7864},"timestamp":1778721730785,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":54690,"rowCount":7864,"limit":null},"timestamp":1778721742655,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":55760,"rowCount":7864,"limit":null},"timestamp":1778721744366,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":21979,"rowCount":7864,"limit":null},"timestamp":1778721747952,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":21982,"productCount":7864},"timestamp":1778721747953,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":19718,"productCount":7864},"timestamp":1778721750688,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":19716,"rowCount":7864,"limit":null},"timestamp":1778721750686,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":10,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778721755029,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":129601},"timestamp":1778721755031,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":9,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778721755112,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":129684},"timestamp":1778721755113,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":2,"rowCount":7864,"limit":null},"timestamp":1778721756372,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":20,"rowCount":7864,"limit":null},"timestamp":1778721757707,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:loadMore","message":"loadMore after artificial delay","data":{"delayMs":300},"timestamp":1778721820410,"hypothesisId":"E"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:loadMore","message":"loadMore after artificial delay","data":{"delayMs":300},"timestamp":1778722041951,"hypothesisId":"E"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":3080,"createdSchema":false},"timestamp":1778722080762,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":9918,"rowCount":7864,"limit":null},"timestamp":1778722087619,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":0,"rowCount":7864,"limit":null},"timestamp":1778722087917,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":12,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778722089634,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":464206},"timestamp":1778722089636,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":11,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778722089715,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":464287},"timestamp":1778722089717,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":12,"rowCount":7864,"limit":null},"timestamp":1778722090363,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":5,"rowCount":7864,"limit":null},"timestamp":1778722091412,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":17,"createdSchema":false},"timestamp":1778722109107,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":9782,"rowCount":7864,"limit":null},"timestamp":1778722118891,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":11,"rowCount":7864,"limit":null},"timestamp":1778722128070,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":40,"rowCount":7864,"limit":null},"timestamp":1778722129305,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":0,"rowCount":7864,"limit":null},"timestamp":1778722167474,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":4,"productCount":7864},"timestamp":1778722167478,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":14,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778722177071,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":551646},"timestamp":1778722177075,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":16,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778722177187,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ClientHomePage.tsx:mount","message":"ClientHomePage mounted","data":{"productCount":7864,"perfNow":551759},"timestamp":1778722177188,"hypothesisId":"B"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":32,"rowCount":7864,"limit":null},"timestamp":1778722178207,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":true,"durationMs":28,"rowCount":7864,"limit":null},"timestamp":1778722179627,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":30,"createdSchema":false},"timestamp":1778722653525,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":31470,"rowCount":7864,"limit":null},"timestamp":1778722685657,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":31473,"productCount":7864},"timestamp":1778722685660,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":36466,"rowCount":7864,"limit":null},"timestamp":1778722690017,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":36473,"productCount":7864},"timestamp":1778722690019,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":11,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778722699558,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":19,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778722700346,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":5998,"createdSchema":false},"timestamp":1778722730807,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":2939,"createdSchema":false},"timestamp":1778722736360,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":2665,"createdSchema":false},"timestamp":1778722741829,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:loadMore","message":"loadMore after artificial delay","data":{"delayMs":300},"timestamp":1778722754974,"hypothesisId":"E"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:loadMore","message":"loadMore after artificial delay","data":{"delayMs":300},"timestamp":1778722765316,"hypothesisId":"E"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":41381,"rowCount":7864,"limit":null},"timestamp":1778722766273,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":35206,"rowCount":7864,"limit":null},"timestamp":1778722774392,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:loadMore","message":"loadMore after artificial delay","data":{"delayMs":300},"timestamp":1778722775366,"hypothesisId":"E"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:loadMore","message":"loadMore after artificial delay","data":{"delayMs":300},"timestamp":1778722784704,"hypothesisId":"E"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:loadMore","message":"loadMore after artificial delay","data":{"delayMs":300},"timestamp":1778722802473,"hypothesisId":"E"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:loadMore","message":"loadMore after artificial delay","data":{"delayMs":300},"timestamp":1778722816763,"hypothesisId":"E"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:loadMore","message":"loadMore after artificial delay","data":{"delayMs":300},"timestamp":1778722832970,"hypothesisId":"E"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":35,"createdSchema":false},"timestamp":1778722946121,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":23,"createdSchema":false},"timestamp":1778722960258,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":51440,"rowCount":7864,"limit":null},"timestamp":1778722997565,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":51446,"productCount":7864},"timestamp":1778722997570,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":62429,"rowCount":7864,"limit":null},"timestamp":1778723022690,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":62430,"productCount":7864},"timestamp":1778723022691,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":26,"createdSchema":false},"timestamp":1778723024771,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":10204,"rowCount":7864,"limit":null},"timestamp":1778723034979,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":10206,"productCount":7864},"timestamp":1778723034980,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":15964,"createdSchema":false},"timestamp":1778723285928,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":113,"createdSchema":false},"timestamp":1778723303539,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":49117,"rowCount":7864,"limit":null},"timestamp":1778723319625,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":5417,"createdSchema":false},"timestamp":1778723381447,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":42205,"rowCount":7864,"limit":null},"timestamp":1778723345822,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":144567,"rowCount":7864,"limit":null},"timestamp":1778723520811,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":175881,"rowCount":7864,"limit":null},"timestamp":1778723554513,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":8467,"createdSchema":false},"timestamp":1778723583633,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":194,"createdSchema":false},"timestamp":1778723596981,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts error","data":{"durationMs":10654,"hadStaleCache":false},"timestamp":1778723607684,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts error","data":{"durationMs":4444,"hadStaleCache":false},"timestamp":1778723622974,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":142706,"rowCount":7864,"limit":null},"timestamp":1778723718832,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":139533,"rowCount":7864,"limit":null},"timestamp":1778723721830,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":152731,"rowCount":7864,"limit":null},"timestamp":1778723728679,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":33,"createdSchema":false},"timestamp":1778723757531,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":39347,"rowCount":7864,"limit":null},"timestamp":1778723796884,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":39364,"productCount":7864},"timestamp":1778723796898,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":96018,"rowCount":7864,"limit":null},"timestamp":1778723854645,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":96038,"productCount":7864},"timestamp":1778723854665,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":129212,"rowCount":7864,"limit":null},"timestamp":1778723887063,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":138338,"rowCount":7864,"limit":null},"timestamp":1778723907220,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"app/page.tsx:Home","message":"Home getProducts finished","data":{"durationMs":138340,"productCount":7864},"timestamp":1778723907222,"hypothesisId":"A"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":64,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778723929811,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":4364,"createdSchema":false},"timestamp":1778723940294,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"components/ProductGrid.tsx:dedupe","message":"ProductGrid dedupe","data":{"dedupeMs":39,"allProductsLen":7864,"dedupedLen":7864},"timestamp":1778723940742,"hypothesisId":"C"}
+{"sessionId":"210a9c","location":"lib/db.ts:initializeDatabase","message":"initializeDatabase finished","data":{"durationMs":1618,"createdSchema":false},"timestamp":1778723941172,"hypothesisId":"D"}
+{"sessionId":"210a9c","location":"lib/db.ts:getProducts","message":"getProducts return","data":{"cacheHit":false,"durationMs":11928,"rowCount":7864,"limit":null},"timestamp":1778723947938,"hypothesisId":"A"}

@@ -1,0 +1,388 @@
+# 📦 Order Tracking System - Visuell Guide
+
+## 🎨 Tracking-sidans Layout
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    🌈 Gradient Bakgrund                          │
+│              (Orange-50 → White → Pink-50)                       │
+│                                                                  │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  ← Tillbaka              🟢 Live Tracking                 │  │
+│  │                                                            │  │
+│  │  📦 Spåra Din Order                                        │  │
+│  │  Ordernummer: ORD-2024-001                                │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                                                                  │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │              PROGRESS BAR & TIMELINE                       │  │
+│  │                                                            │  │
+│  │    ✓          📦          🚚          🎉                   │  │
+│  │  ●━━━━━━━━●━━━━━━━━●━━━━━━━━○                            │  │
+│  │                                                            │  │
+│  │  Bekräftad    Packas    Transport   Levererad             │  │
+│  │  ✅ Klar     ✅ Klar    ✅ Klar     ⬜ Väntar             │  │
+│  │  10 Jan      11 Jan     12 Jan                            │  │
+│  │  10:00       14:30      08:00                             │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                                                                  │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  📋 Orderhistorik                                          │  │
+│  │                                                            │  │
+│  │  ┌─────────────────────────────────────────────────────┐  │  │
+│  │  │ ✓  Bekräftad                              ✅        │  │  │
+│  │  │    Din beställning har mottagits                    │  │  │
+│  │  │    10 januari 2024, 10:00                           │  │  │
+│  │  └─────────────────────────────────────────────────────┘  │  │
+│  │                                                            │  │
+│  │  ┌─────────────────────────────────────────────────────┐  │  │
+│  │  │ 📦 Packas                                 ✅        │  │  │
+│  │  │    Din order packas för leverans                    │  │  │
+│  │  │    11 januari 2024, 14:30                           │  │  │
+│  │  └─────────────────────────────────────────────────────┘  │  │
+│  │                                                            │  │
+│  │  ┌─────────────────────────────────────────────────────┐  │  │
+│  │  │ 🚚 Under Transport                        ✅        │  │  │
+│  │  │    Paketet är på väg till dig                       │  │  │
+│  │  │    12 januari 2024, 08:00                           │  │  │
+│  │  └─────────────────────────────────────────────────────┘  │  │
+│  │                                                            │  │
+│  │  ℹ️ Nästa steg: Levererad                                 │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                                                                  │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  📦 Produkter i Ordern                                     │  │
+│  │                                                            │  │
+│  │  2x Premium T-shirt (M, Svart)                            │  │
+│  │  1x Slim Fit Jeans (32/32)                                │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                                                                  │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  🌈 Gradient Box (Orange → Pink)                          │  │
+│  │                                                            │  │
+│  │  Behöver du hjälp?                                        │  │
+│  │  Kontakta vår kundservice om du har frågor               │  │
+│  │                                                            │  │
+│  │  [Kontakta Oss]  [Mina Beställningar]                    │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## 🎯 Status-ikoner och Färger
+
+### Status 1: Bekräftad ✓
+```
+┌─────────────┐
+│             │
+│      ✓      │  ← Vit checkmark
+│             │
+└─────────────┘
+   Gradient
+ Orange→Pink
+   + Shadow
+```
+
+### Status 2: Packas 📦
+```
+┌─────────────┐
+│             │
+│     📦      │  ← Box emoji
+│             │
+└─────────────┘
+   Gradient
+ Orange→Pink
+   + Shadow
+```
+
+### Status 3: Transport 🚚
+```
+┌─────────────┐
+│             │
+│     🚚      │  ← Truck emoji
+│             │
+└─────────────┘
+   Gradient
+ Orange→Pink
+   + Shadow
+```
+
+### Status 4: Levererad 🎉
+```
+┌─────────────┐
+│             │
+│     🎉      │  ← Party emoji
+│             │
+└─────────────┘
+   Gradient
+ Orange→Pink
+   + Shadow
+```
+
+## 🎨 Färgpalett
+
+### Primära Färger
+```
+Orange:  #f97316  ████████
+Pink:    #ec4899  ████████
+Gradient: Orange → Pink
+```
+
+### Bakgrundsfärger
+```
+Orange-50: #fff7ed  ████████
+White:     #ffffff  ████████
+Pink-50:   #fdf2f8  ████████
+```
+
+### Status-färger
+```
+Slutförd:  #10b981  ████████  (Grön)
+Aktiv:     #f97316  ████████  (Orange)
+Väntande:  #e5e7eb  ████████  (Grå)
+```
+
+## 📱 Responsiv Design
+
+### Desktop (>1024px)
+```
+┌────────────────────────────────────────────────┐
+│  ✓      📦      🚚      🎉                    │
+│  ●━━━━━●━━━━━●━━━━━●━━━━━○                   │
+│  Bekräftad  Packas  Transport  Levererad      │
+└────────────────────────────────────────────────┘
+```
+
+### Tablet (768px - 1024px)
+```
+┌──────────────────────────────────────┐
+│  ✓     📦     🚚     🎉             │
+│  ●━━━━●━━━━●━━━━●━━━━○             │
+│  Bekräftad Packas Transport Levererad│
+└──────────────────────────────────────┘
+```
+
+### Mobile (<768px)
+```
+┌────────────────────┐
+│   ✓    📦         │
+│   ●━━━━●          │
+│ Bekräftad Packas  │
+│                    │
+│   🚚    🎉        │
+│   ●━━━━○          │
+│ Transport Levererad│
+└────────────────────┘
+```
+
+## 🎬 Animationer
+
+### 1. Live-indikator
+```
+🟢 Live Tracking
+↑
+Pulserande animation
+(scale: 1 → 1.2 → 1)
+```
+
+### 2. Progress Bar
+```
+Före:  ●━━━━━━━━━━━━━━━━━━━━━━━━━━○
+       0%
+
+Efter: ●━━━━━━━━━━━━━●━━━━━━━━━━━○
+       50%
+       
+Transition: 1s ease-out
+Gradient: Orange → Pink
+```
+
+### 3. Aktiv Status
+```
+Normal:    ┌─────┐
+           │ 📦  │
+           └─────┘
+
+Pulse:     ┌─────┐
+           │ 📦  │  ← Större + Glow
+           └─────┘
+           
+Animation: pulse 2s infinite
+```
+
+### 4. Hover-effekt
+```
+Normal:    [Kontakta Oss]
+
+Hover:     [Kontakta Oss]  ← Shadow + Scale 1.05
+           └─────────────┘
+              Shadow
+```
+
+## 🔄 Dataflöde
+
+```
+┌─────────────┐
+│  Database   │
+│ order_tracking│
+└──────┬──────┘
+       │
+       │ Hämta var 30s
+       ↓
+┌─────────────┐
+│     API     │
+│ /api/order- │
+│ tracking/[id]│
+└──────┬──────┘
+       │
+       │ JSON Response
+       ↓
+┌─────────────┐
+│  Frontend   │
+│ /spara-order│
+│    /[id]    │
+└──────┬──────┘
+       │
+       │ Render
+       ↓
+┌─────────────┐
+│  Användare  │
+│   Ser live  │
+│   tracking  │
+└─────────────┘
+```
+
+## 📊 Status-progression
+
+```
+Start
+  │
+  ↓
+┌─────────────┐
+│ Confirmed   │ ← Order mottagen
+│     ✓       │
+└──────┬──────┘
+       │
+       ↓
+┌─────────────┐
+│  Packing    │ ← Packas
+│     📦      │
+└──────┬──────┘
+       │
+       ↓
+┌─────────────┐
+│ Transport   │ ← Skickad
+│     🚚      │
+└──────┬──────┘
+       │
+       ↓
+┌─────────────┐
+│ Delivered   │ ← Levererad
+│     🎉      │
+└─────────────┘
+  │
+  ↓
+Slut
+```
+
+## 🎯 Användargränssnitt-element
+
+### Knappar
+
+#### Primär (Gradient)
+```
+┌──────────────────┐
+│  Spåra Order  →  │  ← Orange→Pink gradient
+└──────────────────┘
+     White text
+```
+
+#### Sekundär (Outline)
+```
+┌──────────────────┐
+│  Tillbaka  ←     │  ← Border + Transparent
+└──────────────────┘
+     Gray text
+```
+
+### Cards
+
+#### Vit Card med Shadow
+```
+┌────────────────────────────────┐
+│                                │
+│  Content här                   │
+│                                │
+└────────────────────────────────┘
+  Shadow: 0 4px 6px rgba(0,0,0,0.1)
+  Border-radius: 16px
+```
+
+#### Gradient Card
+```
+┌────────────────────────────────┐
+│  🌈 Orange → Pink gradient     │
+│                                │
+│  White text                    │
+│                                │
+└────────────────────────────────┘
+  Border-radius: 16px
+```
+
+## 💡 Design-principer
+
+1. **Temu-inspirerad** - Orange/Pink gradients överallt
+2. **Visuell hierarki** - Stora ikoner, tydliga statusar
+3. **Feedback** - Animationer och live-uppdateringar
+4. **Mobilfirst** - Responsiv på alla enheter
+5. **Tillgänglighet** - Tydliga färger och ikoner
+6. **Professionell** - Polerad och modern design
+
+## 🎨 Typografi
+
+```
+Rubriker:
+  H1: 3xl (30px) - Bold - Gradient text
+  H2: 2xl (24px) - Bold - Gray-800
+  H3: xl (20px) - Bold - Gray-800
+
+Body:
+  Normal: base (16px) - Regular - Gray-600
+  Small: sm (14px) - Regular - Gray-500
+  Tiny: xs (12px) - Regular - Gray-400
+
+Knappar:
+  Text: base (16px) - Semibold
+```
+
+## 🌟 Specialeffekter
+
+### Gradient Text
+```css
+background: linear-gradient(to right, #f97316, #ec4899);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+```
+
+### Box Shadow (Hover)
+```css
+box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
+```
+
+### Pulse Animation
+```css
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+```
+
+### Scale on Hover
+```css
+transform: scale(1.05);
+transition: all 0.3s ease;
+```
+
+---
+
+**🎉 Tracking-systemet är designat för att ge användarna en premium upplevelse inspirerad av Temu!**

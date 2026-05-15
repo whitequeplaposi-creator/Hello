@@ -1,24 +1,26 @@
 'use client'
 
+import PageShell from '@/components/PageShell'
 import { useLanguage } from '@/lib/LanguageContext'
 
 export default function Kontakt() {
   const { t } = useLanguage()
 
   return (
+    <PageShell>
     <div className="min-h-screen flex flex-col bg-white">
       <main className="flex-grow px-4 sm:px-6 py-12">
         <div className="max-w-4xl mx-auto space-y-12">
           <header className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Kontakta oss</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">{t('contactPageTitle')}</h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Har du frågor, synpunkter eller behöver hjälp? Vi finns här för dig och svarar så snart vi kan.
+              {t('contactPageSubtitle')}
             </p>
           </header>
 
           <div className="grid md:grid-cols-2 gap-8">
             <section className="space-y-6">
-              <h2 className="text-2xl font-semibold text-gray-900">Kontaktuppgifter</h2>
+              <h2 className="text-2xl font-semibold text-gray-900">{t('contactInfo')}</h2>
 
               <div className="space-y-4">
                 <div className="flex items-start space-x-4">
@@ -26,7 +28,7 @@ export default function Kontakt() {
                     <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                   </svg>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Adress</h3>
+                    <h3 className="font-semibold text-gray-900">{t('address')}</h3>
                     <p className="text-gray-600">Storgatan 12<br />111 22 Stockholm</p>
                   </div>
                 </div>
@@ -36,9 +38,9 @@ export default function Kontakt() {
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                   </svg>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Telefon</h3>
+                    <h3 className="font-semibold text-gray-900">{t('phone')}</h3>
                     <p className="text-gray-600">+46 (0)8-123 45 67</p>
-                    <p className="text-gray-500 text-sm">Mån–Fre: 08:00–17:00</p>
+                    <p className="text-gray-500 text-sm">{t('openingHours')}</p>
                   </div>
                 </div>
 
@@ -48,9 +50,9 @@ export default function Kontakt() {
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
                   <div>
-                    <h3 className="font-semibold text-gray-900">E-post</h3>
+                    <h3 className="font-semibold text-gray-900">{t('email')}</h3>
                     <p className="text-gray-600">kundservice@example.se</p>
-                    <p className="text-gray-500 text-sm">Vi svarar inom 24 timmar</p>
+                    <p className="text-gray-500 text-sm">{t('weRespondWithin24h')}</p>
                   </div>
                 </div>
 
@@ -59,7 +61,7 @@ export default function Kontakt() {
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Organisationsnummer</h3>
+                    <h3 className="font-semibold text-gray-900">{t('organizationNumber')}</h3>
                     <p className="text-gray-600">556123-4567</p>
                   </div>
                 </div>
@@ -67,55 +69,55 @@ export default function Kontakt() {
             </section>
 
             <section className="space-y-6">
-              <h2 className="text-2xl font-semibold text-gray-900">Skicka ett meddelande</h2>
+              <h2 className="text-2xl font-semibold text-gray-900">{t('sendMessage')}</h2>
 
               <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Namn</label>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">{t('name')}</label>
                   <input
                     type="text"
                     id="name"
                     name="name"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none transition-all"
-                    placeholder="Ditt namn"
+                    placeholder={t('yourName')}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">E-post</label>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">{t('email')}</label>
                   <input
                     type="email"
                     id="email"
                     name="email"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none transition-all"
-                    placeholder="din@epost.se"
+                    placeholder={t('yourEmail')}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Ämne</label>
+                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">{t('subject')}</label>
                   <select
                     id="subject"
                     name="subject"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none transition-all bg-white"
                   >
-                    <option value="">Välj ämne</option>
-                    <option value="order">Fråga om beställning</option>
-                    <option value="return">Retur och reklamation</option>
-                    <option value="product">Produktfråga</option>
-                    <option value="sustainability">Hållbarhet</option>
-                    <option value="other">Annat</option>
+                    <option value="">{t('selectSubject')}</option>
+                    <option value="order">{t('orderQuestion')}</option>
+                    <option value="return">{t('returnComplaint')}</option>
+                    <option value="product">{t('productQuestion')}</option>
+                    <option value="sustainability">{t('sustainabilityQuestion')}</option>
+                    <option value="other">{t('other')}</option>
                   </select>
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Meddelande</label>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">{t('message')}</label>
                   <textarea
                     id="message"
                     name="message"
                     rows={4}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none transition-all resize-none"
-                    placeholder="Skriv ditt meddelande här..."
+                    placeholder={t('writeMessageHere')}
                   />
                 </div>
 
@@ -123,7 +125,7 @@ export default function Kontakt() {
                   type="submit"
                   className="w-full bg-gray-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-900 transition-colors"
                 >
-                  Skicka meddelande
+                  {t('sendMessageBtn')}
                 </button>
               </form>
             </section>
@@ -131,33 +133,33 @@ export default function Kontakt() {
 
           
           <section className="space-y-4 text-center">
-            <h2 className="text-2xl font-semibold text-gray-900">Vanliga frågor</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('faq')}</h2>
             <div className="grid md:grid-cols-2 gap-4 text-left">
               <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold text-gray-900 mb-2">Hur lång är leveranstiden?</h3>
-                <p className="text-gray-600 text-sm">Standardleverans tar 3–5 arbetsdagar. Expressleverans finns tillgänglig vid utcheckning.</p>
+                <h3 className="font-semibold text-gray-900 mb-2">{t('howLongDelivery')}</h3>
+                <p className="text-gray-600 text-sm">{t('deliveryAnswer')}</p>
               </div>
               <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold text-gray-900 mb-2">Vilka betalningsmetoder accepterar ni?</h3>
-                <p className="text-gray-600 text-sm">Vi accepterar kortbetalning (Visa, Mastercard) och Klarna delbetalning.</p>
+                <h3 className="font-semibold text-gray-900 mb-2">{t('whichPaymentMethods')}</h3>
+                <p className="text-gray-600 text-sm">{t('paymentAnswer')}</p>
               </div>
               <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold text-gray-900 mb-2">Hur fungerar returer?</h3>
-                <p className="text-gray-600 text-sm">Du har 30 dagars öppet köp. Returfrakt är kostnadsfri med vår returetikett.</p>
+                <h3 className="font-semibold text-gray-900 mb-2">{t('howReturns')}</h3>
+                <p className="text-gray-600 text-sm">{t('returnsAnswer')}</p>
               </div>
                             <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold text-gray-900 mb-2">Kan jag ändra eller avbryta en beställning?</h3>
-                <p className="text-gray-600 text-sm">Kontakta kundservice inom 30 minuter efter beställningen så hjälper vi dig.</p>
+                <h3 className="font-semibold text-gray-900 mb-2">{t('canChangeOrder')}</h3>
+                <p className="text-gray-600 text-sm">{t('changeOrderAnswer')}</p>
               </div>
               <div className="p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold text-gray-900 mb-2">Levererar ni utanför Sverige?</h3>
-                <p className="text-gray-600 text-sm">Ja, vi levererar till hela Norden och EU. Fraktkostnaden varierar beroende på destination.</p>
+                <h3 className="font-semibold text-gray-900 mb-2">{t('deliverOutsideSweden')}</h3>
+                <p className="text-gray-600 text-sm">{t('outsideSwedenAnswer')}</p>
               </div>
             </div>
           </section>
 
           <section className="space-y-6 text-center">
-            <h2 className="text-2xl font-semibold text-gray-900">Följ oss</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">{t('followUs')}</h2>
             <div className="flex justify-center space-x-6">
               <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors" aria-label="Facebook">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
@@ -184,5 +186,7 @@ export default function Kontakt() {
         </div>
       </main>
     </div>
+    </PageShell>
   )
 }
+

@@ -14,6 +14,9 @@ interface HeroProduct {
   imageUrl?: string
   heroTitle?: string
   heroDescription?: string
+  originalPrice?: number
+  badge?: string
+  discount?: number
 }
 
 interface HeroCarouselProps {
@@ -24,30 +27,58 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
   const [heroProducts, setHeroProducts] = useState<HeroProduct[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   useEffect(() => {
     try {
       setIsLoading(true)
       
-      const availableProducts = products.filter(product => product.inStock)
+      const availableProducts = products.filter(product => 
+        product.inStock && 
+        product.id && 
+        product.name && 
+        product.price &&
+        product.image
+      )
       
       if (availableProducts.length === 0) {
-        setHeroProducts([])
+        const fallbackProducts = products.filter(product => 
+          product.inStock && 
+          product.id && 
+          product.name && 
+          product.price
+        )
+        setHeroProducts(fallbackProducts.slice(0, 4).map((product, index) => ({
+          id: product.id,
+          name: cleanText(product.name),
+          description: cleanText(product.description),
+          price: product.price,
+          category: cleanText(product.category),
+          inStock: product.inStock,
+          imageUrl: product.image || `/product-${product.id}.jpg`,
+          heroTitle: cleanText(product.name),
+          heroDescription: `Upptäck kvalitet till bästa pris`,
+          originalPrice: Math.round(product.price * 1.4),
+          badge: index === 0 ? 'NYHET' : index === 1 ? 'POPULÄR' : 'REA',
+          discount: Math.round(((product.price * 1.4) - product.price) / (product.price * 1.4) * 100)
+        })))
         setIsLoading(false)
         return
       }
       
-      // Ta de första 3 produkterna från databasen
-      const selectedProducts: HeroProduct[] = availableProducts.slice(0, 3).map(product => ({
+      const selectedProducts: HeroProduct[] = availableProducts.slice(0, 4).map((product, index) => ({
         id: product.id,
         name: cleanText(product.name),
         description: cleanText(product.description),
         price: product.price,
         category: cleanText(product.category),
         inStock: product.inStock,
-        imageUrl: product.image || `/product-${product.id}.jpg`,
+        imageUrl: product.image,
         heroTitle: cleanText(product.name),
-        heroDescription: `${cleanText(product.description)}. Endast ${product.price} USD. Kvalitetsprodukter med snabb leverans.`
+        heroDescription: `Exklusiv design med premium kvalitet`,
+        originalPrice: Math.round(product.price * 1.4),
+        badge: index === 0 ? 'NYHET' : index === 1 ? 'POPULÄR' : index === 2 ? 'REA' : 'TREND',
+        discount: Math.round(((product.price * 1.4) - product.price) / (product.price * 1.4) * 100)
       }))
       
       setHeroProducts(selectedProducts)
@@ -63,93 +94,171 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
     if (heroProducts.length === 0) return
 
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => 
-        prevIndex === heroProducts.length - 1 ? 0 : prevIndex + 1
-      )
-    }, 5000)
+      setIsTransitioning(true)
+      setTimeout(() => {
+        setCurrentIndex((prevIndex) => 
+          prevIndex === heroProducts.length - 1 ? 0 : prevIndex + 1
+        )
+        setIsTransitioning(false)
+      }, 150)
+    }, 6000)
 
     return () => clearInterval(interval)
   }, [heroProducts.length])
 
   const goToSlide = (index: number) => {
-    setCurrentIndex(index)
+    if (index === currentIndex) return
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentIndex(index)
+      setIsTransitioning(false)
+    }, 150)
   }
 
   const goToPrevious = () => {
-    setCurrentIndex(currentIndex === 0 ? heroProducts.length - 1 : currentIndex - 1)
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentIndex(currentIndex === 0 ? heroProducts.length - 1 : currentIndex - 1)
+      setIsTransitioning(false)
+    }, 150)
   }
 
   const goToNext = () => {
-    setCurrentIndex(currentIndex === heroProducts.length - 1 ? 0 : currentIndex + 1)
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentIndex(currentIndex === heroProducts.length - 1 ? 0 : currentIndex + 1)
+      setIsTransitioning(false)
+    }, 150)
   }
 
   if (isLoading) {
     return (
-      <div className="relative bg-gradient-to-br from-gray-50 to-white border-b border-gray-200 py-4 md:py-6">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="flex-1">
-              <div className="bg-white rounded-2xl p-4 shadow-xl">
-                <div className="w-full h-48 md:h-56 bg-gray-200 rounded-xl animate-pulse"></div>
-              </div>
-            </div>
-            <div className="flex-1 flex items-center">
-              <div className="animate-pulse">
-                <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-              </div>
-            </div>
+      <section className="relative w-full h-[500px] md:h-[600px] bg-gray-50 overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-gray-300 border-t-black rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600 font-medium">Laddar produkter...</p>
           </div>
         </div>
-      </div>
+      </section>
     )
   }
 
   if (heroProducts.length === 0) {
-    return (
-      <div className="relative bg-gradient-to-br from-gray-50 to-white border-b border-gray-200 py-4 md:py-6">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="flex-1">
-              <div className="bg-white rounded-2xl p-4 shadow-xl">
-                <div className="w-full h-48 md:h-56 bg-gray-100 rounded-xl flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">🛍️</div>
-                    <p className="text-gray-500">Laddar produkter från databasen...</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex-1 flex items-center">
-              <div>
-                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-                  Välkommen till vår e-handel
-                </h2>
-                <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                  Vi laddar produkterna från vår databas.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+    return null
   }
 
   const currentProduct = heroProducts[currentIndex]
 
   return (
-    <div className="relative bg-gradient-to-br from-gray-50 to-white border-b border-gray-200 py-4 md:py-6">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="flex-1">
-            <div className="relative bg-white rounded-2xl p-4 shadow-xl overflow-hidden">
-              <div className="relative">
+    <section className="relative w-full h-[500px] md:h-[600px] lg:h-[650px] overflow-hidden bg-white">
+      {/* Main Content Container */}
+      <div className="relative h-full flex items-center">
+        <div className="container mx-auto px-4 md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            
+            {/* Left Content */}
+            <div className={`space-y-6 lg:space-y-8 transition-all duration-500 ${isTransitioning ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'}`}>
+              
+              {/* Badge */}
+              <div className="flex items-center gap-3">
+                <span className={`inline-block px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full ${
+                  currentProduct.badge === 'NYHET' ? 'bg-green-100 text-green-800' :
+                  currentProduct.badge === 'POPULÄR' ? 'bg-blue-100 text-blue-800' :
+                  currentProduct.badge === 'REA' ? 'bg-red-100 text-red-800' :
+                  'bg-purple-100 text-purple-800'
+                }`}>
+                  {currentProduct.badge}
+                </span>
+                {currentProduct.discount && (
+                  <span className="bg-black text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                    -{currentProduct.discount}%
+                  </span>
+                )}
+              </div>
+
+              {/* Category */}
+              <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                {currentProduct.category}
+              </p>
+
+              {/* Title */}
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+                {currentProduct.heroTitle || currentProduct.name}
+              </h1>
+
+              {/* Description */}
+              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg">
+                {currentProduct.heroDescription || currentProduct.description}
+              </p>
+
+              {/* Price Section */}
+              <div className="flex items-center gap-4 flex-wrap">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl md:text-4xl font-bold text-gray-900">
+                    ${currentProduct.price}
+                  </span>
+                  {currentProduct.originalPrice && (
+                    <span className="text-xl text-gray-400 line-through">
+                      ${currentProduct.originalPrice}
+                    </span>
+                  )}
+                </div>
+                {currentProduct.inStock ? (
+                  <span className="bg-green-50 text-green-700 text-sm font-medium px-3 py-1 rounded-full border border-green-200">
+                    I lager
+                  </span>
+                ) : (
+                  <span className="bg-red-50 text-red-700 text-sm font-medium px-3 py-1 rounded-full border border-red-200">
+                    Slut i lager
+                  </span>
+                )}
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <a
+                  href={`/produkt/${currentProduct.id}`}
+                  className="inline-flex items-center justify-center px-8 py-4 bg-black text-white font-semibold text-lg rounded-lg hover:bg-gray-800 transition-colors duration-200 shadow-lg hover:shadow-xl"
+                >
+                  Köp nu
+                  <svg className="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </a>
+                
+                <a
+                  href="/products"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-semibold text-lg rounded-lg border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-colors duration-200"
+                >
+                  Se mer
+                </a>
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="flex items-center gap-6 pt-6 text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Fri frakt över $50</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  <span>30 dagars retur</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Image */}
+            <div className={`relative transition-all duration-500 ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
+              <div className="relative aspect-square max-w-lg mx-auto">
                 <img 
                   src={currentProduct.imageUrl || '/product-placeholder.jpg'}
                   alt={currentProduct.name}
-                  className="w-full h-48 md:h-56 object-cover rounded-xl transition-opacity duration-500"
+                  className="w-full h-full object-cover rounded-2xl shadow-2xl"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement
                     target.style.display = 'none'
@@ -159,81 +268,67 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
                     }
                   }}
                 />
-                
-                <div className="absolute top-2 left-2 bg-gray-900 text-white px-2 py-1 text-xs font-semibold rounded">
-                  {currentProduct.category}
-                </div>
-                
-                <div className="absolute top-2 right-2 bg-green-600 text-white px-2 py-1 text-xs font-bold rounded">
-                  ${currentProduct.price}
-                </div>
-                
-                <div className="image-fallback absolute inset-0 bg-gray-100 rounded-xl flex items-center justify-center" style={{ display: 'none' }}>
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">📦</div>
-                    <p className="text-gray-500 text-sm">{currentProduct.name}</p>
-                    <p className="text-gray-400 text-xs">Produktbild kunde inte laddas</p>
+                <div className="image-fallback absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center shadow-2xl" style={{ display: 'none' }}>
+                  <div className="text-center text-gray-600">
+                    <div className="text-6xl mb-4">📦</div>
+                    <p className="text-xl font-semibold">{currentProduct.name}</p>
                   </div>
                 </div>
-              </div>
-
-              <button
-                onClick={goToPrevious}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200"
-                aria-label="Föregående produkt"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              
-              <button
-                onClick={goToNext}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200"
-                aria-label="Nästa produkt"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-                {heroProducts.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => goToSlide(index)}
-                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                      index === currentIndex 
-                        ? 'bg-gray-800' 
-                        : 'bg-white/60 hover:bg-white/80'
-                    }`}
-                    aria-label={`Gå till produkt ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-          
-          <div className="flex-1 flex items-center">
-            <div>
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-                {currentProduct.heroTitle || currentProduct.name}
-              </h2>
-              <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-4">
-                {currentProduct.heroDescription || currentProduct.description}
-              </p>
-              <div className="flex items-center gap-4">
-                <span className="text-2xl font-bold text-green-600">${currentProduct.price}</span>
-                {currentProduct.inStock ? (
-                  <span className="text-sm text-green-600 font-medium">✓ I lager</span>
-                ) : (
-                  <span className="text-sm text-red-600 font-medium">Slut i lager</span>
+                
+                {/* Floating Discount Badge */}
+                {currentProduct.discount && (
+                  <div className="absolute -top-4 -right-4 bg-red-500 text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg transform rotate-12">
+                    -{currentProduct.discount}%
+                  </div>
                 )}
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Navigation Arrows */}
+      {heroProducts.length > 1 && (
+        <>
+          <button
+            onClick={goToPrevious}
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 z-10"
+            aria-label="Föregående produkt"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <button
+            onClick={goToNext}
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 z-10"
+            aria-label="Nästa produkt"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </>
+      )}
+
+      {/* Dots Indicator */}
+      {heroProducts.length > 1 && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+          {heroProducts.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                index === currentIndex 
+                  ? 'w-8 bg-black' 
+                  : 'w-2 bg-gray-300 hover:bg-gray-400'
+              }`}
+              aria-label={`Gå till produkt ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </section>
   )
 }

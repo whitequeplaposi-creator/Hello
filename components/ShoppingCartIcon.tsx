@@ -2,7 +2,7 @@ export default function ShoppingCartIcon({ className = "w-5 h-5" }: { className?
   return (
     <img
       className={className}
-      src="/shopping-cart.svg"
+      src="/shopping-cart-new.svg"
       alt="Kundvagn"
     />
   )

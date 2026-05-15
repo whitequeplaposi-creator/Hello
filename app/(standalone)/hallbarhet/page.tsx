@@ -1,65 +1,73 @@
-﻿const ecoImages = [
-  {
-    title: 'Solenergi & Förnybar energi',
-    image: (
-      <img src="/solenergi.jpg" alt="Solenergi & Förnybar energi" className="w-full h-full object-cover" />
-    ),
-  },
-  {
-    title: 'Återvinning & Cirkulär ekonomi',
-    image: (
-      <img src="/atervinning.jpg" alt="Återvinning & Cirkulär ekonomi" className="w-full h-full object-cover" />
-    ),
-  },
-  {
-    title: 'Organisk odling & Bomull',
-    image: (
-      <img src="/organisk-odling.jpg" alt="Organisk odling & Bomull" className="w-full h-full object-cover" />
-    ),
-  },
-  {
-    title: 'Hållbart transportsystem',
-    image: (
-      <img src="/hallbart-transport.jpg" alt="Hållbart transportsystem" className="w-full h-full object-cover" />
-    ),
-  },
-  {
-    title: 'Regnskog & Klimatkompensation',
-    image: (
-      <img src="/regnskog.jpg" alt="Regnskog & Klimatkompensation" className="w-full h-full object-cover" />
-    ),
-  },
-  {
-    title: 'Rent vatten & Vattenvård',
-    image: (
-      <img src="/rent-vatten.jpg" alt="Rent vatten & Vattenvård" className="w-full h-full object-cover" />
-    ),
-  },
-  {
-    title: 'Lokal gemenskap & Fair Trade',
-    image: (
-      <img src="/lokal-gemenskap.jpg" alt="Lokal gemenskap & Fair Trade" className="w-full h-full object-cover" />
-    ),
-  },
-]
+'use client'
+
+import PageShell from '@/components/PageShell'
+import { useLanguage } from '@/lib/LanguageContext'
 
 export default function Hallbarhet() {
+  const { t } = useLanguage()
+
+  const ecoImages = [
+    {
+      title: t('solarEnergy'),
+      image: (
+        <img src="/solenergi.jpg" alt={t('solarEnergy')} className="w-full h-full object-cover" />
+      ),
+    },
+    {
+      title: t('recyclingCircular'),
+      image: (
+        <img src="/atervinning.jpg" alt={t('recyclingCircular')} className="w-full h-full object-cover" />
+      ),
+    },
+    {
+      title: t('organicFarming'),
+      image: (
+        <img src="/organisk-odling.jpg" alt={t('organicFarming')} className="w-full h-full object-cover" />
+      ),
+    },
+    {
+      title: t('sustainableTransport'),
+      image: (
+        <img src="/hallbart-transport.jpg" alt={t('sustainableTransport')} className="w-full h-full object-cover" />
+      ),
+    },
+    {
+      title: t('rainforestCompensation'),
+      image: (
+        <img src="/regnskog.jpg" alt={t('rainforestCompensation')} className="w-full h-full object-cover" />
+      ),
+    },
+    {
+      title: t('cleanWater'),
+      image: (
+        <img src="/rent-vatten.jpg" alt={t('cleanWater')} className="w-full h-full object-cover" />
+      ),
+    },
+    {
+      title: t('localCommunityFairTrade'),
+      image: (
+        <img src="/lokal-gemenskap.jpg" alt={t('localCommunityFairTrade')} className="w-full h-full object-cover" />
+      ),
+    },
+  ]
+
   return (
+    <PageShell>
     <main className="min-h-screen bg-gradient-to-br from-stone-50 via-emerald-50/30 to-stone-50">
       <div className="max-w-7xl mx-auto px-6 py-20 space-y-32">
 
         <header className="text-center space-y-8">
           <div className="space-y-4">
-            <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-emerald-800 to-emerald-600 bg-clip-text text-transparent tracking-tight leading-tight">Hållbarhet</h1>
+            <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-emerald-800 to-emerald-600 bg-clip-text text-transparent tracking-tight leading-tight">{t('sustainabilityPageTitle')}</h1>
             <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 mx-auto rounded-full" />
           </div>
           <p className="text-xl md:text-2xl text-emerald-700/90 max-w-3xl mx-auto font-light leading-relaxed">
-            Vi bygger en grönare framtid — ett val, en produkt och ett partnerskap i taget.
+            {t('sustainabilityPageSubtitle')}
           </p>
           <div className="mt-12 max-w-5xl mx-auto">
             <img 
               src="/hallbarhet.png" 
-              alt="Hållbarhet - Vi bygger en grönare framtid" 
+              alt={t('sustainabilityPageSubtitle')} 
               className="w-full h-auto rounded-3xl shadow-2xl ring-1 ring-emerald-100/50"
             />
           </div>
@@ -67,25 +75,26 @@ export default function Hallbarhet() {
 
         <section className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-semibold text-emerald-900">Vårt hållbarhetslöfte</h2>
+            <h2 className="text-4xl font-semibold text-emerald-900">{t('sustainabilityPromise')}</h2>
             <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 mx-auto rounded-full" />
           </div>
           <p className="text-stone-700 leading-relaxed text-center max-w-4xl mx-auto mb-12 text-xl font-light">
-            Vi är djupt engagerade i att bygga en hållbar framtid för kommande generationer.
-            Vårt arbete med hållbarhet omfattar allt från miljövänliga produkter
-            till etisk produktion och socialt ansvar.
+            {t('sustainabilityPromiseText')}
           </p>
           <ul className="grid md:grid-cols-3 gap-8">
             {[
-              'Klimatneutrala leveranser genom klimatkompensation',
-              'Cirkulär ekonomi och återvinning i hela kedjan',
-              'Etisk produktion med respekt för mänskliga rättigheter',
-            ].map((text, i) => (
+              { title: t('climateNeutralDeliveries'), desc: t('climateNeutralDeliveriesDesc') },
+              { title: t('circularEconomy'), desc: t('circularEconomyDesc') },
+              { title: t('ethicalProduction'), desc: t('ethicalProductionDesc') },
+            ].map((item, i) => (
               <li key={i} className="flex items-start space-x-5 p-7 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-emerald-100/50 hover:shadow-xl transition-all duration-300 hover:bg-white">
                 <span className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
                   {i + 1}
                 </span>
-                <span className="text-stone-700 font-medium text-lg leading-relaxed">{text}</span>
+                <div className="space-y-1">
+                  <h4 className="text-stone-900 font-bold text-lg">{item.title}</h4>
+                  <p className="text-stone-700 font-medium text-base leading-relaxed">{item.desc}</p>
+                </div>
               </li>
             ))}
           </ul>
@@ -93,9 +102,9 @@ export default function Hallbarhet() {
 
         <section className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-semibold text-emerald-900">Miljö i bilder</h2>
+            <h2 className="text-4xl font-semibold text-emerald-900">{t('miljoIBilder')}</h2>
             <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 mx-auto rounded-full" />
-            <p className="text-stone-600 text-lg font-light">Sju miljöbaserade bilder som speglar våra värderingar</p>
+            <p className="text-stone-600 text-lg font-light">{t('miljoIBilderDesc')}</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {ecoImages.map((img, i) => (
@@ -117,22 +126,22 @@ export default function Hallbarhet() {
 
         <section className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-semibold text-emerald-900">Våra kärnvärden</h2>
+            <h2 className="text-4xl font-semibold text-emerald-900">{t('ourCoreValues')}</h2>
             <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 mx-auto rounded-full" />
           </div>
           <div className="grid md:grid-cols-3 gap-10">
             {[
               {
-                title: 'Miljöansvar',
-                desc: 'Skydda och återställa våra naturresurser genom medvetna val i varje led.',
+                title: t('environmentalResponsibility'),
+                desc: t('environmentalResponsibilityDesc'),
               },
               {
-                title: 'Transparens',
-                desc: 'Öppenhet om vår påverkan och framsteg, med årliga hållbarhetsrapporter.',
+                title: t('transparency'),
+                desc: t('transparencyDesc'),
               },
               {
-                title: 'Innovation',
-                desc: 'Ständigt söka nya hållbara lösningar för material, processer och logistik.',
+                title: t('innovation'),
+                desc: t('innovationDesc'),
               },
             ].map((v, i) => (
               <div key={i} className="bg-white/90 backdrop-blur-sm rounded-3xl p-10 shadow-lg border border-emerald-100/50 text-center hover:shadow-xl transition-all duration-300 hover:bg-white hover:scale-[1.02]">
@@ -150,22 +159,22 @@ export default function Hallbarhet() {
 
         <section className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-semibold text-emerald-900">Våra huvudinitiativ</h2>
+            <h2 className="text-4xl font-semibold text-emerald-900">{t('ourMainInitiatives')}</h2>
             <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 mx-auto rounded-full" />
           </div>
           <div className="grid md:grid-cols-3 gap-10">
             {[
               {
-                title: 'Klimatneutrala leveranser',
-                desc: 'Alla våra leveranser är klimatneutrala genom klimatkompensation och val av miljövänliga transportalternativ.',
+                title: t('climateNeutralDeliveries'),
+                desc: t('climateNeutralDeliveriesDesc'),
               },
               {
-                title: 'Cirkulär ekonomi',
-                desc: 'Vi återvinner och återanvänder material i hela vår kedja, från produktion till förpackning.',
+                title: t('circularEconomy'),
+                desc: t('circularEconomyDesc'),
               },
               {
-                title: 'Etisk produktion',
-                desc: 'Vi arbetar endast med leverantörer som uppfyller höga standarder för arbetsvillkor och mänskliga rättigheter.',
+                title: t('ethicalProduction'),
+                desc: t('ethicalProductionDesc'),
               },
             ].map((item, i) => (
               <div key={i} className="group bg-white/90 backdrop-blur-sm rounded-3xl p-10 shadow-lg border border-emerald-100/50 hover:border-emerald-200 transition-all duration-300 hover:bg-white hover:shadow-xl hover:scale-[1.02]">
@@ -182,17 +191,17 @@ export default function Hallbarhet() {
         <section className="bg-gradient-to-br from-white to-emerald-50/30 py-20 rounded-3xl">
           <div className="max-w-5xl mx-auto px-6">
             <div className="text-center space-y-4 mb-16">
-              <h2 className="text-4xl font-semibold text-emerald-900">Våra miljömål för 2025</h2>
+              <h2 className="text-4xl font-semibold text-emerald-900">{t('environmentalGoals2025')}</h2>
               <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 mx-auto rounded-full" />
             </div>
             <div className="grid md:grid-cols-2 gap-6">
               {[
-                '100% återvunna material i alla produkter',
-                'Noll koldioxidutsläpp från vår verksamhet',
-                'Alla förpackningar 100% återvinningsbara',
-                'Fair Trade-certifiering för alla produkter',
-                '100% förnybar energi i alla våra lokaler',
-                'Noll vattenavfall i produktionen',
+                t('goal1'),
+                t('goal2'),
+                t('goal3'),
+                t('goal4'),
+                t('goal5'),
+                t('goal6'),
               ].map((goal, i) => (
                 <div key={i} className="flex items-center space-x-4 p-5 bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-emerald-100/50 hover:shadow-md transition-all">
                   <span className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shadow-lg ${
@@ -209,18 +218,17 @@ export default function Hallbarhet() {
 
         <section className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-semibold text-emerald-900">Ansvar i hela kedjan</h2>
+            <h2 className="text-4xl font-semibold text-emerald-900">{t('responsibilityInChain')}</h2>
             <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 mx-auto rounded-full" />
           </div>
           <p className="text-stone-700 leading-relaxed text-center max-w-4xl mx-auto mb-12 text-xl font-light">
-            Från råmaterial till färdig produkt — vi tar ansvar för varje steg i vår leveranskedja.
-            Våra produkter tillverkas under rättvisa förhållanden med respekt för både människa och miljö.
+            {t('responsibilityInChainText')}
           </p>
           <div className="grid md:grid-cols-3 gap-10">
             {[
-              { title: 'Transparent spårbarhet', desc: 'Vi kan spåra varje produkt tillbaka till källan med full insyn.' },
-              { title: 'Regelbundna revisioner', desc: 'Oberoende kontroller av alla våra leverantörer varje år.' },
-              { title: 'Långsiktiga partnerskap', desc: 'Vi bygger starka relationer med våra leverantörer över tid.' },
+              { title: t('transparentTraceability'), desc: t('transparentTraceabilityDesc') },
+              { title: t('regularAudits'), desc: t('regularAuditsDesc') },
+              { title: t('longTermPartnerships'), desc: t('longTermPartnershipsDesc') },
             ].map((item, i) => (
               <div key={i} className="bg-white/90 backdrop-blur-sm rounded-3xl p-10 shadow-lg border border-emerald-100/50 text-center hover:shadow-xl transition-all duration-300 hover:bg-white">
                 <div className="w-16 h-16 bg-gradient-to-br from-stone-100 to-stone-200 text-stone-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
@@ -237,14 +245,14 @@ export default function Hallbarhet() {
 
         <section className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-semibold text-emerald-900">Socialt ansvar</h2>
+            <h2 className="text-4xl font-semibold text-emerald-900">{t('socialResponsibility')}</h2>
             <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 mx-auto rounded-full" />
           </div>
           <div className="grid md:grid-cols-3 gap-10">
             {[
-              { title: 'Välgörenhet', desc: '1% av vår omsättning går till välgörenhetsorganisationer som arbetar med miljö och utbildning.' },
-              { title: 'Utbildning', desc: 'Stöd till utbildningsprojekt i våra produktionsländer för jämlikhet och framtidstro.' },
-              { title: 'Lokalt engagemang', desc: 'Samarbete med lokala organisationer och projekt i samhällen där vi verkar.' },
+              { title: t('charity'), desc: t('charityDesc') },
+              { title: t('education'), desc: t('educationDesc') },
+              { title: t('localEngagement'), desc: t('localEngagementDesc') },
             ].map((item, i) => (
               <div key={i} className="bg-white/90 backdrop-blur-sm rounded-3xl p-10 shadow-lg border border-emerald-100/50 text-center hover:shadow-xl transition-all duration-300 hover:bg-white">
                 <div className="w-16 h-16 bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
@@ -261,16 +269,16 @@ export default function Hallbarhet() {
 
         <section className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-semibold text-emerald-900">Våra hållbarhetsmilstolpar</h2>
+            <h2 className="text-4xl font-semibold text-emerald-900">{t('sustainabilityMilestones')}</h2>
             <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 mx-auto rounded-full" />
           </div>
           <div className="relative max-w-5xl mx-auto">
             <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-emerald-200 to-emerald-300 hidden md:block" />
             {[
-              { year: '2020', text: 'Alla våra leveranser blev klimatneutrala genom klimatkompensation', side: 'left' },
-              { year: '2021', text: 'Våra lokaler och lager drivs helt med förnybar energi', side: 'right' },
-              { year: '2023', text: '50% av våra produkter är nu Fair Trade-certifierade', side: 'left' },
-              { year: '2025', text: 'Vårt mål att uppnå noll koldioxidutsläpp i hela verksamheten', side: 'right' },
+              { year: '2020', text: t('milestone2020'), side: 'left' },
+              { year: '2021', text: t('milestone2021'), side: 'right' },
+              { year: '2023', text: t('milestone2023'), side: 'left' },
+              { year: '2025', text: t('milestone2025'), side: 'right' },
             ].map((m, i) => (
               <div key={i} className={`relative flex md:items-center mb-12 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                 <div className={`hidden md:block w-1/2 ${i % 2 === 0 ? 'pr-12 text-right' : 'pl-12 text-left'}`}>
@@ -293,14 +301,14 @@ export default function Hallbarhet() {
 
         <section className="space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-semibold text-emerald-900">Certifieringar & Utmärkelser</h2>
+            <h2 className="text-4xl font-semibold text-emerald-900">{t('certificationsAwards')}</h2>
             <div className="w-20 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 mx-auto rounded-full" />
           </div>
           <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
             {[
-              { title: 'Fair Trade', desc: 'Certifierad för rättvis handel', color: 'bg-gradient-to-br from-amber-50 to-amber-100 text-amber-700 border-amber-200' },
-              { title: 'B Corp', desc: 'Certifierad för social och miljömässig prestation', color: 'bg-gradient-to-br from-stone-100 to-stone-200 text-stone-700 border-stone-300' },
-              { title: 'Climate Neutral', desc: 'Klimatneutral certifiering för hela verksamheten', color: 'bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-700 border-emerald-200' },
+              { title: t('fairTrade'), desc: t('fairTradeDesc'), color: 'bg-gradient-to-br from-amber-50 to-amber-100 text-amber-700 border-amber-200' },
+              { title: t('bCorp'), desc: t('bCorpDesc'), color: 'bg-gradient-to-br from-stone-100 to-stone-200 text-stone-700 border-stone-300' },
+              { title: t('climateNeutralCert'), desc: t('climateNeutralCertDesc'), color: 'bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-700 border-emerald-200' },
             ].map((cert, i) => (
               <div key={i} className={`rounded-3xl p-10 text-center border shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] ${cert.color}`}>
                 <div className="w-20 h-20 rounded-full bg-white/90 flex items-center justify-center mx-auto mb-6 shadow-xl">
@@ -318,13 +326,12 @@ export default function Hallbarhet() {
         <section className="bg-gradient-to-br from-emerald-600 to-green-600 py-24 rounded-3xl">
           <div className="max-w-5xl mx-auto px-6 text-center">
             <div className="space-y-6">
-              <h2 className="text-4xl font-bold text-white mb-8">Gör skillnad tillsammans</h2>
+              <h2 className="text-4xl font-bold text-white mb-8">{t('makeADifference')}</h2>
               <p className="text-white/90 leading-relaxed text-xl font-light max-w-3xl mx-auto">
-                Varje köp du gör hos oss bidrar till en mer hållbar framtid. Tillsammans kan vi skapa
-                verklig förändring — för planeten, för människor och för kommande generationer.
+                {t('makeADifferenceText')}
               </p>
               <button className="bg-white text-emerald-700 px-10 py-4 font-semibold hover:bg-stone-50 transition-all duration-300 rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-[1.05] text-lg">
-                Utforska våra hållbara produkter
+                {t('exploreSustainableProducts')}
               </button>
             </div>
           </div>
@@ -332,5 +339,6 @@ export default function Hallbarhet() {
 
       </div>
     </main>
+    </PageShell>
   )
 }

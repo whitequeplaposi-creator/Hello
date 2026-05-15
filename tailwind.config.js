@@ -10,6 +10,9 @@ module.exports = {
       fontFamily: {
         playfair: ['var(--font-playfair)', 'serif'],
       },
+      screens: {
+        'xs': '475px',
+      },
     },
   },
   plugins: [],

@@ -19,12 +19,13 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    
     if (!email || !password) {
       setError(t('fillAllFields'))
-      setIsLoading(false)
       return
     }
 
+    setIsLoading(true)
     const success = await login(email, password)
     setIsLoading(false)
     
@@ -103,7 +104,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full py-3 bg-sky-400 text-white font-medium rounded-lg hover:bg-sky-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {isLoading ? (
                 <>

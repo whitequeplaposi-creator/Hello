@@ -3,9 +3,5 @@ export default function StandaloneLayout({
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <html lang="sv">
-      <body>{children}</body>
-    </html>
-  )
+  return <>{children}</>
 }

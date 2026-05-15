@@ -20,14 +20,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: `${product.name} - ${product.price} kr`,
+    title: `${product.name} - ${product.price} USD`,
     description: product.description,
   }
 }
 
 // Generate static params for all products at build time
 export async function generateStaticParams() {
-  const products = await getProducts()
+  // Limit to 50 products to avoid cache size issues during build
+  const products = await getProducts(50)
   
   return products.map((product) => ({
     id: product.id,
@@ -35,17 +36,14 @@ export async function generateStaticParams() {
 }
 
 export default async function ProduktPage({ params }: PageProps) {
-  // Fetch product and related products in parallel for faster loading
-  const [product, relatedProductsResult] = await Promise.all([
-    getProduct(params.id),
-    getProduct(params.id).then(p => p ? getRelatedProducts(params.id, p.category) : [])
-  ])
+  // Fetch product first, then fetch related products using its category
+  const product = await getProduct(params.id)
 
   if (!product) {
     notFound()
   }
 
-  const relatedProducts = relatedProductsResult
+  const relatedProducts = await getRelatedProducts(params.id, product.category)
 
   return (
     <div className="min-h-screen flex flex-col bg-white">

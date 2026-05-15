@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Product } from '@/lib/types'
 import { useCart } from '@/lib/CartContext'
@@ -9,47 +9,10 @@ import { cleanText, formatPrice, colorNameToHex } from '@/lib/utils'
 import ShoppingCartIcon from './ShoppingCartIcon'
 import ProductPageCartIcon from './ProductPageCartIcon'
 import TruckIcon from './TruckIcon'
-import SimplePaymentMethods from './SimplePaymentMethods'
-
-interface Review {
-  id: string
-  author: string
-  rating: number
-  title: string
-  body: string
-  date: string
-  verified: boolean
-}
-
-const sampleReviews: Review[] = [
-  {
-    id: '1',
-    author: 'Anna K.',
-    rating: 5,
-    title: 'Fantastisk kvalitet!',
-    body: 'Mycket nöjd med produkten. Kvaliteten är utmärkt och leveransen var snabb. Rekommenderas starkt!',
-    date: '2025-03-15',
-    verified: true,
-  },
-  {
-    id: '2',
-    author: 'Erik S.',
-    rating: 4,
-    title: 'Bra produkt',
-    body: 'Goda material och fin passform. Skulle önska lite fler färgalternativ, men överlag mycket bra.',
-    date: '2025-02-28',
-    verified: true,
-  },
-  {
-    id: '3',
-    author: 'Maria L.',
-    rating: 5,
-    title: 'Precis som förväntat',
-    body: 'Produkten motsvarar beskrivningen perfekt. Mycket professionell förpackning och snabb leverans.',
-    date: '2025-01-10',
-    verified: false,
-  },
-]
+import FavoriteButton from './FavoriteButton'
+import ProductCard from './ProductCard'
+import ProductReviews from './ProductReviews'
+import { useTrackProductEvent } from '@/hooks/usePersonalization'
 
 interface ProductDetailPageProps {
   product: Product
@@ -59,20 +22,27 @@ interface ProductDetailPageProps {
 export default function ProductDetailPage({ product, relatedProducts }: ProductDetailPageProps) {
   const { addToCart } = useCart()
   const { t } = useLanguage()
+  const { trackEvent } = useTrackProductEvent()
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [selectedColor, setSelectedColor] = useState<string | null>(null)
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const [showSizeGuide, setShowSizeGuide] = useState(false)
   const [activeTab, setActiveTab] = useState<'description' | 'specifications' | 'reviews'>('description')
-  const [reviews, setReviews] = useState<Review[]>(sampleReviews)
-  const [showReviewForm, setShowReviewForm] = useState(false)
-  const [newReview, setNewReview] = useState({
-    author: '',
-    title: '',
-    body: '',
-    rating: 5,
-  })
+
+  // Spåra produktvisning när sidan laddas
+  const pageOpenTime = useRef(Date.now())
+  useEffect(() => {
+    trackEvent(product, 'view')
+    return () => {
+      // Spåra tid spenderad på sidan när användaren lämnar
+      const durationSeconds = Math.round((Date.now() - pageOpenTime.current) / 1000)
+      if (durationSeconds > 2) {
+        trackEvent(product, 'click', { durationSeconds })
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product.id])
 
   const images = product.images && product.images.length > 0
     ? product.images
@@ -80,38 +50,18 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
       ? [product.image]
       : []
 
-  const averageRating = useMemo(() => {
-    return reviews.length > 0
-      ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-      : 0
-  }, [reviews])
-
   const handleAddToCart = () => {
     if (!selectedColor || !selectedSize) {
       return
     }
     for (let i = 0; i < quantity; i++) {
-      addToCart(product)
+      addToCart(product, selectedSize, selectedColor)
     }
+    // Spåra "lägg i varukorg"-händelse
+    trackEvent(product, 'add_to_cart')
   }
 
   const canAddToCart = selectedColor && selectedSize && product.inStock
-
-  const handleSubmitReview = (e: React.FormEvent) => {
-    e.preventDefault()
-    const review: Review = {
-      id: Date.now().toString(),
-      author: newReview.author,
-      rating: newReview.rating,
-      title: newReview.title,
-      body: newReview.body,
-      date: new Date().toISOString().split('T')[0],
-      verified: false,
-    }
-    setReviews([review, ...reviews])
-    setNewReview({ author: '', title: '', body: '', rating: 5 })
-    setShowReviewForm(false)
-  }
 
   const renderStars = (rating: number, interactive = false) => {
     return (
@@ -139,17 +89,6 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
-      {/* Breadcrumbs */}
-      <nav className="mb-6 text-sm text-gray-500">
-        <ol className="flex items-center gap-2">
-          <li><Link href="/" className="hover:text-gray-800 transition-colors">{t('breadcrumbsHome')}</Link></li>
-          <li>/</li>
-          <li><Link href="/" className="hover:text-gray-800 transition-colors">{t('breadcrumbsProducts')}</Link></li>
-          <li>/</li>
-          <li className="text-gray-800 font-medium truncate max-w-xs">{cleanText(product.name)}</li>
-        </ol>
-      </nav>
-
       {/* Main Product Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
         {/* Image Gallery */}
@@ -212,22 +151,29 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
 
           {/* Rating Summary */}
           <div className="flex items-center gap-3">
-            {renderStars(Math.round(averageRating))}
+            {renderStars(0)}
             <span className="text-sm text-gray-600">
-              {averageRating.toFixed(1)} ({reviews.length} {t('reviews').toLowerCase()})
+              <span className="text-blue-600 hover:underline cursor-pointer" onClick={() => setActiveTab('reviews')}>
+                {t('reviews').toLowerCase()}
+              </span>
             </span>
           </div>
 
           {/* Price */}
-          <div className="flex items-baseline gap-3">
-            <span className="text-3xl font-bold text-gray-900">
-              {formatPrice(product.price)}
-            </span>
-            {product.price >= 499 && (
-              <span className="text-sm text-green-600 font-medium">
-                {t('freeShipping')}
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-baseline gap-3">
+              <span className="text-3xl font-bold text-gray-900">
+                {formatPrice(product.price)}
               </span>
-            )}
+              {product.price >= 499 && (
+                <span className="text-sm text-green-600 font-medium">
+                  {t('freeShipping')}
+                </span>
+              )}
+            </div>
+            <div onClick={() => trackEvent(product, 'wishlist')}>
+              <FavoriteButton productId={product.id} />
+            </div>
           </div>
 
           {/* Stock Status */}
@@ -361,21 +307,9 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
                 <p className="text-xs text-gray-500">{t('returnPolicyValue')}</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-              <svg className="w-6 h-6 text-gray-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-              <div>
-                <p className="text-xs font-semibold text-gray-800">{t('securePayment')}</p>
-                <p className="text-xs text-gray-500">{t('securePaymentValue')}</p>
-              </div>
-            </div>
           </div>
 
-          {/* Payment Methods */}
-          <div className="pt-2">
-            <SimplePaymentMethods />
-          </div>
+
         </div>
       </div>
 
@@ -393,11 +327,6 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
               }`}
             >
               {t(tab)}
-              {tab === 'reviews' && (
-                <span className="ml-1.5 bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">
-                  {reviews.length}
-                </span>
-              )}
             </button>
           ))}
         </div>
@@ -488,165 +417,13 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
         )}
 
         {activeTab === 'reviews' && (
-          <div className="space-y-6">
-            {/* Rating Summary */}
-            <div className="flex items-center gap-6 p-6 bg-gray-50 rounded-xl">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-gray-900">{averageRating.toFixed(1)}</div>
-                <div className="mt-1">{renderStars(Math.round(averageRating))}</div>
-                <div className="text-sm text-gray-500 mt-1">{reviews.length} {t('reviews').toLowerCase()}</div>
-              </div>
-              <div className="flex-1 space-y-1.5">
-                {[5, 4, 3, 2, 1].map((star) => {
-                  const count = reviews.filter(r => r.rating === star).length
-                  const percentage = reviews.length > 0 ? (count / reviews.length) * 100 : 0
-                  return (
-                    <div key={star} className="flex items-center gap-2 text-sm">
-                      <span className="text-gray-600 w-3">{star}</span>
-                      <svg className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                      <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-yellow-400 rounded-full transition-all"
-                          style={{ width: `${percentage}%` }}
-                        />
-                      </div>
-                      <span className="text-gray-500 w-6 text-right">{count}</span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Write Review Button */}
-            <button
-              onClick={() => setShowReviewForm(!showReviewForm)}
-              className="px-6 py-2.5 border border-gray-900 text-gray-900 rounded-lg font-medium text-sm hover:bg-gray-900 hover:text-white transition-all"
-            >
-              {t('writeReview')}
-            </button>
-
-            {/* Review Form */}
-            {showReviewForm && (
-              <form onSubmit={handleSubmitReview} className="p-6 bg-gray-50 rounded-xl space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('yourName')}</label>
-                  <input
-                    type="text"
-                    required
-                    value={newReview.author}
-                    onChange={(e) => setNewReview(prev => ({ ...prev, author: e.target.value }))}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('reviewRating')}</label>
-                  {renderStars(newReview.rating, true)}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('reviewTitle')}</label>
-                  <input
-                    type="text"
-                    required
-                    value={newReview.title}
-                    onChange={(e) => setNewReview(prev => ({ ...prev, title: e.target.value }))}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('reviewBody')}</label>
-                  <textarea
-                    required
-                    rows={4}
-                    value={newReview.body}
-                    onChange={(e) => setNewReview(prev => ({ ...prev, body: e.target.value }))}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none resize-none"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="px-6 py-2.5 bg-gray-900 text-white rounded-lg font-medium text-sm hover:bg-gray-800 transition-all"
-                >
-                  {t('submitReview')}
-                </button>
-              </form>
-            )}
-
-            {/* Reviews List */}
-            {reviews.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">{t('noReviews')}</p>
-            ) : (
-              <div className="divide-y divide-gray-100">
-                {reviews.map((review) => (
-                  <div key={review.id} className="py-6 first:pt-0">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-sm font-semibold text-gray-600">
-                            {review.author.charAt(0)}
-                          </div>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium text-gray-900 text-sm">{review.author}</span>
-                              {review.verified && (
-                                <span className="inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-                                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                  </svg>
-                                  {t('verifiedPurchase')}
-                                </span>
-                              )}
-                            </div>
-                            <span className="text-xs text-gray-400">{review.date}</span>
-                          </div>
-                        </div>
-                      </div>
-                      {renderStars(review.rating)}
-                    </div>
-                    <h4 className="font-semibold text-gray-900 mt-3 text-sm">{review.title}</h4>
-                    <p className="text-gray-600 mt-1 text-sm leading-relaxed">{review.body}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <ProductReviews produktId={product.id} />
         )}
       </div>
 
       {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <div className="border-t border-gray-200 mt-12 pt-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('relatedProducts')}</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {relatedProducts.slice(0, 5).map((related) => (
-              <Link key={related.id} href={`/produkt/${related.id}`} className="group block">
-                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-all">
-                  <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-                    {related.image ? (
-                      <img
-                        src={related.image}
-                        alt={cleanText(related.name)}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <svg className="w-10 h-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-3">
-                    <p className="text-xs font-medium text-gray-900 line-clamp-1">{cleanText(related.name)}</p>
-                    <p className="text-sm font-bold text-gray-900 mt-1">{formatPrice(related.price)}</p>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
+        <RelatedProductsSection relatedProducts={relatedProducts} t={t} />
       )}
 
       {/* Size Guide Modal */}
@@ -753,6 +530,48 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
               </div>
             </div>
           </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Separate client component for related products with load more functionality
+function RelatedProductsSection({
+  relatedProducts,
+  t,
+}: {
+  relatedProducts: Product[]
+  t: (key: string) => string
+}) {
+  // Client-side ID deduplication as a safety net against any server-side
+  // duplicates that may slip through (e.g. from cache inconsistencies).
+  const uniqueProducts = relatedProducts.filter(
+    (p, index, self) => index === self.findIndex((q) => q.id === p.id)
+  )
+
+  const [visibleCount, setVisibleCount] = useState(8)
+  const visible = uniqueProducts.slice(0, visibleCount)
+  const hasMore = visibleCount < uniqueProducts.length
+
+  if (uniqueProducts.length === 0) return null
+
+  return (
+    <div className="border-t border-gray-200 mt-12 pt-8">
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('relatedProducts')}</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        {visible.map((related) => (
+          <ProductCard key={related.id} product={related} />
+        ))}
+      </div>
+      {hasMore && (
+        <div className="mt-8 text-center">
+          <button
+            onClick={() => setVisibleCount((prev) => prev + 8)}
+            className="px-8 py-3 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            {t('loadMore')}
+          </button>
         </div>
       )}
     </div>
