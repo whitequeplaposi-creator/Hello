@@ -10,6 +10,7 @@ import { CookieProvider } from '@/lib/CookieContext'
 import { FavoritesProvider } from '@/lib/FavoritesContext'
 import CookieBanner from '@/components/CookieBanner'
 import CookieSettings from '@/components/CookieSettings'
+import NextAuthProvider from '@/components/NextAuthProvider'
 
 const playfair = Playfair_Display({ 
   subsets: ['latin'],
@@ -48,6 +49,7 @@ export default function RootLayout({
         <meta name="google" content="notranslate" />
       </head>
       <body>
+        <NextAuthProvider>
         <CookieProvider>
           <LanguageProvider>
             <AuthProvider>
@@ -65,6 +67,7 @@ export default function RootLayout({
             </AuthProvider>
           </LanguageProvider>
         </CookieProvider>
+        </NextAuthProvider>
       </body>
     </html>
   )
