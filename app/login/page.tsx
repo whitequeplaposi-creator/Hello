@@ -53,11 +53,11 @@ export default function LoginPage() {
         </Link>
       </div>
 
-      <main className="flex-1 flex items-center justify-center px-4 py-12">
+      <main className="flex-1 flex items-center justify-center px-4 py-6">
         <div className="w-full max-w-[440px]">
-          <div className="mb-10 text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-3">{t('welcomeBack')}</h1>
-            <p className="text-gray-500 text-lg">{t('loginSubtitle')}</p>
+          <div className="mb-6 text-center">
+            <h1 className="text-2xl font-bold text-gray-900 mb-3">{t('welcomeBack')}</h1>
+            <p className="text-gray-500 text-sm">{t('loginSubtitle')}</p>
           </div>
 
           {error && (
@@ -66,7 +66,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                 {t('email')}
@@ -76,7 +76,7 @@ export default function LoginPage() {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all text-gray-900"
+                className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all text-gray-900"
                 placeholder=""
                 disabled={isLoading}
               />
@@ -92,7 +92,7 @@ export default function LoginPage() {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all pr-12 text-gray-900"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all pr-12 text-gray-900"
                   placeholder=""
                   disabled={isLoading}
                 />
@@ -119,7 +119,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-sky-400 text-white font-medium rounded-lg hover:bg-sky-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full px-3 py-2 bg-sky-400 text-white font-medium rounded-lg hover:bg-sky-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {isLoading ? (
                 <>
