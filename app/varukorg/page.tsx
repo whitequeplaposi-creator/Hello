@@ -93,11 +93,10 @@ export default function CartPage() {
                 </div>
               )}
 
-              <ul className="space-y-4">
+              <ul>
                 {items.map((item) => (
                   <li
                     key={`${item.product.id}-${item.selectedSize ?? ''}-${item.selectedColor ?? ''}`}
-                    className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5"
                   >
                     <div className="flex gap-4">
                       <Link
@@ -246,21 +245,15 @@ export default function CartPage() {
 
                 <ul className="mt-8 space-y-2 border-t border-gray-100 pt-6 text-xs text-gray-600">
                   <li className="flex gap-2">
-                    <span className="text-emerald-600" aria-hidden>
-                      ✓
-                    </span>
+                    <span className="text-emerald-600" aria-hidden>✓</span>
                     {t('cartTrustFast')}
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-emerald-600" aria-hidden>
-                      ✓
-                    </span>
+                    <span className="text-emerald-600" aria-hidden>✓</span>
                     {t('cartTrustSecure')}
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-emerald-600" aria-hidden>
-                      ✓
-                    </span>
+                    <span className="text-emerald-600" aria-hidden>✓</span>
                     {t('cartTrustReturns')}
                   </li>
                 </ul>
