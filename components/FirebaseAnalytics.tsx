@@ -1,12 +1,4 @@
-'use client'
-
-import { useEffect } from 'react'
-import { analyticsPromise } from '@/lib/firebase'
-
+// Firebase Analytics har tagits bort.
 export default function FirebaseAnalytics() {
-  useEffect(() => {
-    analyticsPromise.catch(console.error)
-  }, [])
-
-  return null
+  return null;
 }

@@ -26,13 +26,13 @@ export default function LoginPage() {
     }
 
     setIsLoading(true)
-    const success = await login(email, password)
+    const result = await login(email, password)
     setIsLoading(false)
     
-    if (success) {
+    if (result.success) {
       router.push('/')
     } else {
-      setError(t('wrongCredentials'))
+      setError(result.error || t('wrongCredentials'))
     }
   }
 

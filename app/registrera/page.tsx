@@ -48,13 +48,13 @@ export default function RegisterPage() {
     }
 
     setIsLoading(true)
-    const success = await register(email, password, name)
+    const result = await register(email, password, name)
     setIsLoading(false)
     
-    if (success) {
+    if (result.success) {
       router.push('/')
     } else {
-      setError(t('emailAlreadyExists'))
+      setError(result.error || t('emailAlreadyExists'))
     }
   }
 
