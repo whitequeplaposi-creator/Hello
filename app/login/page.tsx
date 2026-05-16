@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/lib/AuthContext'
 import { useLanguage } from '@/lib/LanguageContext'
+import BrandmarkLogo from '@/components/BrandmarkLogo'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -41,6 +42,9 @@ export default function LoginPage() {
       <main className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-[440px]">
           <div className="mb-10 text-center">
+            <div className="flex justify-center mb-6">
+              <BrandmarkLogo size="lg" showText={true} variant="default" />
+            </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-3">{t('welcomeBack')}</h1>
             <p className="text-gray-500 text-lg">{t('loginSubtitle')}</p>
           </div>
