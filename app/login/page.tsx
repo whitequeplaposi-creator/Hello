@@ -54,21 +54,21 @@ export default function LoginPage() {
       </div>
 
       <main className="flex-1 flex items-center justify-center px-4 py-6">
-        <div className="w-full max-w-[440px]">
-          <div className="mb-6 text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-3">{t('welcomeBack')}</h1>
-            <p className="text-gray-500 text-sm">{t('loginSubtitle')}</p>
+        <div className="w-full max-w-sm">
+          <div className="mb-4 text-center">
+            <h1 className="text-xl font-bold text-gray-900 mb-1">{t('welcomeBack')}</h1>
+            <p className="text-gray-500 text-xs">{t('loginSubtitle')}</p>
           </div>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+            <div className="mb-3 p-2.5 bg-red-50 border border-red-200 rounded-md text-red-600 text-xs">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-2.5">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-xs font-medium text-gray-700 mb-1">
                 {t('email')}
               </label>
               <input
@@ -76,14 +76,14 @@ export default function LoginPage() {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all text-gray-900"
+                className="w-full px-3 py-1.5 text-sm bg-gray-50 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-transparent transition-all text-gray-900"
                 placeholder=""
                 disabled={isLoading}
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-xs font-medium text-gray-700 mb-1">
                 {t('password')}
               </label>
               <div className="relative">
@@ -92,7 +92,7 @@ export default function LoginPage() {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all pr-12 text-gray-900"
+                  className="w-full px-3 py-1.5 text-sm bg-gray-50 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-black focus:border-transparent transition-all pr-10 text-gray-900"
                   placeholder=""
                   disabled={isLoading}
                 />
@@ -119,7 +119,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full px-3 py-2 bg-sky-400 text-white font-medium rounded-lg hover:bg-sky-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full px-3 py-1.5 text-sm bg-sky-400 text-white font-medium rounded-md hover:bg-sky-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {isLoading ? (
                 <>
@@ -135,8 +135,8 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-8 text-center">
-            <p className="text-gray-600">
+          <div className="mt-4 text-center">
+            <p className="text-gray-600 text-xs">
               {t('noAccount')}{' '}
               <Link href="/registrera" className="text-black font-medium hover:underline transition-all">
                 {t('createAccountHere')}
