@@ -9,15 +9,19 @@ interface PageProps {
   params: Promise<{ id: string }>
 }
 
+// Allow dynamic rendering for products not pre-built at build time
+export const dynamicParams = true
+
+// Revalidate product pages every hour
+export const revalidate = 3600
+
 // Generate metadata for SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params
   const product = await getProduct(id)
   
   if (!product) {
-    return {
-      title: 'Produkt hittades inte',
-    }
+    return { title: 'Produkt hittades inte' }
   }
 
   return {
@@ -26,25 +30,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-// Generate static params for all products at build time
+// Pre-build the most common product pages at build time
 export async function generateStaticParams() {
-  // Limit to 50 products to avoid cache size issues during build
-  const products = await getProducts(50)
-  
-  return products.map((product) => ({
-    id: product.id,
-  }))
+  const products = await getProducts(500)
+  return products.map((product) => ({ id: product.id }))
 }
 
 export default async function ProduktPage({ params }: PageProps) {
   const { id } = await params
-  const product = await getProduct(id)
+
+  // Run both queries in parallel — cuts load time roughly in half
+  const [product, relatedProducts] = await Promise.all([
+    getProduct(id),
+    getRelatedProducts(id),
+  ])
 
   if (!product) {
     notFound()
   }
-
-  const relatedProducts = await getRelatedProducts(id, product.category)
 
   return (
     <div className="min-h-screen flex flex-col bg-white">

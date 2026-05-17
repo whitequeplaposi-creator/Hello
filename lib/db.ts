@@ -1,4 +1,5 @@
 import { createClient } from '@libsql/client';
+import { unstable_cache } from 'next/cache';
 import { filterJpgImages } from './utils';
 import { validateAndDeduplicateProducts } from './productUtils';
 import type { Product } from './types';
@@ -468,54 +469,58 @@ export async function getProducts(limit?: number): Promise<Product[]> {
   }
 }
 
-// Cache individual product for 1 hour
-export async function getProduct(id: string): Promise<Product | null> {
-  try {
-    const result = await client.execute({
-      sql: 'SELECT * FROM Eprolo WHERE id = ?',
-      args: [id]
-    });
-    
-    if (result.rows.length === 0) return null;
-    
-    const row = result.rows[0];
-    const imageUrls = row.Image ? row.Image.toString().split(', ') : [];
-    const filteredImages = filterJpgImages(imageUrls);
-    
-    const colorString = row.color?.toString() || '';
-    const productColors = colorString
-      ? colorString.split(',').map((c: string) => c.trim()).filter((c: string) => c.length > 0)
-      : [];
+// Cache individual product for 1 hour using Next.js data cache
+export const getProduct = unstable_cache(
+  async (id: string): Promise<Product | null> => {
+    try {
+      const result = await client.execute({
+        sql: 'SELECT id, namn, price, Image, color, size FROM Eprolo WHERE id = ?',
+        args: [id]
+      });
+      
+      if (result.rows.length === 0) return null;
+      
+      const row = result.rows[0];
+      const imageUrls = row.Image ? row.Image.toString().split(', ') : [];
+      const filteredImages = filterJpgImages(imageUrls);
+      
+      const colorString = row.color?.toString() || '';
+      const productColors = colorString
+        ? colorString.split(',').map((c: string) => c.trim()).filter((c: string) => c.length > 0)
+        : [];
 
-    const sizeString = row.size?.toString() || '';
-    const productSizes = sizeString
-      ? sizeString.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
-      : [];
+      const sizeString = row.size?.toString() || '';
+      const productSizes = sizeString
+        ? sizeString.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
+        : [];
 
-    const productName = row.namn?.toString() || '';
-    return {
-      id: row.id?.toString() || '',
-      name: productName,
-      description: row.namn?.toString() || '',
-      price: parseFloat(row.price?.toString() || '0'),
-      category: categorizeProduct(productName),
-      inStock: true,
-      image: filteredImages[0] || undefined,
-      images: filteredImages.length > 0 ? filteredImages : filteredImages[0] ? [filteredImages[0]] : [],
-      colors: productColors.length > 0 ? productColors : undefined,
-      sizes: productSizes,
-    };
-  } catch (error) {
-    console.error('Error fetching product:', error);
-    return null;
-  }
-}
+      const productName = row.namn?.toString() || '';
+      return {
+        id: row.id?.toString() || '',
+        name: productName,
+        description: productName,
+        price: parseFloat(row.price?.toString() || '0'),
+        category: categorizeProduct(productName),
+        inStock: true,
+        image: filteredImages[0] || undefined,
+        images: filteredImages.length > 0 ? filteredImages : [],
+        colors: productColors.length > 0 ? productColors : undefined,
+        sizes: productSizes,
+      };
+    } catch (error) {
+      console.error('Error fetching product:', error);
+      return null;
+    }
+  },
+  ['product'],
+  { revalidate: 3600, tags: ['product'] }
+);
 
-// Get related products — same product type only, deduplicated by ID, varied.
-// Only used on the product detail page; does not affect the home page.
+// Get related products — same product type only, capped at 24, fast.
+// Uses a targeted query with LIKE instead of fetching the entire table.
 export async function getRelatedProducts(productId: string, _category?: string): Promise<Product[]> {
   try {
-    // Fetch the current product's name so we can determine its exact type
+    // Fetch the current product's name to determine its type
     const currentProductResult = await client.execute({
       sql: 'SELECT namn FROM Eprolo WHERE id = ?',
       args: [productId]
@@ -524,60 +529,95 @@ export async function getRelatedProducts(productId: string, _category?: string):
     const currentProductName = currentProductResult.rows[0]?.namn?.toString() || '';
     const productType = categorizeProduct(currentProductName);
 
-    // Fetch ALL products except the current one.
-    // ORDER BY RANDOM() at the DB level ensures variety on every page load.
-    const result = await client.execute({
-      sql: 'SELECT * FROM Eprolo WHERE id != ? ORDER BY RANDOM()',
-      args: [productId]
-    });
+    // Build keyword list for this product type so we can query with LIKE
+    const typeKeywords = CATEGORY_KEYWORDS[productType] ?? [];
 
-    // Deduplicate strictly by ID only — name-based dedup is intentionally
-    // skipped here because products with similar names (e.g. same dress in
-    // different colours) are genuinely distinct and should all be shown.
-    const seenIds = new Set<string>();
-    const allMapped: Product[] = [];
-    for (const row of result.rows) {
-      const p = mapRow(row as Record<string, unknown>);
-      if (
-        p.id &&
-        !seenIds.has(p.id) &&
-        p.name &&
-        p.price > 0 &&
-        p.category
-      ) {
-        seenIds.add(p.id);
-        allMapped.push(p);
+    let rows: typeof currentProductResult.rows = [];
+
+    if (typeKeywords.length > 0) {
+      // Query only rows whose name contains at least one keyword for this type.
+      // We use a UNION of individual LIKE queries — SQLite handles this well.
+      // Cap at 200 rows so we have enough to deduplicate and still be fast.
+      const likeConditions = typeKeywords.map(() => `namn LIKE ?`).join(' OR ')
+      const args: string[] = [...typeKeywords.map(k => `%${k}%`), productId]
+      const result = await client.execute({
+        sql: `SELECT id, namn, price, Image, color, size FROM Eprolo
+              WHERE (${likeConditions}) AND id != ?
+              ORDER BY RANDOM()
+              LIMIT 200`,
+        args,
+      })
+      rows = result.rows
+    }
+
+    // If keyword query returned too few, fall back to a random sample
+    if (rows.length < 8) {
+      const fallback = await client.execute({
+        sql: `SELECT id, namn, price, Image, color, size FROM Eprolo
+              WHERE id != ?
+              ORDER BY RANDOM()
+              LIMIT 100`,
+        args: [productId],
+      })
+      rows = fallback.rows
+    }
+
+    // Map and deduplicate
+    const seenIds = new Set<string>()
+    const allMapped: Product[] = []
+    for (const row of rows) {
+      const p = mapRow(row as Record<string, unknown>)
+      if (p.id && !seenIds.has(p.id) && p.name && p.price > 0) {
+        seenIds.add(p.id)
+        allMapped.push(p)
       }
     }
 
-    // --- Strict same-type filter ---
-    // For a dress page we only show dresses; for a jacket page only jackets, etc.
-    const sameType = allMapped.filter(p => p.category === productType && p.inStock);
+    // Prefer same type, cap at 24 for fast page load
+    const sameType = allMapped.filter(p => p.category === productType)
+    if (sameType.length >= 4) return sameType.slice(0, 24)
 
-    if (sameType.length >= 4) {
-      // Return all matching products — no artificial cap.
-      // The UI handles pagination / "load more".
-      return sameType;
-    }
-
-    // Fallback for very rare product types: widen to the same broad group
-    // (e.g. all "tops" when the specific type has fewer than 4 results).
-    const broadGroup = getBroadGroup(productType);
+    const broadGroup = getBroadGroup(productType)
     if (broadGroup) {
-      const broadMatch = allMapped.filter(
-        p => p.inStock && getBroadGroup(p.category) === broadGroup
-      );
-      if (broadMatch.length >= 4) {
-        return broadMatch;
-      }
+      const broadMatch = allMapped.filter(p => getBroadGroup(p.category) === broadGroup)
+      if (broadMatch.length >= 4) return broadMatch.slice(0, 24)
     }
 
-    // Last resort: return all in-stock products (still ID-deduplicated).
-    return allMapped.filter(p => p.inStock);
+    return allMapped.slice(0, 24)
   } catch (error) {
-    console.error('Error fetching related products:', error);
-    return [];
+    console.error('Error fetching related products:', error)
+    return []
   }
+}
+
+// Keywords per category used for targeted DB queries
+const CATEGORY_KEYWORDS: Record<string, string[]> = {
+  'dress':      ['dress', 'klänning', 'gown', 'maxi'],
+  'skirt':      ['skirt', 'kjol'],
+  'blouse':     ['blouse', 'blus'],
+  'jacket':     ['jacket', 'jacka', 'blazer', 'cardigan'],
+  'coat':       ['coat', 'kappa', 'overcoat', 'trench'],
+  'hoodie':     ['hoodie', 'sweatshirt'],
+  'sweater':    ['sweater', 'tröja', 'pullover', 'knit'],
+  't-shirt':    ['t-shirt', 'tshirt', 'tee'],
+  'shirt':      ['shirt', 'skjorta'],
+  'jeans':      ['jeans'],
+  'shorts':     ['shorts'],
+  'leggings':   ['leggings'],
+  'trousers':   ['trousers', 'pants', 'byxa', 'chinos'],
+  'swimwear':   ['swimsuit', 'bikini', 'swimwear'],
+  'underwear':  ['lingerie', 'underwear', 'bra', 'panties'],
+  'socks':      ['socks', 'strumpor', 'stockings', 'tights'],
+  'shoes':      ['shoes', 'skor', 'sneakers', 'boots', 'sandals', 'heels'],
+  'bag':        ['bag', 'väska', 'purse', 'handbag', 'backpack', 'tote'],
+  'belt':       ['belt', 'bälte'],
+  'accessories':['hat', 'cap', 'mössa', 'beanie', 'scarf', 'gloves'],
+  'jewelry':    ['jewelry', 'necklace', 'bracelet', 'earring', 'ring'],
+  'jumpsuit':   ['jumpsuit', 'romper', 'overall'],
+  'suit':       ['suit', 'kostym', 'tuxedo'],
+  'top':        ['crop', 'tank', 'camisole'],
+  'women':      ['women', 'woman', 'ladies', 'dam'],
+  'men':        ['men', 'herr'],
 }
 
 /**
