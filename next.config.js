@@ -8,11 +8,19 @@ const nextConfig = {
       },
     ],
     formats: ['image/avif', 'image/webp'],
+    // Cache optimized images for 7 days on Vercel CDN
+    minimumCacheTTL: 604800,
+    // Common device widths — avoids generating unnecessary sizes
+    deviceSizes: [390, 640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 64, 96, 128, 256, 384],
   },
   experimental: {
     optimizePackageImports: ['@/components', '@/lib'],
   },
-  // removeConsole removed: keeping console logs in production for Vercel function logs
+  // Compress responses
+  compress: true,
+  // Power header for CDN hints
+  poweredByHeader: false,
 }
 
 module.exports = nextConfig

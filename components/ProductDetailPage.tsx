@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import Link from 'next/link'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import Image from 'next/image'
 import { Product } from '@/lib/types'
 import { useCart } from '@/lib/CartContext'
 import { useLanguage } from '@/lib/LanguageContext'
@@ -12,6 +12,7 @@ import TruckIcon from './TruckIcon'
 import FavoriteButton from './FavoriteButton'
 import ProductCard from './ProductCard'
 import ProductReviews from './ProductReviews'
+import VariantSelector, { VariantState } from './VariantSelector'
 import { useTrackProductEvent } from '@/hooks/usePersonalization'
 
 interface ProductDetailPageProps {
@@ -27,8 +28,11 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
   const [quantity, setQuantity] = useState(1)
   const [selectedColor, setSelectedColor] = useState<string | null>(null)
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
+  const [currentPrice, setCurrentPrice] = useState(product.price)
+  const [variantInStock, setVariantInStock] = useState(product.inStock)
   const [showSizeGuide, setShowSizeGuide] = useState(false)
   const [activeTab, setActiveTab] = useState<'description' | 'specifications' | 'reviews'>('description')
+  const [addedToCart, setAddedToCart] = useState(false)
 
   // Spåra produktvisning när sidan laddas
   const pageOpenTime = useRef(Date.now())
@@ -50,18 +54,36 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
       ? [product.image]
       : []
 
+  const hasMultipleColors = (product.colors?.length ?? 0) >= 2
+  const hasSizes = (product.sizes?.length ?? 0) > 0
+
   const handleAddToCart = () => {
-    if (!selectedColor || !selectedSize) {
-      return
-    }
+    // Color required only when product has 2+ colors
+    if (hasMultipleColors && !selectedColor) return
+    // Size always required when sizes exist
+    if (hasSizes && !selectedSize) return
+
+    const colorToUse = selectedColor ?? (product.colors?.[0] ?? '')
     for (let i = 0; i < quantity; i++) {
-      addToCart(product, selectedSize, selectedColor)
+      addToCart(product, selectedSize ?? '', colorToUse)
     }
-    // Spåra "lägg i varukorg"-händelse
     trackEvent(product, 'add_to_cart')
+    setAddedToCart(true)
+    setTimeout(() => setAddedToCart(false), 2000)
   }
 
-  const canAddToCart = selectedColor && selectedSize && product.inStock
+  const handleVariantChange = useCallback((state: VariantState) => {
+    setSelectedColor(state.selectedColor)
+    setSelectedSize(state.selectedSize)
+    setSelectedImage(state.currentImageIndex)
+    setCurrentPrice(state.currentPrice)
+    setVariantInStock(state.inStock)
+  }, [])
+
+  const canAddToCart =
+    variantInStock &&
+    (!hasMultipleColors || !!selectedColor) &&
+    (!hasSizes || !!selectedSize)
 
   const renderStars = (rating: number) => {
     return (
@@ -89,12 +111,14 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
           {/* Main Image */}
           <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl overflow-hidden border border-gray-200">
             {images.length > 0 ? (
-              <img
+              <Image
                 src={images[selectedImage]}
                 alt={cleanText(product.name)}
-                className="w-full h-full object-cover"
-                loading="lazy"
-                fetchPriority="high"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+                priority
+                quality={85}
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
@@ -121,7 +145,14 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
                     selectedImage === index ? 'border-gray-900 ring-1 ring-gray-900' : 'border-gray-200 hover:border-gray-400'
                   }`}
                 >
-                  <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" />
+                  <Image
+                    src={img}
+                    alt=""
+                    fill
+                    sizes="80px"
+                    className="object-cover"
+                    loading="lazy"
+                  />
                 </button>
               ))}
             </div>
@@ -155,10 +186,13 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
           {/* Price */}
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-gray-900">
-                {formatPrice(product.price)}
+              <span className="text-3xl font-bold text-gray-900 transition-all duration-200">
+                {formatPrice(currentPrice)}
               </span>
-              {product.price >= 499 && (
+              {currentPrice !== product.price && (
+                <span className="text-sm text-gray-400 line-through">{formatPrice(product.price)}</span>
+              )}
+              {currentPrice >= 499 && (
                 <span className="text-sm text-green-600 font-medium">
                   {t('freeShipping')}
                 </span>
@@ -171,115 +205,105 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
 
           {/* Stock Status */}
           <div className="flex items-center gap-2">
-            <div className={`w-2.5 h-2.5 rounded-full ${product.inStock ? 'bg-green-500' : 'bg-red-500'}`} />
-            <span className={`text-sm font-medium ${product.inStock ? 'text-green-700' : 'text-red-700'}`}>
-              {product.inStock ? t('inStock') : t('outOfStockBadge')}
+            <div className={`w-2.5 h-2.5 rounded-full transition-colors ${variantInStock ? 'bg-green-500' : 'bg-red-500'}`} />
+            <span className={`text-sm font-medium transition-colors ${variantInStock ? 'text-green-700' : 'text-red-700'}`}>
+              {variantInStock ? t('inStock') : t('outOfStockBadge')}
+              {selectedColor && selectedSize && (
+                <span className="ml-1 font-normal text-gray-500">
+                  — {selectedColor}, {selectedSize}
+                </span>
+              )}
             </span>
           </div>
 
-          {/* Colors */}
-          {product.colors && product.colors.length > 0 && (
-            <div>
-              <h3 className="text-sm font-medium text-gray-700 mb-2">{t('colors')}</h3>
-              <div className="flex flex-wrap gap-2">
-                {product.colors.map((color, index) => {
-                  const hex = colorNameToHex(color)
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedColor(color)}
-                      className={`flex items-center gap-1.5 group cursor-pointer transition-all ${
-                        selectedColor === color ? 'ring-2 ring-gray-900 rounded-full' : ''
-                      }`}
-                    >
-                      <div
-                        className={`w-6 h-6 rounded-full border-2 transition-all ${
-                          hex ? 'border-gray-200 group-hover:border-gray-400' : 'border-gray-300 border-dashed'
-                        }`}
-                        style={hex ? { backgroundColor: hex } : undefined}
-                        title={color}
-                      >
-                        {!hex && (
-                          <div className="w-full h-full flex items-center justify-center text-[8px] text-gray-400 font-medium">
-                            ?
-                          </div>
-                        )}
-                      </div>
-                      <span className="text-xs text-gray-600 group-hover:text-gray-900 transition-colors">{color}</span>
-                    </button>
-                  )
-                })}
-              </div>
-              {selectedColor && (
-                <p className="text-xs text-gray-500 mt-2">Vald färg: {selectedColor}</p>
-              )}
-            </div>
-          )}
-
-          {/* Sizes */}
-          {product.sizes && product.sizes.length > 0 && (
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium text-gray-700">Storlek</h3>
-                <button
-                  onClick={() => setShowSizeGuide(true)}
-                  className="text-xs text-blue-600 hover:text-blue-700 underline"
-                >
-                  Storleksguide
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {product.sizes.map((size, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 border rounded-lg text-sm font-medium transition-all ${
-                      selectedSize === size
-                        ? 'border-gray-900 bg-gray-900 text-white'
-                        : 'border-gray-300 hover:border-gray-400 text-gray-700'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-              {selectedSize && (
-                <p className="text-xs text-gray-500 mt-2">Vald storlek: {selectedSize}</p>
-              )}
-            </div>
+          {/* Variant Selector */}
+          {((product.colors && product.colors.length > 0) || (product.sizes && product.sizes.length > 0)) && (
+            <VariantSelector
+              colors={product.colors ?? []}
+              sizes={product.sizes ?? []}
+              images={images}
+              basePrice={product.price}
+              baseInStock={product.inStock}
+              currentImageIndex={selectedImage}
+              onChange={handleVariantChange}
+            />
           )}
 
           {/* Quantity & Add to Cart */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+          <div className="space-y-3">
+            {/* Validation hint */}
+            {!canAddToCart && variantInStock && (
+              <p className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                {hasMultipleColors && !selectedColor && hasSizes && !selectedSize
+                  ? 'Välj färg och storlek för att lägga i varukorgen'
+                  : hasMultipleColors && !selectedColor
+                    ? 'Välj en färg för att lägga i varukorgen'
+                    : hasSizes && !selectedSize
+                      ? 'Välj en storlek för att lägga i varukorgen'
+                      : null}
+              </p>
+            )}
+
+            <div className="flex gap-3">
+              {/* Quantity */}
+              <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="px-4 py-3 text-gray-600 hover:bg-gray-50 transition-colors text-lg font-medium"
+                  aria-label="Minska antal"
+                >
+                  −
+                </button>
+                <span className="px-5 py-3 text-center font-medium min-w-[3rem] border-x border-gray-300">
+                  {quantity}
+                </span>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="px-4 py-3 text-gray-600 hover:bg-gray-50 transition-colors text-lg font-medium"
+                  aria-label="Öka antal"
+                >
+                  +
+                </button>
+              </div>
+
+              {/* Add to Cart */}
               <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="px-4 py-3 text-gray-600 hover:bg-gray-50 transition-colors text-lg font-medium"
+                onClick={handleAddToCart}
+                disabled={!canAddToCart}
+                className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-sm transition-all duration-200 ${
+                  addedToCart
+                    ? 'bg-green-600 text-white'
+                    : canAddToCart
+                      ? 'bg-gray-900 text-white hover:bg-gray-700 active:scale-95'
+                      : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                }`}
+                aria-label="Lägg i varukorg"
               >
-                −
-              </button>
-              <span className="px-5 py-3 text-center font-medium min-w-[3rem] border-x border-gray-300">
-                {quantity}
-              </span>
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="px-4 py-3 text-gray-600 hover:bg-gray-50 transition-colors text-lg font-medium"
-              >
-                +
+                {addedToCart ? (
+                  <>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Tillagd i varukorg
+                  </>
+                ) : (
+                  <>
+                    <ProductPageCartIcon className="w-5 h-5" />
+                    Lägg i varukorg
+                  </>
+                )}
               </button>
             </div>
-            <button
-              onClick={handleAddToCart}
-              disabled={!canAddToCart}
-              className={`p-2 rounded transition-colors ${
-                canAddToCart
-                  ? 'hover:bg-gray-100 cursor-pointer'
-                  : 'bg-gray-50 cursor-not-allowed opacity-50'
-              }`}
-              aria-label="Lägg i varukorg"
-            >
-              <ProductPageCartIcon className="w-6 h-6" />
-            </button>
+
+            {/* Size guide link */}
+            {product.sizes && product.sizes.length > 0 && (
+              <button
+                onClick={() => setShowSizeGuide(true)}
+                className="text-xs text-blue-600 hover:text-blue-700 underline"
+              >
+                Storleksguide
+              </button>
+            )}
           </div>
 
           {/* Delivery Info Cards */}

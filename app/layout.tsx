@@ -60,6 +60,11 @@ export default function RootLayout({
       <head>
         <meta name="google" content="notranslate" />
         <meta name="mobile-web-app-capable" content="yes" />
+        {/* Preconnect to image CDN domains for faster product image loading */}
+        <link rel="preconnect" href="https://shopifyfile.oss-accelerate.aliyuncs.com" />
+        <link rel="preconnect" href="https://img.alicdn.com" />
+        <link rel="dns-prefetch" href="https://shopifyfile.oss-accelerate.aliyuncs.com" />
+        <link rel="dns-prefetch" href="https://img.alicdn.com" />
       </head>
       <body>
         <NextAuthProvider>

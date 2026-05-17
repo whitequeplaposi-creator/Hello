@@ -168,10 +168,11 @@ export default function ProductGrid({ initialProducts }: ProductGridProps) {
       )}
       
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-        {visibleProducts.map((product) => (
+        {visibleProducts.map((product, index) => (
           <ProductCard 
             key={product.id} 
             product={product}
+            priority={index < 12}
             onInteraction={() => {
               trackInteraction(product.id, 'click')
               trackEvent(product, 'click')

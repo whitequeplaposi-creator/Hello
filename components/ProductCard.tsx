@@ -1,10 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import Image from 'next/image'
 import { Product } from '@/lib/types'
 import { useCart } from '@/lib/CartContext'
-import { useFavorites } from '@/lib/FavoritesContext'
 import { useLanguage } from '@/lib/LanguageContext'
 import { cleanText, colorNameToHex } from '@/lib/utils'
 import ShoppingCartIcon from './ShoppingCartIcon'
@@ -12,71 +11,58 @@ import ShoppingCartIcon from './ShoppingCartIcon'
 interface ProductCardProps {
   product: Product
   onInteraction?: () => void
+  priority?: boolean
 }
 
-export default function ProductCard({ product, onInteraction }: ProductCardProps) {
+export default function ProductCard({ product, onInteraction, priority = false }: ProductCardProps) {
   const { addToCart } = useCart()
-  const { addFavorite, removeFavorite, isFavorite } = useFavorites()
   const { t } = useLanguage()
 
   const isDisabled = !product.inStock
-  
-  // Hantera klick på produkten
-  const handleProductClick = () => {
-    if (onInteraction) {
-      onInteraction()
-    }
-  }
-
-  const getStatusBadge = () => {
-    if (!product.inStock) {
-      return (
-        <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs font-semibold rounded">
-          {t('outOfStock') || 'Slut i lager'}
-        </span>
-      )
-    }
-    return null
-  }
 
   return (
     <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden hover:shadow transition-all duration-150 hover:border-gray-200">
-      {/* Product Image Container */}
-      <Link 
+      {/* Product Image */}
+      <Link
         href={`/produkt/${product.id}`}
-        className="block relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden group"
+        className="block relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden group"
         prefetch={true}
-        onClick={handleProductClick}
+        onClick={onInteraction}
       >
         {product.image ? (
-          <img 
-            src={product.image} 
-            alt={product.name}
-            className="w-full h-full object-cover"
+          <Image
+            src={product.image}
+            alt={cleanText(product.name)}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+            className="object-cover"
+            priority={priority}
+            loading={priority ? undefined : 'lazy'}
           />
         ) : (
-          <span className="text-gray-400 text-xs">{t('image')}</span>
+          <span className="absolute inset-0 flex items-center justify-center text-gray-400 text-xs">
+            {t('image')}
+          </span>
         )}
-        {getStatusBadge()}
-        
-        {/* Hover overlay */}
+
+        {!product.inStock && (
+          <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs font-semibold rounded">
+            {t('outOfStock') || 'Slut i lager'}
+          </span>
+        )}
+
         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-5 transition-all duration-150" />
       </Link>
-      
+
       {/* Product Information */}
       <div className="p-2">
-        {/* Product Name */}
-        <Link 
-          href={`/produkt/${product.id}`}
-          className="block"
-          onClick={handleProductClick}
-        >
+        <Link href={`/produkt/${product.id}`} onClick={onInteraction}>
           <p className="text-gray-900 text-xs font-semibold mb-1 line-clamp-1 leading-tight hover:text-blue-600 transition-colors">
             {cleanText(product.name)}
           </p>
         </Link>
-        
-        {/* Colors */}
+
+        {/* Color swatches */}
         {product.colors && product.colors.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-1">
             {product.colors.slice(0, 5).map((color, index) => {
@@ -96,30 +82,23 @@ export default function ProductCard({ product, onInteraction }: ProductCardProps
           </div>
         )}
 
-
-
-        {/* Price and Action */}
+        {/* Price and Add to Cart */}
         <div className="flex items-center justify-between">
-          <span className="text-base font-bold text-gray-900">
-            {product.price} USD
-          </span>
-          
-          <button 
+          <span className="text-base font-bold text-gray-900">{product.price} USD</span>
+          <button
             onClick={() => addToCart(product)}
-            disabled={!product.inStock || isDisabled}
-            className={`
-              flex items-center gap-1 px-1.5 py-0.5 rounded-sm font-medium text-xs transition-all duration-150
-              ${!product.inStock || isDisabled
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+            disabled={isDisabled}
+            className={`flex items-center gap-1 px-1.5 py-0.5 rounded-sm font-medium text-xs transition-all duration-150 ${
+              isDisabled
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300 active:scale-95'
-              }
-            `}
+            }`}
           >
             {product.inStock ? (
-              <>
-                <ShoppingCartIcon className="w-4 h-4" />
-              </>
-            ) : (t('outOfStock') || 'Slut i lager')}
+              <ShoppingCartIcon className="w-4 h-4" />
+            ) : (
+              t('outOfStock') || 'Slut i lager'
+            )}
           </button>
         </div>
       </div>
