@@ -49,7 +49,7 @@ export default function Footer() {
     )
   }
   return (
-    <footer className="bg-white text-gray-800 mt-12 border-t border-gray-200">
+    <footer className="bg-white text-gray-800 mt-12 border-t border-gray-200" style={{ fontFamily: 'var(--font-oswald), sans-serif', fontWeight: 400 }}>
       <div className="container mx-auto px-4 py-8">
         {/* Mobile Accordion View */}
         <div className="sm:hidden">
@@ -85,7 +85,7 @@ export default function Footer() {
                   expandedCategories.includes(category.title) ? 'max-h-48' : 'max-h-0'
                 }`}
               >
-                <ul className="pt-2 pb-4 space-y-2 text-gray-600">
+                <ul className="pt-2 pb-4 space-y-2 text-gray-600 font-bold text-sm">
                   {category.links.map((link) => (
                     <li key={link.href}>
                       <Link
@@ -103,7 +103,7 @@ export default function Footer() {
           
           {/* Mobile Social Icons */}
           <div className="mb-6">
-            <h3 className="font-bold mb-4 text-gray-800">{t('followUs')}</h3>
+            <h3 className="font-normal mb-4 text-gray-800">{t('followUs')}</h3>
             <div className="flex gap-4 justify-center">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
                 <FacebookIcon className="w-6 h-6" />
@@ -122,7 +122,7 @@ export default function Footer() {
 
           {/* Mobile Payment Icons */}
           <div className="mb-6">
-            <h3 className="font-bold mb-4 text-gray-800">{t('paymentMethods')}</h3>
+            <h3 className="font-normal mb-4 text-gray-800">{t('paymentMethods')}</h3>
             <div className="flex gap-2 justify-center flex-wrap">
               <img src="/visa.svg" alt="Visa" className="h-8 w-auto" />
               <img src="/mastercard.svg" alt="Mastercard" className="h-8 w-auto" />
@@ -134,14 +134,14 @@ export default function Footer() {
         <div className="hidden sm:grid grid-cols-2 lg:grid-cols-6 gap-8">
           <div className="text-center sm:text-left">
             <h3 className="font-bold mb-4">{t('aboutUs')}</h3>
-            <ul className="space-y-2 text-gray-600">
+            <ul className="space-y-2 text-gray-600 text-sm">
               <li><Link href="/om-oss" className="hover:text-gray-900">{t('aboutUs')}</Link></li>
               <li><Link href="/hallbarhet" className="hover:text-gray-900">{t('sustainability')}</Link></li>
             </ul>
           </div>
           <div className="text-center sm:text-left">
             <h3 className="font-bold mb-4">{t('customerService')}</h3>
-            <ul className="space-y-2 text-gray-600">
+            <ul className="space-y-2 text-gray-600 text-sm">
               <li><Link href="/kontakt" className="hover:text-gray-900">{t('contactUs')}</Link></li>
               <li><Link href="/frakt-leverans" className="hover:text-gray-900">{t('shippingDelivery')}</Link></li>
               <li><Link href="/returer" className="hover:text-gray-900">{t('returnsExchanges')}</Link></li>
@@ -150,7 +150,7 @@ export default function Footer() {
           </div>
           <div className="text-center sm:text-left">
             <h3 className="font-bold mb-4">{t('terms')}</h3>
-            <ul className="space-y-2 text-gray-600">
+            <ul className="space-y-2 text-gray-600 text-sm">
               <li><Link href="/kopvillkor" className="hover:text-gray-900">{t('termsOfPurchase')}</Link></li>
               <li><Link href="/integritet" className="hover:text-gray-900">{t('privacyPolicy')}</Link></li>
               <li><Link href="/cookies" className="hover:text-gray-900">{t('cookies')}</Link></li>
@@ -158,14 +158,14 @@ export default function Footer() {
             </ul>
           </div>
           <div className="text-center sm:text-left">
-            <h3 className="font-bold mb-4">{t('paymentMethods')}</h3>
+            <h3 className="font-normal mb-4">{t('paymentMethods')}</h3>
             <div className="flex gap-2 justify-center sm:justify-start flex-wrap">
               <img src="/visa.svg" alt="Visa" className="h-8 w-auto" />
               <img src="/mastercard.svg" alt="Mastercard" className="h-8 w-auto" />
             </div>
           </div>
           <div className="text-center sm:text-left">
-            <h3 className="font-bold mb-4">{t('deliveryMethods')}</h3>
+            <h3 className="font-normal mb-4">{t('deliveryMethods')}</h3>
             <div className="flex gap-2 justify-center sm:justify-start">
               <img src="/db-schenker-logo.png" alt="DB Schenker" className="w-12 h-12 object-contain" />
               <img src="/dhl-brand.svg" alt="DHL" className="w-12 h-12 object-contain" />
@@ -173,7 +173,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="text-center sm:text-left">
-            <h3 className="font-bold mb-4">{t('followUs')}</h3>
+            <h3 className="font-normal mb-4">{t('followUs')}</h3>
             <div className="flex gap-4 justify-center sm:justify-start">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
                 <FacebookIcon className="w-6 h-6" />

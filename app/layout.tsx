@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Playfair_Display } from 'next/font/google'
+import { Playfair_Display, Lexend, Oswald } from 'next/font/google'
 import './globals.css'
 import { CartProvider } from '@/lib/CartContext'
 import { AuthProvider } from '@/lib/AuthContext'
@@ -18,11 +18,23 @@ const playfair = Playfair_Display({
   display: 'swap',
 })
 
+const lexend = Lexend({
+  subsets: ['latin'],
+  variable: '--font-lexend',
+  display: 'swap',
+})
+
+const oswald = Oswald({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-oswald',
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
   title: 'Modern E-handel',
   description: 'En modern och användarvänlig e-handelssida',
   appleWebApp: {
-    capable: true,
     statusBarStyle: 'default',
     title: 'Modern E-handel',
   },
@@ -44,9 +56,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={playfair.variable}>
+    <html lang="en" className={`${playfair.variable} ${lexend.variable} ${oswald.variable}`}>
       <head>
         <meta name="google" content="notranslate" />
+        <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body>
         <NextAuthProvider>

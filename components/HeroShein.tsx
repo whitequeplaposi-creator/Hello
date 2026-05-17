@@ -272,42 +272,6 @@ export default function HeroShein({ products }: HeroSheinProps) {
                     }}
                   />
 
-                  {index < 8 && (
-                    <div className="absolute top-2 left-2">
-                      <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                        {discount}% OFF
-                      </span>
-                    </div>
-                  )}
-
-                  {index < 3 && (
-                    <div className="absolute top-2 right-2">
-                      <span
-                        className={`text-white text-xs font-bold px-2 py-1 rounded ${
-                          activeCategory === 'flashSale'
-                            ? 'bg-red-600'
-                            : activeCategory === 'superDeals'
-                              ? 'bg-orange-500'
-                              : activeCategory === 'newIn'
-                                ? 'bg-green-500'
-                                : activeCategory === 'topTrends'
-                                  ? 'bg-purple-500'
-                                  : 'bg-blue-500'
-                        }`}
-                      >
-                        {activeCategory === 'flashSale'
-                          ? 'FLASH'
-                          : activeCategory === 'superDeals'
-                            ? 'DEAL'
-                            : activeCategory === 'newIn'
-                              ? 'NEW'
-                              : activeCategory === 'topTrends'
-                                ? 'TREND'
-                                : 'BRAND'}
-                      </span>
-                    </div>
-                  )}
-
                   <button
                     type="button"
                     onClick={e => handleAddToCart(product, e)}

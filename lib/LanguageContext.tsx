@@ -205,7 +205,7 @@ const translations = {
       'Du har för närvarande inga aktiva leveranser att spåra. När du gör en beställning kommer den att visas här.',
     logisticsInfoFastTitle: 'Snabb leverans',
     logisticsInfoFastBody:
-      'Vi levererar dina produkter inom 3–5 arbetsdagar med våra pålitliga transportpartners.',
+      'Vi levererar dina produkter inom 24 arbetsdagar med våra pålitliga transportpartners.',
     logisticsInfoRealtimeTitle: 'Realtidsspårning',
     logisticsInfoRealtimeBody:
       'Följ din leverans i realtid med detaljerad spårningsinformation och leveransstatus.',
@@ -279,7 +279,7 @@ const translations = {
     rightOfWithdrawal: 'Ångerrätt',
     
     // Footer - Other
-    followUs: 'Följ oss',
+    followUs: 'Följ BOXSHE',
     allRightsReserved: 'Alla rättigheter förbehållna.',
     paymentMethods: 'Betalningsmetoder',
     deliveryMethods: 'Leveransmetoder',
@@ -297,7 +297,7 @@ const translations = {
     // Delivery Info
     deliveryInfo: 'Leveransinformation',
     deliveryTime: 'Leveranstid',
-    deliveryTimeValue: '3-5 arbetsdagar',
+    deliveryTimeValue: '24 arbetsdagar',
     freeShipping: 'Fri frakt över 500 kr',
     freeShippingInfo: 'Fri frakt över 500 kr',
     returnPolicy: 'Returpolicy',
@@ -355,7 +355,7 @@ const translations = {
     sendMessageBtn: 'Skicka meddelande',
     commonQuestions: 'Vanliga frågor',
     howLongDelivery: 'Hur lång är leveranstiden?',
-    deliveryAnswer: 'Standardleverans tar 3–5 arbetsdagar. Expressleverans finns tillgänglig vid utcheckning.',
+    deliveryAnswer: 'Standardleverans tar 24 arbetsdagar. Expressleverans finns tillgänglig vid utcheckning.',
     whichPaymentMethods: 'Vilka betalningsmetoder accepterar ni?',
     paymentAnswer: 'Vi accepterar kortbetalning (Visa, Mastercard) och Klarna delbetalning.',
     howReturns: 'Hur fungerar returer?',
@@ -374,7 +374,7 @@ const translations = {
     pricesAndPayment: 'Priser och betalning',
     pricesAndPaymentText: 'Alla priser anges i USD och inkluderar moms. Vid beställning från länder utanför Sverige kan ytterligare tullavgifter och skatter tillkomma. Vi erbjuder följande betalningsmetoder: kortbetalning (Visa, Mastercard) och Klarna delbetalning. Betalning sker i samband med beställning. Vid delbetalning via Klarna gäller Klarnas egna villkor, vilka du accepterar i samband med betalningen. Vi förbehåller oss rätten att justera priser på webbplatsen utan föregående avisering. Gällande pris är det som anges på webbplatsen vid beställningstillfället.',
     delivery: 'Leverans',
-    deliveryText: 'Standardleverans tar 3–5 arbetsdagar inom Sverige. Expressleverans med 1–2 arbetsdagar finns som tillval vid utcheckning. Leveranser sker med PostNord, DHL eller Budbee beroende på valt leveranssätt och destination. Vid beställning över $500 erbjuder vi fri standardfrakt inom Sverige. För beställningar under $500 tillkommer en fraktavgift om $39 för standardfrakt och $79 för expressfrakt. Om en vara är tillfälligt slut i lager informerar vi dig via e-post med beräknad leveranstid. Du har då rätt att häva köpet om leveranstiden inte passar.',
+    deliveryText: 'Standardleverans tar 24 arbetsdagar inom Sverige. Expressleverans med 20 arbetsdagar finns som tillval vid utcheckning. Leveranser sker med PostNord, DHL eller Budbee beroende på valt leveranssätt och destination. Vid beställning över $500 erbjuder vi fri standardfrakt inom Sverige. För beställningar under $500 tillkommer en fraktavgift om $39 för standardfrakt och $79 för expressfrakt. Om en vara är tillfälligt slut i lager informerar vi dig via e-post med beräknad leveranstid. Du har då rätt att häva köpet om leveranstiden inte passar.',
     rightOfWithdrawalSection: 'Ångerrätt och returer',
     rightOfWithdrawalText: 'Enligt lagen om distansavtal har du 14 dagars ångerrätt från det att du mottagit varan. Vi erbjuder utökat öppet köp om 30 dagar. För att utnyttja ångerrätten måste varan vara oanvänd och i samma skick som när du mottog den. Alla etiketter och förpackningar ska vara kvar. Returfrakt är alltid gratis. Kontakta vår kundservice för att få en returetikett. Vid åberopande av ångerrätten återbetalas hela köpesumman inom 14 dagar från det att vi mottagit varan. Undantag från ångerrätten gäller för varor med bruten förpackning, specialtillverkade produkter samt hygienartiklar och underkläder där förpackningen har brutits.',
     complaints: 'Reklamationer',
@@ -711,13 +711,13 @@ const translations = {
 
     // Shipping & Delivery Page
     shippingAndDelivery: 'Frakt & Leverans',
-    shippingSubtitle: 'Vi erbjuder globala leveranser. Standardfrakt 2-4 arbetsdagar, express 1-2 arbetsdagar.',
+    shippingSubtitle: 'Vi erbjuder globala leveranser. Standardfrakt 24 arbetsdagar, express 20 arbetsdagar.',
     deliveryOptions: 'Leveransalternativ',
     standardShipping: 'Standardfrakt',
-    standardShippingTime: '2-4 arbetsdagar',
+    standardShippingTime: '24 arbetsdagar',
     standardShippingDesc: 'Global leverans • Fri frakt över $500',
     expressShipping: 'Expressleverans',
-    expressShippingTime: '1-2 arbetsdagar',
+    expressShippingTime: '20 arbetsdagar',
     expressShippingDesc: 'Global leverans • Leverans till dörr',
     deliveryAreas: 'Leveransområden',
     sweden: 'Sverige',
@@ -969,7 +969,7 @@ const translations = {
       'You currently have no active deliveries to track. When you place an order, it will appear here.',
     logisticsInfoFastTitle: 'Fast delivery',
     logisticsInfoFastBody:
-      'We deliver your products within 3–5 business days with our trusted shipping partners.',
+      'We deliver your products within 24 business days with our trusted shipping partners.',
     logisticsInfoRealtimeTitle: 'Live tracking',
     logisticsInfoRealtimeBody:
       'Follow your delivery in real time with detailed tracking information and status updates.',
@@ -1043,7 +1043,7 @@ const translations = {
     rightOfWithdrawal: 'Right of withdrawal',
     
     // Footer - Other
-    followUs: 'Follow us',
+    followUs: 'Follow BOXSHE',
     allRightsReserved: 'All rights reserved.',
     paymentMethods: 'Payment methods',
     deliveryMethods: 'Delivery methods',
@@ -1061,7 +1061,7 @@ const translations = {
     // Delivery Info
     deliveryInfo: 'Delivery information',
     deliveryTime: 'Delivery time',
-    deliveryTimeValue: '3-5 working days',
+    deliveryTimeValue: '24 working days',
     freeShipping: 'Free shipping over $499',
     freeShippingInfo: 'Free shipping over $499',
     returnPolicy: 'Return policy',
@@ -1119,7 +1119,7 @@ const translations = {
     sendMessageBtn: 'Send message',
     commonQuestions: 'Frequently asked questions',
     howLongDelivery: 'How long is the delivery time?',
-    deliveryAnswer: 'Standard delivery takes 3–5 working days. Express delivery is available at checkout.',
+    deliveryAnswer: 'Standard delivery takes 24 working days. Express delivery is available at checkout.',
     whichPaymentMethods: 'Which payment methods do you accept?',
     paymentAnswer: 'We accept card payment (Visa, Mastercard) and Klarna installment payment.',
     howReturns: 'How do returns work?',
@@ -1138,7 +1138,7 @@ const translations = {
     pricesAndPayment: 'Prices and Payment',
     pricesAndPaymentText: 'All prices are stated in USD and include VAT. When ordering from countries outside Sweden, additional customs duties and taxes may apply. We offer the following payment methods: card payment (Visa, Mastercard) and Klarna installment payment. Payment is made at the time of order. For installment payment via Klarna, Klarna\'s own terms apply, which you accept at the time of payment. We reserve the right to adjust prices on the website without prior notice. The applicable price is the one stated on the website at the time of purchase.',
     delivery: 'Delivery',
-    deliveryText: 'Standard delivery takes 3–5 working days within Sweden. Express delivery with 1–2 working days is available as an option at checkout. Deliveries are made by PostNord, DHL or Budbee depending on the chosen delivery method and destination. For orders over $500, we offer free standard shipping within Sweden. For orders under $500, a shipping fee of $39 for standard shipping and $79 for express shipping applies. If an item is temporarily out of stock, we will inform you by email with an estimated delivery time. You then have the right to cancel the purchase if the delivery time does not suit you.',
+    deliveryText: 'Standard delivery takes 24 working days within Sweden. Express delivery with 20 working days is available as an option at checkout. Deliveries are made by PostNord, DHL or Budbee depending on the chosen delivery method and destination. For orders over $500, we offer free standard shipping within Sweden. For orders under $500, a shipping fee of $39 for standard shipping and $79 for express shipping applies. If an item is temporarily out of stock, we will inform you by email with an estimated delivery time. You then have the right to cancel the purchase if the delivery time does not suit you.',
     rightOfWithdrawalSection: 'Right of Withdrawal and Returns',
     rightOfWithdrawalText: 'According to the distance selling regulations, you have 14 days right of withdrawal from the date you receive the item. We offer an extended 30-day return policy. To exercise the right of withdrawal, the item must be unused and in the same condition as when you received it. All labels and packaging must be intact. Return shipping is always free. Contact our customer service to receive a return label. When exercising the right of withdrawal, the full purchase price will be refunded within 14 days from the date we receive the item. Exceptions to the right of withdrawal apply to items with broken packaging, custom-made products, and hygiene articles and underwear where the packaging has been broken.',
     complaints: 'Complaints',
@@ -1484,13 +1484,13 @@ const translations = {
 
     // Shipping & Delivery Page
     shippingAndDelivery: 'Shipping & Delivery',
-    shippingSubtitle: 'We offer global deliveries. Standard shipping 2-4 business days, express 1-2 business days.',
+    shippingSubtitle: 'We offer global deliveries. Standard shipping 24 business days, express 20 business days.',
     deliveryOptions: 'Delivery Options',
     standardShipping: 'Standard Shipping',
-    standardShippingTime: '2-4 business days',
+    standardShippingTime: '24 business days',
     standardShippingDesc: 'Global delivery • Free shipping over $500',
     expressShipping: 'Express Shipping',
-    expressShippingTime: '1-2 business days',
+    expressShippingTime: '20 business days',
     expressShippingDesc: 'Global delivery • Door-to-door delivery',
     deliveryAreas: 'Delivery Areas',
     sweden: 'Sweden',
