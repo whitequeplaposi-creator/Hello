@@ -76,7 +76,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const logout = async () => {
+    // Sign out from own JWT session
     await fetch('/api/auth/logout', { method: 'POST' })
+    // Also sign out from NextAuth (Google) session if active
+    try {
+      const { signOut } = await import('next-auth/react')
+      await signOut({ redirect: false })
+    } catch { /* next-auth not loaded */ }
     setUser(null)
   }
 
