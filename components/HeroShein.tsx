@@ -219,7 +219,7 @@ export default function HeroShein({ products }: HeroSheinProps) {
 
   return (
     <section className="w-full bg-white">
-      <div className="bg-black text-white text-center py-2 text-sm">
+      <div className="hidden lg:block bg-black text-white text-center py-2 text-sm">
         <div className="container mx-auto px-4">
           <span className="font-medium">{t('heroBannerFreeShipping')}</span>
           <span className="mx-4">|</span>

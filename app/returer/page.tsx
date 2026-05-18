@@ -1,7 +1,6 @@
 'use client'
 
 import PageShell from '@/components/PageShell'
-import FooterProductStrip from '@/components/FooterProductStrip'
 import { useLanguage } from '@/lib/LanguageContext'
 
 export default function Returer() {
@@ -72,7 +71,6 @@ export default function Returer() {
 
           </div>
 
-          <FooterProductStrip />
         </main>
       </div>
     </PageShell>

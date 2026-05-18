@@ -1,7 +1,6 @@
 'use client'
 
 import PageShell from '@/components/PageShell'
-import FooterProductStrip from '@/components/FooterProductStrip'
 import { useLanguage } from '@/lib/LanguageContext'
 
 export default function Integritetspolicy() {
@@ -59,7 +58,6 @@ export default function Integritetspolicy() {
             </a>
           </div>
 
-          <FooterProductStrip />
         </main>
       </div>
     </PageShell>

@@ -494,7 +494,7 @@ export default function Header() {
                   onClick={() => setIsCartOpen(true)}
                   className="text-gray-600 hover:text-gray-900 relative transition-colors"
                 >
-                  <ShoppingCartIcon className="h-5 w-5" />
+                  <ShoppingCartIcon className="h-7 w-7" />
                   {totalItems > 0 && (
                     <span className="absolute -top-2 -right-2 bg-gray-900 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                       {totalItems}

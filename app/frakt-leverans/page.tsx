@@ -1,7 +1,6 @@
 'use client'
 
 import PageShell from '@/components/PageShell'
-import FooterProductStrip from '@/components/FooterProductStrip'
 import { useLanguage } from '@/lib/LanguageContext'
 
 export default function FraktLeverans() {
@@ -105,7 +104,6 @@ export default function FraktLeverans() {
 
           </div>
 
-          <FooterProductStrip />
         </main>
       </div>
     </PageShell>

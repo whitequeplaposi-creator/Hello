@@ -1,7 +1,6 @@
 'use client'
 
 import PageShell from '@/components/PageShell'
-import FooterProductStrip from '@/components/FooterProductStrip'
 import { useState, useMemo } from 'react'
 import { useLanguage } from '@/lib/LanguageContext'
 
@@ -166,7 +165,6 @@ export default function Faq() {
             </a>
           </div>
 
-          <FooterProductStrip />
         </main>
       </div>
     </PageShell>

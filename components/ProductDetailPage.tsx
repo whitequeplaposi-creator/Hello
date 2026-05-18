@@ -266,31 +266,25 @@ export default function ProductDetailPage({ product, relatedProducts }: ProductD
                 </button>
               </div>
 
-              {/* Add to Cart */}
+              {/* Add to Cart — icon only */}
               <button
                 onClick={handleAddToCart}
                 disabled={!canAddToCart}
-                className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium text-sm transition-all duration-200 ${
+                className={`flex items-center justify-center p-2 transition-all duration-200 ${
                   addedToCart
-                    ? 'bg-green-600 text-white'
+                    ? 'text-green-600'
                     : canAddToCart
-                      ? 'bg-gray-900 text-white hover:bg-gray-700 active:scale-95'
-                      : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      ? 'text-gray-900 hover:text-gray-600 active:scale-95'
+                      : 'text-gray-300 cursor-not-allowed'
                 }`}
                 aria-label="Lägg i varukorg"
               >
                 {addedToCart ? (
-                  <>
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    Tillagd i varukorg
-                  </>
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
                 ) : (
-                  <>
-                    <ProductPageCartIcon className="w-5 h-5" />
-                    Lägg i varukorg
-                  </>
+                  <ProductPageCartIcon className="w-9 h-9" />
                 )}
               </button>
             </div>

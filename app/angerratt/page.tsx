@@ -1,7 +1,6 @@
 'use client'
 
 import PageShell from '@/components/PageShell'
-import FooterProductStrip from '@/components/FooterProductStrip'
 import { useLanguage } from '@/lib/LanguageContext'
 
 export default function Angerratt() {
@@ -74,7 +73,6 @@ export default function Angerratt() {
             </a>
           </div>
 
-          <FooterProductStrip />
         </main>
       </div>
     </PageShell>

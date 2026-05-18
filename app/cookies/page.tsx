@@ -1,7 +1,6 @@
 'use client'
 
 import PageShell from '@/components/PageShell'
-import FooterProductStrip from '@/components/FooterProductStrip'
 import { useLanguage } from '@/lib/LanguageContext'
 import { useCookies } from '@/lib/CookieContext'
 
@@ -73,7 +72,6 @@ export default function Cookies() {
             </p>
           </div>
 
-          <FooterProductStrip />
         </main>
       </div>
     </PageShell>
