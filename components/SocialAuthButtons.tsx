@@ -9,6 +9,14 @@ interface SocialAuthButtonsProps {
 export default function SocialAuthButtons({ mode }: SocialAuthButtonsProps) {
   const label = mode === 'login' ? 'Logga in med' : 'Registrera med'
 
+  const handleGoogle = () => {
+    // Pass mode as state so NextAuth callback knows if this is registration
+    signIn('google', {
+      callbackUrl: '/',
+      ...(mode === 'register' ? { state: 'register' } : {}),
+    })
+  }
+
   return (
     <div className="flex flex-col gap-3">
       <p className="text-xs font-medium text-gray-500 text-center">{label}</p>
@@ -16,7 +24,7 @@ export default function SocialAuthButtons({ mode }: SocialAuthButtonsProps) {
       {/* Google */}
       <button
         type="button"
-        onClick={() => signIn('google', { callbackUrl: '/' })}
+        onClick={handleGoogle}
         className="flex items-center justify-center gap-2.5 w-full px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-colors text-sm font-medium text-gray-700 shadow-sm group"
       >
         <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">

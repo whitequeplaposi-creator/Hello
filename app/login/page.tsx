@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/lib/AuthContext'
 import { useLanguage } from '@/lib/LanguageContext'
@@ -15,8 +15,17 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { login } = useAuth()
   const { t } = useLanguage()
+
+  // Show error if redirected back from NextAuth with not_registered
+  useEffect(() => {
+    const errorParam = searchParams.get('error')
+    if (errorParam === 'not_registered') {
+      setError('Det här Google-kontot är inte registrerat. Skapa ett konto först.')
+    }
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

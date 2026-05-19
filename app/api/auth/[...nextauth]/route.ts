@@ -13,7 +13,7 @@ const handler = NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET || process.env.JWT_SECRET,
   callbacks: {
-    async signIn({ user }) {
+    async signIn({ user, account }) {
       if (!user.email) return false;
       try {
         // Ensure password_hash column exists
@@ -27,16 +27,25 @@ const handler = NextAuth({
         });
 
         if (existing.rows.length === 0) {
-          const id = `cust_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-          const name = user.name || user.email.split('@')[0];
-          await client.execute({
-            sql: `INSERT INTO customers (id, email, name, created_at, updated_at, status, total_orders, total_spent)
-                  VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'active', 0, 0)`,
-            args: [id, user.email.toLowerCase(), name],
-          });
+          // Check if this is a registration flow via state parameter
+          const state = (account as any)?.state as string | undefined;
+          if (state === 'register') {
+            // Create new customer during registration
+            const id = `cust_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+            const name = user.name || user.email.split('@')[0];
+            await client.execute({
+              sql: `INSERT INTO customers (id, email, name, created_at, updated_at, status, total_orders, total_spent)
+                    VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'active', 0, 0)`,
+              args: [id, user.email.toLowerCase(), name],
+            });
+          } else {
+            // Login attempt with unregistered account — deny
+            return '/login?error=not_registered';
+          }
         }
       } catch (err) {
-        console.error('Error creating customer from Google sign-in:', err);
+        console.error('Error in Google sign-in callback:', err);
+        return false;
       }
       return true;
     },

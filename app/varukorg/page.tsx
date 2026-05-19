@@ -2,278 +2,165 @@
 
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Cart from '@/components/Cart'
+
+/**
+ * /varukorg — visar samma Cart-komponent som i headern,
+ * men inbäddad som en helsida (alltid öppen, ingen overlay).
+ */
+export default function CartPage() {
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Header />
+      <main className="flex-grow flex items-start justify-center py-8 px-4">
+        {/* Cart rendered as inline page — isOpen=true, onClose navigates back */}
+        <div className="w-full max-w-md">
+          <CartInline />
+        </div>
+      </main>
+      <Footer />
+    </div>
+  )
+}
+
+/**
+ * Wrapper that renders Cart content without the slide-in panel shell.
+ * We reuse CartContext directly so it's the same data as the header cart.
+ */
 import { useCart } from '@/lib/CartContext'
 import { useLanguage } from '@/lib/LanguageContext'
 import { cleanText } from '@/lib/utils'
 import Link from 'next/link'
+import ShoppingCartIcon from '@/components/ShoppingCartIcon'
 
-export default function CartPage() {
+function CartInline() {
   const { items, removeFromCart, updateQuantity, totalPrice, clearCart } = useCart()
   const { t } = useLanguage()
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen flex flex-col bg-gray-50/80">
-        <Header />
-        <main className="flex-grow flex items-center justify-center px-4 py-16">
-          <div className="max-w-md w-full rounded-2xl border border-gray-200 bg-white p-10 text-center shadow-sm">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100">
-              <svg className="h-9 w-9 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-            </div>
-            <h1 className="text-xl font-semibold text-gray-900">{t('emptyCart')}</h1>
-            <p className="mt-2 text-sm text-gray-600 leading-relaxed">{t('cartEmptyBody')}</p>
-            <Link
-              href="/"
-              className="mt-8 inline-flex items-center justify-center rounded-full bg-gray-900 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-700"
-            >
-              {t('continueShoppingBtn')}
-            </Link>
-          </div>
-        </main>
-        <Footer />
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-10 text-center">
+        <span className="mb-4 flex h-16 w-16 items-center justify-center text-gray-400 mx-auto">
+          <ShoppingCartIcon className="h-10 w-10" />
+        </span>
+        <p className="text-base font-medium text-gray-900">{t('emptyCart')}</p>
+        <p className="mt-1 text-sm text-gray-500">{t('emptyCartHint')}</p>
+        <Link
+          href="/"
+          className="mt-6 inline-flex items-center justify-center rounded-full bg-gray-900 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-gray-700"
+        >
+          {t('continueShoppingBtn')}
+        </Link>
       </div>
     )
   }
 
-  const shippingCost = totalPrice >= 120 ? 0 : 39
-  const amountToFreeShipping = Math.max(0, 120 - totalPrice)
-  const progressPct = Math.min((totalPrice / 120) * 100, 100)
-
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50/80">
-      <Header />
-
-      <main className="flex-grow">
-        <div className="border-b border-gray-200 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <h1 className="text-2xl font-semibold tracking-tight text-gray-900 md:text-3xl">
-                  {t('cart')}
-                </h1>
-                <p className="mt-1 text-sm text-gray-500">
-                  {items.length}{' '}
-                  {items.length === 1 ? t('itemsSingular') : t('itemsPlural')}
-                </p>
-              </div>
-              <Link
-                href="/"
-                className="text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 sm:self-center"
-              >
-                ← {t('continueShoppingBtn')}
-              </Link>
-            </div>
-          </div>
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center gap-2.5 border-b border-gray-200 px-5 py-4">
+        <ShoppingCartIcon className="h-5 w-5 text-gray-800" />
+        <div>
+          <h1 className="text-base font-semibold text-gray-900">{t('cart')}</h1>
+          <p className="text-xs text-gray-500">
+            {items.length} {items.length === 1 ? t('itemsSingular') : t('itemsPlural')}
+          </p>
         </div>
+      </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
-            <div className="lg:col-span-2 space-y-5">
-              {shippingCost > 0 ? (
-                <div className="rounded-xl border border-amber-200/80 bg-amber-50/90 px-4 py-4 text-sm text-amber-950">
-                  <p>
-                    {t('cartFreeShip1')}
-                    <strong>
-                      {amountToFreeShipping} USD
-                    </strong>
-                    {t('cartFreeShip2')}
-                    <strong>{t('cartFreeShipFree')}</strong>
-                    {t('cartFreeShip3')}
-                  </p>
-                  <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-amber-200/60">
-                    <div
-                      className="h-full rounded-full bg-amber-500 transition-all duration-300"
-                      style={{ width: `${progressPct}%` }}
-                    />
-                  </div>
-                </div>
-              ) : (
-                <div className="rounded-xl border border-emerald-200/80 bg-emerald-50/90 px-4 py-3 text-sm font-medium text-emerald-900">
-                  {t('cartFreeShippingOnOrder')}
-                </div>
-              )}
-
-              <ul>
-                {items.map((item) => (
-                  <li
-                    key={`${item.product.id}-${item.selectedSize ?? ''}-${item.selectedColor ?? ''}`}
-                  >
-                    <div className="flex gap-4">
-                      <Link
-                        href={`/produkt/${item.product.id}`}
-                        className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-gray-100 ring-1 ring-gray-200/80 sm:h-28 sm:w-28"
-                      >
-                        {item.product.image ? (
-                          <img
-                            src={item.product.image}
-                            alt={cleanText(item.product.name)}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <span className="flex h-full w-full items-center justify-center text-xs text-gray-400">
-                            {t('cartNoImage')}
-                          </span>
-                        )}
-                      </Link>
-
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:gap-4">
-                          <div className="min-w-0">
-                            <Link
-                              href={`/produkt/${item.product.id}`}
-                              className="text-sm font-semibold leading-snug text-gray-900 transition-colors hover:text-blue-700 sm:text-base line-clamp-2"
-                            >
-                              {cleanText(item.product.name)}
-                            </Link>
-                            <p className="mt-1 text-xs text-gray-500 sm:text-sm">
-                              {item.product.price} USD <span className="text-gray-300">·</span>{' '}
-                              {t('pricePerUnit')}
-                            </p>
-                            {(item.selectedSize || item.selectedColor) && (
-                              <div className="mt-1 flex flex-wrap gap-2">
-                                {item.selectedSize && (
-                                  <span className="inline-flex items-center rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">
-                                    Storlek: {item.selectedSize}
-                                  </span>
-                                )}
-                                {item.selectedColor && (
-                                  <span className="inline-flex items-center rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">
-                                    Färg: {item.selectedColor}
-                                  </span>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                          <p className="text-right text-base font-semibold tabular-nums text-gray-900 sm:shrink-0">
-                            {item.product.price * item.quantity} USD
-                          </p>
-                        </div>
-
-                        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                          <div className="inline-flex items-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-                            <button
-                              type="button"
-                              onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.selectedSize, item.selectedColor)}
-                              className="flex h-9 w-9 items-center justify-center text-gray-600 transition-colors hover:bg-gray-50"
-                              aria-label={t('decreaseQuantity')}
-                            >
-                              <span className="text-lg leading-none">−</span>
-                            </button>
-                            <span className="flex min-w-[2.75rem] items-center justify-center border-x border-gray-200 px-2 text-sm font-semibold tabular-nums">
-                              {item.quantity}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.selectedSize, item.selectedColor)}
-                              className="flex h-9 w-9 items-center justify-center text-gray-600 transition-colors hover:bg-gray-50"
-                              aria-label={t('increaseQuantity')}
-                            >
-                              <span className="text-lg leading-none">+</span>
-                            </button>
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={() => removeFromCart(item.product.id, item.selectedSize, item.selectedColor)}
-                            className="inline-flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-gray-500 transition-colors hover:bg-red-50 hover:text-red-600"
-                          >
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                            {t('removeBtn')}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="flex flex-col gap-3 border-t border-gray-200 pt-4 sm:flex-row sm:items-center sm:justify-between">
-                <button
-                  type="button"
-                  onClick={clearCart}
-                  className="text-left text-sm font-medium text-red-600 transition-colors hover:text-red-700"
-                >
-                  {t('clearCartBtn')}
-                </button>
+      {/* Items */}
+      <div className="px-4 py-4 sm:px-5 space-y-3 max-h-[60vh] overflow-y-auto">
+        {items.map((item) => {
+          const lineTotal = item.product.price * item.quantity
+          return (
+            <div key={item.product.id} className="rounded-xl border border-gray-200 bg-gray-50/40 p-3 sm:p-4">
+              <div className="flex gap-3">
                 <Link
-                  href="/"
-                  className="text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden"
+                  href={`/produkt/${item.product.id}`}
+                  className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-white ring-1 ring-gray-200/80"
                 >
-                  {t('continueShoppingBtn')}
+                  {item.product.image ? (
+                    <img src={item.product.image} alt={cleanText(item.product.name)} className="h-full w-full object-cover" />
+                  ) : (
+                    <span className="flex h-full w-full items-center justify-center text-[10px] text-gray-400">{t('image')}</span>
+                  )}
                 </Link>
-              </div>
-            </div>
 
-            <div className="lg:col-span-1">
-              <div className="sticky top-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                <h2 className="text-lg font-semibold text-gray-900">{t('cartSummaryTitle')}</h2>
+                <div className="min-w-0 flex-1">
+                  <div className="flex gap-2">
+                    <Link href={`/produkt/${item.product.id}`} className="min-w-0 flex-1">
+                      <span className="line-clamp-2 text-sm font-semibold leading-snug text-gray-900 hover:text-gray-600 transition-colors">
+                        {cleanText(item.product.name)}
+                      </span>
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => removeFromCart(item.product.id)}
+                      className="shrink-0 rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600"
+                      aria-label={t('removeProduct')}
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
 
-                <dl className="mt-6 space-y-3 text-sm">
-                  <div className="flex justify-between gap-4 text-gray-600">
-                    <dt>{t('cartSubtotal')}</dt>
-                    <dd className="font-medium tabular-nums text-gray-900">{totalPrice} USD</dd>
-                  </div>
-                  <div className="flex justify-between gap-4 text-gray-600">
-                    <dt>{t('cartShipping')}</dt>
-                    <dd className="font-medium tabular-nums text-gray-900">
-                      {shippingCost === 0 ? t('cartShippingFree') : `${shippingCost} USD`}
-                    </dd>
-                  </div>
-                  <div className="border-t border-gray-200 pt-3 flex justify-between gap-4">
-                    <dt className="font-semibold text-gray-900">{t('total')}</dt>
-                    <dd className="text-base font-semibold tabular-nums text-gray-900">
-                      {totalPrice + shippingCost} USD
-                    </dd>
-                  </div>
-                </dl>
-                <p className="mt-2 text-xs text-gray-500">{t('cartVatIncluded')}</p>
+                  <p className="mt-1 text-xs text-gray-500">
+                    {item.product.price} USD <span className="text-gray-400">·</span> {t('pricePerUnit')}
+                  </p>
 
-                <div className="mt-6 space-y-3">
-                  <Link
-                    href="/kassa"
-                    className="flex w-full items-center justify-center rounded-xl bg-gray-900 py-3.5 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-gray-700"
-                  >
-                    {t('goToCheckout')}
-                  </Link>
-                  <Link
-                    href="/"
-                    className="flex w-full items-center justify-center rounded-xl border border-gray-200 py-3 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
-                  >
-                    {t('continueShoppingBtn')}
-                  </Link>
+                  <div className="mt-3 flex items-center justify-between gap-2">
+                    <div className="inline-flex items-center rounded-lg border border-gray-200 bg-white shadow-sm">
+                      <button
+                        type="button"
+                        onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                        className="flex h-8 w-8 items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"
+                      >−</button>
+                      <span className="min-w-[2rem] px-1 text-center text-sm font-semibold tabular-nums text-gray-900">
+                        {item.quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                        className="flex h-8 w-8 items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"
+                      >+</button>
+                    </div>
+                    <p className="text-sm font-semibold tabular-nums text-gray-900">{lineTotal} USD</p>
+                  </div>
                 </div>
-
-                <ul className="mt-8 space-y-2 border-t border-gray-100 pt-6 text-xs text-gray-600">
-                  <li className="flex gap-2">
-                    <svg className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    {t('cartTrustFast')}
-                  </li>
-                  <li className="flex gap-2">
-                    <svg className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    {t('cartTrustSecure')}
-                  </li>
-                  <li className="flex gap-2">
-                    <svg className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    {t('cartTrustReturns')}
-                  </li>
-                </ul>
               </div>
             </div>
-          </div>
-        </div>
-      </main>
+          )
+        })}
+      </div>
 
-      <Footer />
+      {/* Footer */}
+      <div className="border-t border-gray-200 bg-gray-50/95 px-4 py-4 sm:px-5 space-y-3">
+        <div className="flex items-center justify-between text-sm">
+          <span className="font-medium text-gray-600">{t('total')}</span>
+          <span className="text-lg font-semibold tabular-nums text-gray-900">{totalPrice} USD</span>
+        </div>
+
+        <Link
+          href="/kassa"
+          className="flex w-full items-center justify-center rounded-xl bg-gray-900 py-3.5 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-gray-700"
+        >
+          {t('goToCheckout')}
+        </Link>
+
+        <div className="flex items-center justify-between">
+          <Link href="/" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+            {t('continueShoppingBtn')}
+          </Link>
+          <button
+            type="button"
+            onClick={clearCart}
+            className="text-sm font-medium text-red-600 hover:text-red-700 transition-colors"
+          >
+            {t('clearCartBtn')}
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

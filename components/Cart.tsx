@@ -33,7 +33,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
       >
         <div className="flex shrink-0 items-center justify-between gap-3 border-b border-gray-200 px-5 py-4">
           <div className="flex min-w-0 items-center gap-2.5">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-800">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center text-gray-800">
               <ShoppingCartIcon className="h-5 w-5" />
             </span>
             <div className="min-w-0">
@@ -63,7 +63,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-5">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center px-4 py-16 text-center">
-              <span className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100 text-gray-400">
+              <span className="mb-4 flex h-16 w-16 items-center justify-center text-gray-400">
                 <ShoppingCartIcon className="h-8 w-8" />
               </span>
               <p className="text-base font-medium text-gray-900">{t('emptyCart')}</p>
