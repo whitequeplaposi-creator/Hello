@@ -147,7 +147,9 @@ export default function SmartSearch({ products, onResults }: SmartSearchProps) {
       // Limit cache size to 20 entries
       if (searchCacheRef.current.size > 20) {
         const firstKey = searchCacheRef.current.keys().next().value
-        searchCacheRef.current.delete(firstKey)
+        if (firstKey !== undefined) {
+          searchCacheRef.current.delete(firstKey)
+        }
       }
 
       onResults(results)
