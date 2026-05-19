@@ -18,13 +18,15 @@ export default function CartPage() {
         <main className="flex-grow flex items-center justify-center px-4 py-16">
           <div className="max-w-md w-full rounded-2xl border border-gray-200 bg-white p-10 text-center shadow-sm">
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100">
-              <img src="/empty-white-box.svg" alt="" className="h-9 w-9 opacity-70" />
+              <svg className="h-9 w-9 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
             </div>
             <h1 className="text-xl font-semibold text-gray-900">{t('emptyCart')}</h1>
             <p className="mt-2 text-sm text-gray-600 leading-relaxed">{t('cartEmptyBody')}</p>
             <Link
               href="/"
-              className="mt-8 inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+              className="mt-8 inline-flex items-center justify-center rounded-full bg-gray-900 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-700"
             >
               {t('continueShoppingBtn')}
             </Link>
@@ -58,7 +60,7 @@ export default function CartPage() {
               </div>
               <Link
                 href="/"
-                className="text-sm font-medium text-blue-600 transition-colors hover:text-blue-800 sm:self-center"
+                className="text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 sm:self-center"
               >
                 ← {t('continueShoppingBtn')}
               </Link>
@@ -177,7 +179,9 @@ export default function CartPage() {
                             onClick={() => removeFromCart(item.product.id, item.selectedSize, item.selectedColor)}
                             className="inline-flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-gray-500 transition-colors hover:bg-red-50 hover:text-red-600"
                           >
-                            <img src="/delete-icon.svg" alt="" width={18} height={18} />
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
                             {t('removeBtn')}
                           </button>
                         </div>
@@ -197,7 +201,7 @@ export default function CartPage() {
                 </button>
                 <Link
                   href="/"
-                  className="text-sm font-medium text-blue-600 hover:text-blue-800 sm:hidden"
+                  className="text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden"
                 >
                   {t('continueShoppingBtn')}
                 </Link>
@@ -231,7 +235,7 @@ export default function CartPage() {
                 <div className="mt-6 space-y-3">
                   <Link
                     href="/kassa"
-                    className="flex w-full items-center justify-center rounded-xl bg-blue-600 py-3.5 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
+                    className="flex w-full items-center justify-center rounded-xl bg-gray-900 py-3.5 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-gray-700"
                   >
                     {t('goToCheckout')}
                   </Link>
@@ -245,15 +249,21 @@ export default function CartPage() {
 
                 <ul className="mt-8 space-y-2 border-t border-gray-100 pt-6 text-xs text-gray-600">
                   <li className="flex gap-2">
-                    <span className="text-emerald-600" aria-hidden>✓</span>
+                    <svg className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
                     {t('cartTrustFast')}
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-emerald-600" aria-hidden>✓</span>
+                    <svg className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
                     {t('cartTrustSecure')}
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-emerald-600" aria-hidden>✓</span>
+                    <svg className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
                     {t('cartTrustReturns')}
                   </li>
                 </ul>

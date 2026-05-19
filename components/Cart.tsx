@@ -71,7 +71,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
               <button
                 type="button"
                 onClick={onClose}
-                className="mt-6 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                className="mt-6 rounded-full bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-gray-700"
               >
                 {t('continueShoppingBtn')}
               </button>
@@ -121,7 +121,9 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                             className="shrink-0 rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600"
                             aria-label={t('removeProduct')}
                           >
-                            <img src="/delete-icon.svg" alt="" width={18} height={18} />
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
                           </button>
                         </div>
 
@@ -181,7 +183,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
             <Link
               href="/varukorg"
               onClick={onClose}
-              className="flex w-full items-center justify-center rounded-xl bg-blue-600 py-3.5 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
+              className="flex w-full items-center justify-center rounded-xl bg-gray-900 py-3.5 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-gray-700"
             >
               {t('goToCart')}
             </Link>

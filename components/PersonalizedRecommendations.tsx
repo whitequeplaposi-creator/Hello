@@ -10,6 +10,7 @@ import { useState, useMemo } from 'react'
 import { useAuth } from '@/lib/AuthContext'
 import { usePersonalizedFeed } from '@/hooks/usePersonalization'
 import ProductCard from './ProductCard'
+import TrendingProductCard from './TrendingProductCard'
 import { useTrackProductEvent } from '@/hooks/usePersonalization'
 import type { Product } from '@/lib/types'
 
@@ -32,6 +33,7 @@ interface SectionProps {
   isLoading: boolean
   emptyMessage?: string
   badge?: string
+  useTrending?: boolean
 }
 
 function RecommendationSection({
@@ -41,6 +43,7 @@ function RecommendationSection({
   isLoading,
   emptyMessage,
   badge,
+  useTrending = false,
 }: SectionProps) {
   const { trackEvent } = useTrackProductEvent()
 
@@ -79,13 +82,21 @@ function RecommendationSection({
         )}
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onInteraction={() => trackEvent(product, 'click')}
-          />
-        ))}
+        {products.map((product) =>
+          useTrending ? (
+            <TrendingProductCard
+              key={product.id}
+              product={product}
+              onInteraction={() => trackEvent(product, 'click')}
+            />
+          ) : (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onInteraction={() => trackEvent(product, 'click')}
+            />
+          )
+        )}
       </div>
     </div>
   )
@@ -186,6 +197,7 @@ export default function PersonalizedRecommendations({
               products={feed.trending}
               isLoading={feed.isLoading}
               badge="🔥 Trend"
+              useTrending={true}
             />
           )
         }

@@ -5,6 +5,7 @@ A modern e-commerce application built with Next.js, featuring a comprehensive pr
 ## Features
 
 - 🛍️ Product catalog with categories and search functionality
+- 🔍 **Optimized search** with API-based queries, caching, and debouncing
 - 🛒 Shopping cart with persistent storage
 - 👤 User authentication and account management
 - 📦 Order tracking and management
@@ -14,6 +15,7 @@ A modern e-commerce application built with Next.js, featuring a comprehensive pr
 - 🍪 Cookie consent management
 - ⭐ Product reviews and recommendations
 - 📊 Analytics and user behavior tracking
+- ⚡ **High-performance search** with <500ms response time
 
 ## Tech Stack
 
@@ -69,11 +71,40 @@ npm run dev
 ## API Routes
 
 - `/api/products` - Product management
+- `/api/products/search` - **Optimized product search** with caching
 - `/api/orders` - Order processing
 - `/api/customers` - Customer management
 - `/api/categories` - Category management
-- `/api/search` - Product search functionality
+- `/api/search/popular` - Popular search queries
 - `/api/payments` - Payment processing
+
+## Performance Optimizations
+
+### Search Performance
+The application features a highly optimized search system:
+
+- **API-based search**: Server-side processing for faster results
+- **Debouncing**: 150ms delay for search suggestions to reduce unnecessary requests
+- **Caching**: Both client-side (20 queries) and server-side (50 queries) caching
+- **Response time**: <500ms for most searches, <50ms for cached results
+- **Smart suggestions**: Category-based and popular search suggestions
+
+See [Search Performance Documentation](./docs/SEARCH_PERFORMANCE_OPTIMIZATION.md) for details.
+
+### Testing Search Performance
+Run the search performance test:
+```bash
+npm run dev  # Start the development server first
+npx tsx scripts/test-search-performance.ts
+```
+
+## Documentation
+
+- [Search Performance Optimization](./docs/SEARCH_PERFORMANCE_OPTIMIZATION.md)
+- [Search Functionality](./docs/SEARCH_FUNCTIONALITY.md)
+- [Category System](./docs/CATEGORY_SYSTEM_OVERVIEW.md)
+- [Order Tracking System](./docs/ORDER_TRACKING_SYSTEM.md)
+- [Translation System](./docs/TRANSLATION_SYSTEM.md)
 
 ## Contributing
 

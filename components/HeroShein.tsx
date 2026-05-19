@@ -10,6 +10,7 @@ import ShoppingCartIcon from './ShoppingCartIcon'
 
 interface HeroSheinProps {
   products: Product[]
+  onOpenCart?: () => void
 }
 
 type HeroCategoryId = 'superDeals' | 'topTrends' | 'brandZone' | 'flashSale' | 'newIn'
@@ -89,7 +90,7 @@ const CATEGORY_TKEY: Record<HeroCategoryId, string> = {
   newIn: 'heroCatNewIn',
 }
 
-export default function HeroShein({ products }: HeroSheinProps) {
+export default function HeroShein({ products, onOpenCart }: HeroSheinProps) {
   const { t } = useLanguage()
   const [allProducts, setAllProducts] = useState<Product[]>([])
   const [displayedProducts, setDisplayedProducts] = useState<Product[]>([])
@@ -192,6 +193,7 @@ export default function HeroShein({ products }: HeroSheinProps) {
     try {
       addToCart(product)
       await new Promise(resolve => setTimeout(resolve, 300))
+      onOpenCart?.()
     } catch (error) {
       console.error('Misslyckades att lägga till i kundvagn:', error)
     } finally {
@@ -259,8 +261,9 @@ export default function HeroShein({ products }: HeroSheinProps) {
               <a
                 key={`${product.id}-${activeCategory}-${index}`}
                 href={`/produkt/${product.id}`}
-                className="group block bg-white hover:shadow-md transition-shadow duration-200"
+                className="group block bg-white border border-gray-100 hover:border-gray-300 hover:shadow-lg transition-all duration-200 rounded-sm overflow-hidden"
               >
+                {/* Image */}
                 <div className="relative aspect-[3/4] bg-gray-50 overflow-hidden">
                   <img
                     src={product.image || '/product-placeholder.jpg'}
@@ -271,66 +274,30 @@ export default function HeroShein({ products }: HeroSheinProps) {
                       target.src = '/product-placeholder.jpg'
                     }}
                   />
-
-                  <button
-                    type="button"
-                    onClick={e => handleAddToCart(product, e)}
-                    disabled={addingToCart === product.id}
-                    className="absolute bottom-2 right-2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md transition-all duration-200 hover:bg-white hover:scale-110 disabled:opacity-50"
-                    aria-label={t('heroAddToCartAria')}
-                  >
-                    {addingToCart === product.id ? (
-                      <div className="w-4 h-4 border-2 border-gray-400 border-t-black rounded-full animate-spin"></div>
-                    ) : (
-                      <ShoppingCartIcon className="w-4 h-4" />
-                    )}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={e => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      if (isFavorite(product.id)) {
-                        removeFavorite(product.id)
-                      } else {
-                        addFavorite(product.id)
-                      }
-                    }}
-                    className="absolute bottom-2 left-2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md transition-all duration-200 hover:bg-white hover:scale-110"
-                    aria-label={t('heroWishlistAria')}
-                  >
-                    <svg
-                      className={`w-4 h-4 transition-colors ${isFavorite(product.id) ? 'text-red-500 fill-red-500' : 'text-gray-700'}`}
-                      fill={isFavorite(product.id) ? 'currentColor' : 'none'}
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 000-6.364 4.5 4.5 0 00-6.364 0L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                      />
-                    </svg>
-                  </button>
                 </div>
 
+                {/* Info */}
                 <div className="p-2">
-                  <h3 className="text-sm text-gray-900 mb-1 line-clamp-2 leading-tight">{cleanText(product.name)}</h3>
-
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-lg font-bold text-black">${product.price}</span>
-                    {index < 8 && (
-                      <span className="text-sm text-gray-400 line-through">${originalPrice}</span>
-                    )}
-                  </div>
-
-                  {index < 4 && (
-                    <div className="text-xs text-blue-600 font-medium">
-                      #{['MoonlitCouture', 'CaprisRetro', 'BubbleHem', 'Mermaidcore'][index]}
+                  <h3 className="text-xs text-gray-800 mb-1.5 line-clamp-2 leading-snug">{cleanText(product.name)}</h3>
+                  <div className="flex items-center justify-between gap-1">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-sm font-bold text-black">${product.price}</span>
+                      <span className="text-xs text-gray-400 line-through">${originalPrice}</span>
                     </div>
-                  )}
+                    <button
+                      type="button"
+                      onClick={e => handleAddToCart(product, e)}
+                      disabled={addingToCart === product.id}
+                      className="flex items-center justify-center w-7 h-7 text-gray-700 hover:text-black transition-colors disabled:opacity-40 flex-shrink-0"
+                      aria-label={t('heroAddToCartAria')}
+                    >
+                      {addingToCart === product.id ? (
+                        <div className="w-3.5 h-3.5 border-2 border-gray-400 border-t-black rounded-full animate-spin" />
+                      ) : (
+                        <ShoppingCartIcon className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
                 </div>
               </a>
             )

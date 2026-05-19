@@ -57,7 +57,7 @@ export default function ProductCard({ product, onInteraction, priority = false }
       {/* Product Information */}
       <div className="p-2">
         <Link href={`/produkt/${product.id}`} onClick={onInteraction}>
-          <p className="text-gray-900 text-xs font-semibold mb-1 line-clamp-1 leading-tight hover:text-blue-600 transition-colors">
+          <p className="text-gray-900 text-xs font-semibold mb-1 line-clamp-1 leading-tight hover:text-gray-600 transition-colors">
             {cleanText(product.name)}
           </p>
         </Link>
@@ -88,16 +88,14 @@ export default function ProductCard({ product, onInteraction, priority = false }
           <button
             onClick={() => addToCart(product)}
             disabled={isDisabled}
-            className={`flex items-center gap-1 px-1.5 py-0.5 rounded-sm font-medium text-xs transition-all duration-150 ${
-              isDisabled
-                ? 'text-gray-300 cursor-not-allowed'
-                : 'text-gray-700 hover:text-gray-900 active:scale-95'
+            className={`flex items-center gap-1 transition-all duration-150 ${
+              isDisabled ? 'text-gray-300 cursor-not-allowed' : 'text-gray-700 hover:text-gray-900 active:scale-95'
             }`}
           >
             {product.inStock ? (
               <ShoppingCartIcon className="w-6 h-6 flex-shrink-0" />
             ) : (
-              t('outOfStock') || 'Slut i lager'
+              <span className="text-xs">{t('outOfStock') || 'Slut i lager'}</span>
             )}
           </button>
         </div>

@@ -27,6 +27,8 @@ export default function ProductGrid({ initialProducts }: ProductGridProps) {
   const [allProducts, setAllProducts] = useState<Product[]>(initialProducts)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [clickCount, setClickCount] = useState(0)
+  const [searchResults, setSearchResults] = useState<Product[]>([])
+  const [isSearching, setIsSearching] = useState(false)
   const { refreshProducts } = useProductRefresh()
   
   // Ta bort dubbletter från allProducts - memoize to prevent infinite loops
@@ -36,6 +38,36 @@ export default function ProductGrid({ initialProducts }: ProductGridProps) {
     const next = validateAndDeduplicateProducts(allProducts)
     setDeduplicatedProducts(next)
   }, [allProducts])
+  
+  // Hämta sökresultat från API när sökning är aktiv
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (!searchQuery.trim() || searchQuery.trim().length < 2) {
+        setSearchResults([])
+        setIsSearching(false)
+        return
+      }
+
+      setIsSearching(true)
+      try {
+        const response = await fetch(`/api/products/search?q=${encodeURIComponent(searchQuery)}`)
+        const data = await response.json()
+        
+        if (data.products) {
+          setSearchResults(data.products)
+        }
+      } catch (error) {
+        console.error('Error fetching search results:', error)
+        setSearchResults([])
+      } finally {
+        setIsSearching(false)
+      }
+    }
+
+    // Debounce search
+    const timeoutId = setTimeout(fetchSearchResults, 300)
+    return () => clearTimeout(timeoutId)
+  }, [searchQuery])
   
   // Funktion för att uppdatera produktlistan från databasen
   const handleProductRefresh = useCallback(async () => {
@@ -70,6 +102,11 @@ export default function ProductGrid({ initialProducts }: ProductGridProps) {
   
   // Filter products based on search query and category
   const filteredProducts = useMemo(() => {
+    // Om sökning är aktiv, använd sökresultat från API
+    if (searchQuery.trim() && searchQuery.trim().length >= 2) {
+      return searchResults
+    }
+
     let filtered = deduplicatedProducts
     
     // Apply category filter
@@ -95,27 +132,6 @@ export default function ProductGrid({ initialProducts }: ProductGridProps) {
         })
       }
     }
-    
-    // Apply search filter - visa alla produkter som matchar sökningen
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase()
-      filtered = filtered.filter(p => {
-        // Kontrollera alla möjliga matchningar
-        const nameMatch = p.name.toLowerCase().includes(query)
-        const descriptionMatch = p.description.toLowerCase().includes(query)
-        const categoryMatch = p.category.toLowerCase().includes(query)
-        
-        // Kontrollera även färger och storlekar om de finns
-        const colorMatch = p.colors?.some(color => color.toLowerCase().includes(query)) || false
-        const sizeMatch = p.sizes?.some(size => size.toLowerCase().includes(query)) || false
-        
-        // Returnera true om någon matchning hittas
-        return nameMatch || descriptionMatch || categoryMatch || colorMatch || sizeMatch
-      })
-
-      // Sökresultat är alltid rent relevansbaserade — ingen diversity-blandning
-      return filtered
-    }
 
     // Post-Ranking Diversity Layer: blanda kategorier så att liknande
     // produkter inte visas efter varandra. Aktiveras ENDAST på startsidan
@@ -130,7 +146,7 @@ export default function ProductGrid({ initialProducts }: ProductGridProps) {
       return applyPositionRandomization(diversified)
     }
     return diversified
-  }, [searchQuery, selectedCategory, deduplicatedProducts])
+  }, [searchQuery, searchResults, selectedCategory, deduplicatedProducts])
   
   // Load more products manually
   const loadMoreProducts = () => {
@@ -164,6 +180,14 @@ export default function ProductGrid({ initialProducts }: ProductGridProps) {
         <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-center">
           <div className="inline-block animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-blue-600 mr-2"></div>
           <span className="text-blue-700 font-medium">{t('gridRefreshingProducts')}</span>
+        </div>
+      )}
+      
+      {/* Search loading indicator */}
+      {isSearching && (
+        <div className="mb-4 p-3 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center">
+          <div className="inline-block animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-600 mr-2"></div>
+          <span className="text-gray-700 font-medium">Söker...</span>
         </div>
       )}
       

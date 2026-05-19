@@ -26,6 +26,7 @@ export default function Header() {
   const [recentSearches, setRecentSearches] = useState<string[]>([])
   const [categories, setCategories] = useState<string[]>([])
   const [popularSearches, setPopularSearches] = useState<string[]>([])
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
   const languageDropdownRef = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLDivElement>(null)
   const { totalItems } = useCart()
@@ -83,21 +84,40 @@ export default function Header() {
     }
   }, [])
   
-  // Generate search suggestions based on query
+  // Generate search suggestions based on query with debouncing
   useEffect(() => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current)
+    }
+
     if (searchQuery.length >= 2) {
-      const query = searchQuery.toLowerCase()
-      
-      // Hämta förslag från kategorier
-      const categorySuggestions = categories
-        .filter(c => c.toLowerCase().includes(query))
-        .slice(0, 6)
-      
-      setSearchSuggestions(categorySuggestions)
+      debounceTimerRef.current = setTimeout(() => {
+        const query = searchQuery.toLowerCase().trim()
+        
+        // Filter categories that match the query
+        const categorySuggestions = categories
+          .filter(c => c.toLowerCase().includes(query))
+          .slice(0, 4)
+        
+        // Filter popular searches that match the query
+        const popularSuggestions = popularSearches
+          .filter(s => s.toLowerCase().includes(query))
+          .slice(0, 4)
+        
+        // Combine and deduplicate
+        const combined = [...new Set([...categorySuggestions, ...popularSuggestions])].slice(0, 6)
+        setSearchSuggestions(combined)
+      }, 150) // 150ms debounce
     } else {
       setSearchSuggestions([])
     }
-  }, [searchQuery, categories])
+
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
+      }
+    }
+  }, [searchQuery, categories, popularSearches])
   
   // Save search to recent searches
   const saveSearch = (query: string) => {
@@ -140,7 +160,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-30">
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
         {/* Mobile Header */}
         <div className="lg:hidden">
           <div className="container mx-auto px-3 py-3">
@@ -244,7 +264,7 @@ export default function Header() {
                     </button>
                     
                     {isLanguageDropdownOpen && (
-                      <div className="absolute right-0 top-full mt-2 w-44 bg-white rounded-md shadow-lg border border-gray-100 z-50">
+                      <div className="absolute right-0 top-full mt-2 w-44 bg-white rounded-md shadow-lg border border-gray-100 z-[70]">
                         <div className="py-1">
                           <button
                             onClick={() => {
@@ -309,7 +329,7 @@ export default function Header() {
           </div>
           
           {/* Main Header */}
-          <div className="container mx-auto px-6 relative">
+          <div className="container mx-auto px-6">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center gap-8">
                 <BrandmarkLogo size="md" showText={true} variant="default" />
@@ -374,109 +394,6 @@ export default function Header() {
                       </svg>
                     </button>
                   </div>
-                  
-                  {/* Search Dropdown */}
-                  {isSearchFocused && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-[500px] overflow-y-auto">
-                      {/* Search Suggestions */}
-                      {searchSuggestions.length > 0 && (
-                        <div className="p-4 border-b border-gray-100">
-                          <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
-                            Sökförslag
-                          </h3>
-                          <div className="space-y-1">
-                            {searchSuggestions.map((suggestion, index) => (
-                              <button
-                                key={index}
-                                onClick={() => handleSearchSubmit(suggestion)}
-                                className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded flex items-center gap-2"
-                              >
-                                <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                                <span>{suggestion}</span>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Recent Searches */}
-                      {!searchQuery && recentSearches.length > 0 && (
-                        <div className="p-4 border-b border-gray-100">
-                          <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                              Senaste sökningar
-                            </h3>
-                            <button
-                              onClick={clearRecentSearches}
-                              className="text-xs text-gray-500 hover:text-gray-700"
-                            >
-                              Rensa
-                            </button>
-                          </div>
-                          <div className="space-y-1">
-                            {recentSearches.map((search, index) => (
-                              <button
-                                key={index}
-                                onClick={() => handleSearchSubmit(search)}
-                                className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded flex items-center gap-2"
-                              >
-                                <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <span>{search}</span>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Popular Searches */}
-                      {!searchQuery && popularSearches.length > 0 && (
-                        <div className="p-4">
-                          <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
-                            Popular searches
-                          </h3>
-                          <div className="flex flex-wrap gap-2">
-                            {popularSearches.map((search, index) => (
-                              <button
-                                key={index}
-                                onClick={() => handleSearchSubmit(search)}
-                                className="px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full"
-                              >
-                                {search}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Categories Quick Access */}
-                      {!searchQuery && categories.length > 1 && (
-                        <div className="p-4 border-t border-gray-100">
-                          <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
-                            Categories
-                          </h3>
-                          <div className="grid grid-cols-2 gap-2">
-                            {categories.filter(c => c !== 'All').slice(0, 6).map((category) => (
-                              <button
-                                key={category}
-                                onClick={() => {
-                                  setSearchQuery(category)
-                                  setSelectedCategory(category)
-                                  setIsSearchFocused(false)
-                                }}
-                                className="px-3 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded text-left"
-                              >
-                                {category}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -506,6 +423,129 @@ export default function Header() {
           </div>
         </div>
       </header>
+
+      {/* Search Dropdown - Rendered outside header to prevent layout issues */}
+      {isSearchFocused && (
+        <div 
+          className="fixed left-0 right-0 z-[60] hidden lg:block"
+          style={{ top: 'calc(2.5rem + 4rem)' }} // Position below top bar (2.5rem) + main header (4rem)
+        >
+          <div className="container mx-auto px-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-8" style={{ width: 'calc(100% - 48rem)' }}>
+                {/* Spacer for logo and menu button */}
+              </div>
+              
+              <div className="flex-1 max-w-2xl mx-8">
+                <div className="bg-white border border-gray-200 rounded-lg shadow-xl max-h-[500px] overflow-y-auto mt-2">
+                  {/* Search Suggestions */}
+                  {searchSuggestions.length > 0 && (
+                    <div className="p-4 border-b border-gray-100">
+                      <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+                        Sökförslag
+                      </h3>
+                      <div className="space-y-1">
+                        {searchSuggestions.map((suggestion, index) => (
+                          <button
+                            key={index}
+                            onClick={() => handleSearchSubmit(suggestion)}
+                            className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded flex items-center gap-2"
+                          >
+                            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            <span>{suggestion}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Recent Searches */}
+                  {!searchQuery && recentSearches.length > 0 && (
+                    <div className="p-4 border-b border-gray-100">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                          Senaste sökningar
+                        </h3>
+                        <button
+                          onClick={clearRecentSearches}
+                          className="text-xs text-gray-500 hover:text-gray-700"
+                        >
+                          Rensa
+                        </button>
+                      </div>
+                      <div className="space-y-1">
+                        {recentSearches.map((search, index) => (
+                          <button
+                            key={index}
+                            onClick={() => handleSearchSubmit(search)}
+                            className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded flex items-center gap-2"
+                          >
+                            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>{search}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Popular Searches */}
+                  {!searchQuery && popularSearches.length > 0 && (
+                    <div className="p-4">
+                      <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+                        Popular searches
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {popularSearches.map((search, index) => (
+                          <button
+                            key={index}
+                            onClick={() => handleSearchSubmit(search)}
+                            className="px-3 py-1.5 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full"
+                          >
+                            {search}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Categories Quick Access */}
+                  {!searchQuery && categories.length > 1 && (
+                    <div className="p-4 border-t border-gray-100">
+                      <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+                        Categories
+                      </h3>
+                      <div className="grid grid-cols-2 gap-2">
+                        {categories.filter(c => c !== 'All').slice(0, 6).map((category) => (
+                          <button
+                            key={category}
+                            onClick={() => {
+                              setSearchQuery(category)
+                              setSelectedCategory(category)
+                              setIsSearchFocused(false)
+                            }}
+                            className="px-3 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded text-left"
+                          >
+                            {category}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <nav className="flex items-center gap-6">
+                {/* Spacer for user icon and cart */}
+                <div style={{ width: '7rem' }}></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (

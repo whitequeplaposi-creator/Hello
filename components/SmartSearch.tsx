@@ -1,14 +1,8 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Product } from '@/lib/types'
 import { useLanguage } from '@/lib/LanguageContext'
-import { 
-  advancedSearch,
-  getAutoCompleteSuggestions,
-  suggestSpellCorrection,
-  SearchOptions 
-} from '@/lib/algorithms'
 
 interface SmartSearchProps {
   products: Product[]
@@ -20,13 +14,15 @@ export default function SmartSearch({ products, onResults }: SmartSearchProps) {
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
-  const [filters, setFilters] = useState<Partial<SearchOptions>>({})
   const [spellingSuggestion, setSpellingSuggestion] = useState<string | null>(null)
   const [recentSearches, setRecentSearches] = useState<string[]>([])
   const [popularSearches, setPopularSearches] = useState<string[]>([])
   const [categories, setCategories] = useState<string[]>([])
   const [isFocused, setIsFocused] = useState(false)
+  const [isSearching, setIsSearching] = useState(false)
   const searchRef = useRef<HTMLDivElement>(null)
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const searchCacheRef = useRef<Map<string, Product[]>>(new Map())
 
   // Load popular searches from database
   useEffect(() => {
@@ -75,17 +71,39 @@ export default function SmartSearch({ products, onResults }: SmartSearchProps) {
     }
   }, [])
 
-  // Auto-complete
+  // Auto-complete with debouncing
   useEffect(() => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current)
+    }
+
     if (query.length >= 2) {
-      const autoComplete = getAutoCompleteSuggestions(query, products, 8)
-      setSuggestions(autoComplete)
-      setShowSuggestions(true)
+      debounceTimerRef.current = setTimeout(() => {
+        // Generate suggestions from categories and popular searches
+        const queryLower = query.toLowerCase()
+        const categorySuggestions = categories
+          .filter(c => c.toLowerCase().includes(queryLower))
+          .slice(0, 4)
+        
+        const popularSuggestions = popularSearches
+          .filter(s => s.toLowerCase().includes(queryLower))
+          .slice(0, 4)
+        
+        const combined = [...new Set([...categorySuggestions, ...popularSuggestions])].slice(0, 8)
+        setSuggestions(combined)
+        setShowSuggestions(true)
+      }, 150) // 150ms debounce
     } else {
       setSuggestions([])
       setShowSuggestions(isFocused)
     }
-  }, [query, products, isFocused])
+
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
+      }
+    }
+  }, [query, categories, popularSearches, isFocused])
 
   // Save search to recent
   const saveSearch = (searchQuery: string) => {
@@ -96,30 +114,54 @@ export default function SmartSearch({ products, onResults }: SmartSearchProps) {
     localStorage.setItem('smartSearchRecent', JSON.stringify(updated))
   }
 
-  // Sök
-  const handleSearch = (searchQuery: string = query) => {
+  // Sök med API och caching
+  const handleSearch = useCallback(async (searchQuery: string = query) => {
     if (!searchQuery.trim()) return
     
-    // Stavningskorrigering
-    const correction = suggestSpellCorrection(searchQuery, products)
-    if (correction && correction !== searchQuery.toLowerCase()) {
-      setSpellingSuggestion(correction)
-    } else {
-      setSpellingSuggestion(null)
+    setIsSearching(true)
+    setSpellingSuggestion(null)
+
+    try {
+      // Check cache first
+      const cacheKey = searchQuery.toLowerCase().trim()
+      if (searchCacheRef.current.has(cacheKey)) {
+        const cachedResults = searchCacheRef.current.get(cacheKey)!
+        onResults(cachedResults)
+        saveSearch(searchQuery)
+        setShowSuggestions(false)
+        setIsFocused(false)
+        setIsSearching(false)
+        return
+      }
+
+      // Fetch from API
+      const response = await fetch(`/api/products/search?q=${encodeURIComponent(searchQuery)}`)
+      if (!response.ok) throw new Error('Search failed')
+      
+      const data = await response.json()
+      const results = data.products || []
+
+      // Cache results
+      searchCacheRef.current.set(cacheKey, results)
+      
+      // Limit cache size to 20 entries
+      if (searchCacheRef.current.size > 20) {
+        const firstKey = searchCacheRef.current.keys().next().value
+        searchCacheRef.current.delete(firstKey)
+      }
+
+      onResults(results)
+      saveSearch(searchQuery)
+      setShowSuggestions(false)
+      setIsFocused(false)
+    } catch (error) {
+      console.error('Search error:', error)
+      // Fallback to showing all products
+      onResults(products)
+    } finally {
+      setIsSearching(false)
     }
-
-    // Utför sökning - visa alla matchande produkter
-    const results = advancedSearch(products, {
-      query: searchQuery,
-      ...filters,
-      sortBy: 'relevance'
-    })
-
-    onResults(results)
-    saveSearch(searchQuery)
-    setShowSuggestions(false)
-    setIsFocused(false)
-  }
+  }, [query, onResults, products])
 
   const handleSuggestionClick = (suggestion: string) => {
     setQuery(suggestion)
@@ -273,12 +315,25 @@ export default function SmartSearch({ products, onResults }: SmartSearchProps) {
         
         <button
           onClick={() => handleSearch()}
-          className="px-6 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors flex items-center gap-2"
+          disabled={isSearching}
+          className="px-6 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <span>{t('searchButtonLabel')}</span>
+          {isSearching ? (
+            <>
+              <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              <span>{t('searching')}</span>
+            </>
+          ) : (
+            <>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <span>{t('searchButtonLabel')}</span>
+            </>
+          )}
         </button>
       </div>
 

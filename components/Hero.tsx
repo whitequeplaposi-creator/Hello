@@ -7,11 +7,12 @@ import { Product } from '@/lib/types'
 interface HeroProps {
   products: Product[]
   variant?: 'carousel' | 'shein'
+  onOpenCart?: () => void
 }
 
-export default function Hero({ products, variant = 'shein' }: HeroProps) {
+export default function Hero({ products, variant = 'shein', onOpenCart }: HeroProps) {
   if (variant === 'shein') {
-    return <HeroShein products={products} />
+    return <HeroShein products={products} onOpenCart={onOpenCart} />
   }
   
   return <HeroCarousel products={products} />
