@@ -96,11 +96,6 @@ export default function ProductsClient({ products }: ProductsClientProps) {
           <h1 className="text-2xl font-bold text-gray-900">
             {categoryFilter ? categoryTitle : t('catalogTitleAll')}
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            {categoryFilter
-              ? t('catalogCategoryLine', { count: displayProducts.length, cat: categoryFilter })
-              : t('catalogAllLine', { count: displayProducts.length })}
-          </p>
         </div>
 
         {displayProducts.length === 0 ? (

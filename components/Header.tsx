@@ -570,7 +570,7 @@ export default function Header() {
                     <Link
                       href="/login"
                       onClick={() => setIsMenuOpen(false)}
-                      className="flex-1 bg-sky-400 text-white text-center py-2.5 px-4 rounded-lg hover:bg-sky-500 text-sm touch-manipulation"
+                      className="flex-1 bg-gray-900 text-white text-center py-2.5 px-4 rounded-lg hover:bg-gray-700 text-sm touch-manipulation"
                     >
                       {t('login')}
                     </Link>

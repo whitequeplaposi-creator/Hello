@@ -199,13 +199,6 @@ export default function CategoryIcons({ products }: CategoryIconsProps) {
                     
                     {/* Gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    
-                    {/* Produktantal badge */}
-                    {category.productCount > 0 && (
-                      <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-lg">
-                        {category.productCount > 99 ? '99+' : category.productCount}
-                      </div>
-                    )}
                   </>
                 ) : (
                   // Fallback endast om ingen produkt finns i kategorin
@@ -230,19 +223,7 @@ export default function CategoryIcons({ products }: CategoryIconsProps) {
                 {t(labelKeyForSlug(category.name))}
               </span>
               
-              {/* Produktantal text */}
-              {category.productCount > 0 ? (
-                <span className="text-xs text-gray-500 mt-1">
-                  {category.productCount} {t('categoryProductCount')}
-                </span>
-              ) : (
-                <span className="text-xs text-gray-400 mt-1">
-                  {t('comingSoonLabel')}
-                </span>
-              )}
-              
-              {/* Underline effect */}
-              <div className="w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 group-hover:w-full transition-all duration-300 mt-1"></div>
+              {/* Underline effect removed */}
             </Link>
           ))}
         </div>

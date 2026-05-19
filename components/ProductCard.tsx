@@ -90,12 +90,12 @@ export default function ProductCard({ product, onInteraction, priority = false }
             disabled={isDisabled}
             className={`flex items-center gap-1 px-1.5 py-0.5 rounded-sm font-medium text-xs transition-all duration-150 ${
               isDisabled
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 active:scale-95'
+                ? 'text-gray-300 cursor-not-allowed'
+                : 'text-gray-700 hover:text-gray-900 active:scale-95'
             }`}
           >
             {product.inStock ? (
-              <ShoppingCartIcon className="w-4 h-4" />
+              <ShoppingCartIcon className="w-6 h-6 flex-shrink-0" />
             ) : (
               t('outOfStock') || 'Slut i lager'
             )}

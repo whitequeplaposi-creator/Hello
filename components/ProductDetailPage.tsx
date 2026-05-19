@@ -570,7 +570,7 @@ function RelatedProductsSection({
   return (
     <div className="border-t border-gray-200 mt-12 pt-8">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('relatedProducts')}</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
         {visible.map((related) => (
           <ProductCard key={related.id} product={related} />
         ))}
@@ -579,7 +579,7 @@ function RelatedProductsSection({
         <div className="mt-8 text-center">
           <button
             onClick={() => setVisibleCount((prev) => prev + 8)}
-            className="px-8 py-3 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
+            className="px-8 py-3 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors"
           >
             {t('loadMore')}
           </button>
