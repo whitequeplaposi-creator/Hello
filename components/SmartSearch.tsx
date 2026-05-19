@@ -106,13 +106,13 @@ export default function SmartSearch({ products, onResults }: SmartSearchProps) {
   }, [query, categories, popularSearches, isFocused])
 
   // Save search to recent
-  const saveSearch = (searchQuery: string) => {
+  const saveSearch = useCallback((searchQuery: string) => {
     if (!searchQuery.trim()) return
     
     const updated = [searchQuery, ...recentSearches.filter(s => s !== searchQuery)].slice(0, 5)
     setRecentSearches(updated)
     localStorage.setItem('smartSearchRecent', JSON.stringify(updated))
-  }
+  }, [recentSearches])
 
   // Sök med API och caching
   const handleSearch = useCallback(async (searchQuery: string = query) => {
@@ -161,7 +161,7 @@ export default function SmartSearch({ products, onResults }: SmartSearchProps) {
     } finally {
       setIsSearching(false)
     }
-  }, [query, onResults, products])
+  }, [query, onResults, products, saveSearch])
 
   const handleSuggestionClick = (suggestion: string) => {
     setQuery(suggestion)
